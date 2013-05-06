@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+  <!-- INTERFACE -->
+  <cc:interface>
+    <cc:attribute name="combatant" />
+  </cc:interface>
+
+  <!-- IMPLEMENTATION -->
+  <cc:implementation>
+    <h:panelGrid columns="2">
+      <h:outputText value="Type"/>
+      <h:selectOneMenu value="${cc.attrs.value.type}">
+        <f:selectItems value="${catalogsData.typeValues}"/>
+      </h:selectOneMenu>
+      <h:outputText value="Image"/>
+      <h:inputText value="${cc.attrs.value.image}"/>
+      <h:outputText value="HP"/>
+      <h:panelGroup>
+        <h:inputText value="${cc.attrs.value.hp}" size="3"/>/<h:inputText value="${cc.attrs.value.maxHp}" size="3"/>
+      </h:panelGroup>
+      <h:outputText value="Healing Surges"/>
+      <h:inputText value="${cc.attrs.value.healingSurge}" size="3"/>
+      <h:outputText value="Initiative"/>
+      <h:inputText value="${cc.attrs.value.initiative}" size="3"/>
+      <h:outputText value="Position"/>
+      <h:panelGroup>
+        <h:inputText value="${cc.attrs.value.x}" size="3"/>,<h:inputText value="${cc.attrs.value.y}" size="3"/>
+      </h:panelGroup>
+      <h:outputText value="Width"/>
+      <h:panelGroup>
+        <h:inputText value="${cc.attrs.value.width}" size="3"/>,<h:inputText value="${cc.attrs.value.height}" size="3"/>
+      </h:panelGroup>
+    </h:panelGrid>
+  </cc:implementation>
+</html>

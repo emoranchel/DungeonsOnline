@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+  <!-- INTERFACE -->
+  <cc:interface>
+    <cc:attribute name="combatants" />
+    <cc:attribute name="showHide" required="false" default="false"/>
+    <cc:attribute name="showShow" required="false" default="false"/>
+  </cc:interface>
+
+  <!-- IMPLEMENTATION -->
+  <cc:implementation>
+    <h:dataTable var="combatant" value="${cc.attrs.combatants}">
+      <h:column>
+        <f:facet  name="header"><h:outputLabel value="Name"/></f:facet>
+        <h:outputText value="${combatant.name}"/>
+      </h:column>
+      <h:column>
+        <f:facet  name="header"><h:outputLabel value="Type"/></f:facet>
+        <h:selectOneMenu value="${combatant.type}">
+          <f:selectItems value="${catalogsData.typeValues}"/>
+        </h:selectOneMenu>
+      </h:column>
+      <h:column>
+        <f:facet  name="header"><h:outputLabel value="HP"/></f:facet>
+        <h:inputText value="${combatant.hp}" size="3"/>/<h:inputText value="${combatant.maxHp}" size="3"/>
+      </h:column>
+      <h:column>
+        <f:facet  name="header"><h:outputLabel value="Heals"/></f:facet>
+        <h:inputText value="${combatant.healingSurge}" size="2"/>
+      </h:column>
+      <h:column>
+        <f:facet  name="header"><h:outputLabel value="Initiative"/></f:facet>
+        <h:inputText value="${combatant.initiative}" size="3"/>
+      </h:column>
+      <h:column>
+        <f:facet  name="header"><h:outputLabel value="Position"/></f:facet>
+        <h:inputText value="${combatant.x}" size="3"/>,<h:inputText value="${combatant.y}" size="3"/>
+      </h:column>
+      <h:column>
+        <f:facet  name="header"><h:outputLabel value="Size"/></f:facet>
+        <h:inputText value="${combatant.width}" size="2"/>,<h:inputText value="${combatant.height}" size="2"/>
+      </h:column>
+      <h:column>
+        <f:facet  name="header"><h:outputLabel value="Tags"/></f:facet>
+        <h:inputText value="${combatant.tags}" size="5"/>
+      </h:column>
+      <h:column>
+        <f:facet  name="header"><h:outputLabel value="Options"/></f:facet>
+        <h:commandButton action="#{combatDataActions.remove(combatant.name)}" value="Remove"/>
+        <c:if test="${cc.attrs.showHide}">
+          <h:commandButton action="#{combatDataActions.hide(combatant.name)}" value="Hide"/>
+        </c:if>
+        <c:if test="${cc.attrs.showShow}">
+          <h:commandButton action="#{combatDataActions.show(combatant.name)}" value="Show"/>
+        </c:if>
+      </h:column>
+    </h:dataTable>
+  </cc:implementation>
+</html>

@@ -1,0 +1,107 @@
+    <div id="map-options" class="options" style="display:none;">
+      <div class="tabs">
+        <ul>
+          <li><a href="#map-options-move">Move</a></li>
+          <li><a href="#map-options-add">Add Char</a></li>
+          <li><a href="#map-options-char-main">Main</a></li>
+          <li><a href="#map-options-char-data">Data</a></li>
+        </ul>
+        <div id="map-options-move">
+          <h:form id="formMapOptions">
+            <h:inputHidden class="map-options-x" value="${combatActionParams.x}"/><h:inputHidden class="map-options-y" value="${combatActionParams.y}"/>
+            <h:selectOneMenu value="${combatActionParams.target}" class="map-options-select">
+              <f:selectItems value="${combatActions.charItems}"/>
+            </h:selectOneMenu>
+            <h:commandButton value="Move" action="#{combatActions.move()}" class="map-options-moveBtn">
+              <f:ajax render=":ajaxMapContainer" execute="@form" />
+            </h:commandButton>
+          </h:form>
+        </div>
+        <div id="map-options-add">
+          <h:form>
+            <h:inputHidden class="map-options-x" value="${combatActionParams.x}"/><h:inputHidden class="map-options-y" value="${combatActionParams.y}"/>
+            <h:panelGrid columns="2">
+              <h:outputLabel value="Type"/>
+              <h:selectOneMenu value="${combatActionParams.newCombatant.type}">
+                <f:selectItems value="${combatActions.typeValues}"/>
+              </h:selectOneMenu>
+              <h:outputLabel value="Name"/>
+              <h:inputText value="${combatActionParams.newCombatant.name}"/>
+              <h:outputLabel value="Small"/>
+              <h:inputText value="${combatActionParams.newCombatant.small}"/>
+              <h:outputLabel value="Medium"/>
+              <h:inputText value="${combatActionParams.newCombatant.medium}"/>
+              <h:outputLabel value="HP"/>
+              <h:inputText value="${combatActionParams.newCombatant.hp}" size="3"/>
+              <h:outputLabel value="HPMax"/>
+              <h:inputText value="${combatActionParams.newCombatant.maxHp}" size="3"/>
+              <h:outputLabel value="Healing Surges"/>
+              <h:inputText value="${combatActionParams.newCombatant.healingSurge}" size="2"/>
+              <h:outputLabel value="Initiative"/>
+              <h:inputText value="${combatActionParams.newCombatant.initiative}" size="3"/>
+              <h:outputLabel value="Width"/>
+              <h:inputText value="${combatActionParams.newCombatant.width}" size="2"/>
+              <h:outputLabel value="Height"/>
+              <h:inputText value="${combatActionParams.newCombatant.height}" size="2"/>
+              <h:commandButton value="Add" action="#{combatActions.createFromMap}">
+                <f:ajax render=":containerIcons :formInitiatives" execute="@form" />
+              </h:commandButton>
+            </h:panelGrid>
+          </h:form>
+        </div>
+        <div id="map-options-char-main">
+          <div class="hpBar" style="width: ${data.hpp}%; background: ${data.color}; position: relative; height: 4px; margin-top:2px;"></div>
+          <h:form class="formblock">
+            <h:outputText value="Damage"/>
+            <h:inputText value="#{data.damage}" size="3"/>
+            <h:commandButton value="Damage!" action="#{combatActions.dodamage(data)}">
+              <f:ajax render=":containerIcons :formInitiatives" execute="@form" />
+            </h:commandButton>
+          </h:form>
+          <h:form class="formblock">
+            <h:outputText value="Heal"/>
+            <h:inputText value="${data.heal}" size="3"/>
+            <h:commandButton value="Heal!" action="#{combatActions.doheal(data)}">
+              <f:ajax render=":containerIcons :formInitiatives" execute="@form" />
+            </h:commandButton>
+          </h:form>
+          <h:form class="formblock">
+            <h:commandButton value="&larr;" action="#{combatActions.moveLeft(data)}">
+              <f:ajax render=":containerIcons" />
+            </h:commandButton>
+            <h:commandButton value="&uarr;" action="#{combatActions.moveUp(data)}">
+              <f:ajax render=":containerIcons" />
+            </h:commandButton>
+            <h:commandButton value="&rarr;" action="#{combatActions.moveRight(data)}">
+              <f:ajax render=":containerIcons" />
+            </h:commandButton>
+            <h:commandButton value="&darr;" action="#{combatActions.moveDown(data)}">
+              <f:ajax render=":containerIcons" />
+            </h:commandButton>
+          </h:form>
+        </div>
+        <div id="map-options-char-data">
+          <h:form>
+            <h:panelGrid columns="2">
+              <h:outputLabel value="Name"/>
+              <h:outputLabel value="${data.name}"/>
+              <h:outputLabel value="Type"/>
+              <h:selectOneMenu value="${data.type}">
+                <f:selectItems value="${combatActions.typeValues}"/>
+              </h:selectOneMenu>
+              <h:outputLabel value="HP"/>
+              <h:inputText value="${data.hp}" size="3"/>
+              <h:outputLabel value="HPMax"/>
+              <h:inputText value="${data.maxHp}" size="3"/>
+              <h:outputLabel value="Healing Surges"/>
+              <h:inputText value="${data.healingSurge}" size="2"/>
+              <h:outputLabel value="Initiative"/>
+              <h:inputText value="${data.initiative}" size="3"/>
+            </h:panelGrid>
+            <h:commandButton action="#{combatActions.update(data)}" value="Update">
+              <f:ajax render=":containerIcons :formInitiatives" execute="@form" />
+            </h:commandButton>
+          </h:form>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      >
+  <c:set var="title" value="Battle Map"/>
+  <ui:composition template="admin-template.xhtml">
+    <ui:define name="resources">
+      <link rel="stylesheet" href="res/css/map.css" type="text/css"/> 
+      <link rel="stylesheet" href="res/css/map-admin.css" type="text/css"/> 
+      <script src="res/js/map-admin.js" type="text/javascript" ></script>
+      <script src="res/js/map-commons.js" type="text/javascript" ></script>
+      <script src="res/js/map-overlay.js" type="text/javascript" ></script>
+    </ui:define>
+    <ui:define name="content">
+
+      <div id="mapContainer">
+        <div id="map" style="background-image: url('${sessionData.combat.combatMap.url}'); width:${sessionData.combat.combatMap.width*30}px; height:${sessionData.combat.combatMap.height*30}px;">
+          <h:panelGroup id="mapContent">
+            <ui:repeat value="${sessionData.combat.combatants.all}" var="data">
+              <div id="char-${data.name}-tooltip" style="display:none;">
+                ${data.name}<br/>
+                ${data.tags}
+              </div>
+              <div id="char-${data.name}" class="char" style="${data.iconStyle}" data-char="${data.name}" >
+                <div class="hpBar" style="width: ${data.hppPer}; background: ${data.color};"></div>
+              </div>
+            </ui:repeat>
+          </h:panelGroup>
+        </div>
+      </div>
+      <h:panelGroup id="charOptions">
+        <ui:repeat value="${sessionData.combat.combatants.all}" var="data">
+          <div style="display:none;" class="combatantOptions" id="char-${data.name}-options">
+            <div>
+              <div style="display: inline-block; width: 30px;"></div>
+              <input type="button" value="Close" onclick="hideAll(event);"/>
+              <input type="button" value="Basic"/>
+            </div>
+            <div id="char-${data.name}-options-basic">
+              <h:panelGrid>
+                <h:panelGroup>
+                  <input type="text"   value="0" size="1"  name="radius" />
+                  <input type="button" value="Radius" onclick="mapActions.radius(this, event);"/>
+                  <input type="button" value="Path"   onclick="mapActions.path(this, event);"/>
+                  <input type="button" value="Sight"  onclick="mapActions.sight(this, event);"/>
+                </h:panelGroup>
+                <h:form class="blockForm">
+                  <div>
+                    Damage: 
+                    <h:inputText value="${data.damage}" size="1"/>
+                    <h:commandButton action="#{combatCharActions.dodamage(data.name)}" value="Damage">
+                      <f:ajax execute="@form" render=":charOptions :mapContent :formInitiatives"/>
+                    </h:commandButton>
+                  </div>
+                  <div>
+                    Heal: 
+                    <h:inputText value="${data.heal}" size="1"/>
+                    <h:commandButton action="#{combatCharActions.doheal(data.name)}" value="Heal">
+                      <f:ajax execute="@form" render=":charOptions :mapContent :formInitiatives"/>
+                    </h:commandButton>
+                  </div>
+                  <div>
+                    <h:commandButton action="#{combatDataActions.show(data.name)}" value="Show" rendered="${data.hidden}">
+                      <f:ajax render=":charOptions :mapContent :formInitiatives"/>
+                    </h:commandButton>
+                    <h:commandButton action="#{combatDataActions.hide(data.name)}" value="Hide" rendered="${not data.hidden}">
+                      <f:ajax render=":charOptions :mapContent :formInitiatives"/>
+                    </h:commandButton>
+                  </div>
+                </h:form>
+              </h:panelGrid>
+            </div>
+          </div>
+        </ui:repeat>
+      </h:panelGroup>
+
+
+      <div id="mapOptions" style="display:none;">
+        <a onclick="hideAll(event);">[X] Close</a>
+        <div id="mapOptions_coordinates"></div>
+        <input type="button" value="AddCombatant"/>
+        <input type="text"   value="0" size="2" name="radius"/>
+        <input type="button" value="Radius" onclick="mapActions.radius(this, event);"/>
+        <input type="button" value="Path"   onclick="mapActions.path(this, event);"/>
+        <input type="button" value="Sight"  onclick="mapActions.sight(this, event);"/>
+      </div>
+
+      <h:form id="moveForm">
+        <h:inputHidden id="optionX" value="#{combatMoveActions.x}" class="map-options-x"/>
+        <h:inputHidden id="optionY" value="#{combatMoveActions.y}" class="map-options-y"/>
+        <h:inputHidden id="optionSelect" value="#{combatMoveActions.target}" class="map-options-select"/>
+        <h:commandLink id="actionMove" action="#{combatMoveActions.move()}" class="map-options-moveBtn">
+          <f:ajax execute=":moveForm" render=":charOptions :mapContent :formInitiatives"/>
+        </h:commandLink>
+      </h:form>
+
+      <div id="initiative">
+        <a onclick="hideInitiative();">[close]</a>
+        <div id="initiativeContent">
+          <h:form id="formInitiatives">
+            <h:commandButton value="Next" action="#{initiativeActions.nextInitiative()}">
+              <f:ajax execute=":formInitiatives" render=":charOptions :mapContent :formInitiatives"/>
+            </h:commandButton>
+            <ui:repeat value="${initiativeActions.initiatives}" var="data">
+              <div style="background-image:url('ImageServlet?image=${data.image}')" class="initiativePortrait" data-char="${data.name}" id="char-${data.name}-init">
+                <div style="width: ${data.hppPer}; background-color: ${data.color};" class="initiativeHpBar"></div>
+                <div class="initiativeName">${data.name}</div>
+                <div class="initiativeNumber">${data.initiative}<br/>${data.hp}/${data.maxHp}</div>
+              </div>
+            </ui:repeat>
+          </h:form>
+        </div>
+      </div>
+    </ui:define>
+  </ui:composition>
+</html>
+

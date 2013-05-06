@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+  <h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="res/ui-custom/css/custom-theme/jquery-ui-1.10.2.custom.css" type="text/css"/> 
+    <link rel="stylesheet" href="res/css/styles.css" type="text/css"/> 
+
+    <script src="res/js/jquery-1.9.1.js" type="text/javascript" ></script>
+    <script src="res/ui-custom/js/jquery-ui-1.10.2.custom.js" type="text/javascript" ></script>
+
+    <ui:insert name="resources"></ui:insert>
+    <title>Dungeons Admin:${title}</title>
+  </h:head>
+  <h:body>
+    <h1>Combat </h1>
+    <h2>
+      <a href="adminCombatData.jsf">Data </a>
+      <a href="adminCombatEditMap.jsf">Edit Map </a>
+      <a href="adminCombatMap.jsf">Combat Map </a>
+    </h2>
+    <div class="separatedBlock">
+      <h:form class="inlineForm">
+        <h:outputText value="File:"/>
+        <h:inputText value="${saveGameActions.combatFilename}"/>
+        <h:commandButton value="Save" action="#{saveGameActions.saveCombat()}"/>
+      </h:form>
+      <h:form class="inlineForm">
+        <h:outputText value="File:"/>
+        <h:inputText value="${saveGameActions.combatFilename}"/>
+        <h:commandButton value="Load" action="#{saveGameActions.loadCombat()}"/>
+      </h:form>
+    </div>
+    <ui:insert name="content"></ui:insert>
+  </h:body>
+</html>
