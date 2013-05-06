@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+  <c:set value="30" var="gridSize"/>
+  <c:set value="3" var="gridPadding"/>
+  <h:head>
+    <title>Battle map</title>
+    <link rel="stylesheet" href="res/ui-lightness/jquery-ui-1.10.2.custom.css" type="text/css"/> 
+    <link rel="stylesheet" href="res/css/styles.css" type="text/css"/> 
+    <link rel="stylesheet" href="res/css/map.css" type="text/css"/> 
+    <script src="res/js/jquery-1.9.1.js" type="text/javascript" ></script>
+    <script src="res/js/jquery-ui-1.10.2.custom.min.js" type="text/javascript" ></script>
+    <script src="res/js/map-admin.js" type="text/javascript" ></script>
+  </h:head>
+  <h:body style="border:0; margin: 0; padding: 0">
+    <h1>MAP <a href="combatAdmin.jsf">COMBAT</a> <a href="campaignAdmin.jsf">CAMPAIGN</a></h1>
+    <div id="map">
+      <ui:repeat value="${characters.characters}" var="data">
+        <div id="char-${data.name}" class="char" title="${data.name}"
+             style="background-image:url('${data.small}'); top:${(data.y * gridSize) + gridPadding}px; left:${(data.x * gridSize) + gridPadding}px; width:${(data.width * gridSize) - (gridPadding * 2)}px; height:${(data.height * gridSize) - (gridPadding * 2)}px;">
+          <div class="hpBar" style="width: ${data.hpp}%; background: green;"></div>
+        </div>
+      </ui:repeat>
+      <h:form>
+        <ui:repeat value="${characters.characters}" var="data">
+          <div id="char-${data.name}-options" class="options" style="top:${(data.y * gridSize) + gridPadding}px; left:${(data.x * gridSize)+(data.width * gridSize)}px; display: none;">
+            <a class="closeLink">[X]</a> ${data.name}<br/>
+            <h:panelGroup>
+              <h:outputText value="Damage"/>
+              <h:inputText value="${data.damage}" size="3"/>
+              <h:commandButton value="Damage!" action="#{characters.dodamage(data)}"/>
+            </h:panelGroup>
+            <br/>
+            <h:panelGroup>
+              <h:outputText value="Heal"/>
+              <h:inputText value="${data.heal}" size="3"/>
+              <h:commandButton value="Heal!" action="#{characters.doheal(data)}"/>
+            </h:panelGroup>
+            <br/>
+            <h:panelGroup>
+              <h:commandButton value="&larr;" action="#{characters.moveLeft(data)}"/>
+              <h:commandButton value="&uarr;" action="#{characters.moveUp(data)}"/>
+              <h:commandButton value="&rarr;" action="#{characters.moveRight(data)}"/>
+              <h:commandButton value="&darr;" action="#{characters.moveDown(data)}"/>
+            </h:panelGroup>
+            <h:panelGroup>
+              <h:panelGrid columns="2">
+                <h:outputLabel value="Name"/>
+                <h:outputLabel value="${data.name}"/>
+                <h:outputLabel value="Type"/>
+                <h:selectOneMenu value="${data.type}">
+                  <f:selectItems value="${characters.typeValues}"/>
+                </h:selectOneMenu>
+                <h:outputLabel value="HP"/>
+                <h:inputText value="${data.hp}" size="3"/>
+                <h:outputLabel value="HPMax"/>
+                <h:inputText value="${data.maxHp}" size="3"/>
+                <h:outputLabel value="Healing Surges"/>
+                <h:inputText value="${data.healingSurge}" size="2"/>
+                <h:outputLabel value="Initiative"/>
+                <h:inputText value="${data.initiative}" size="3"/>
+              </h:panelGrid>
+              <h:commandButton action="#{characters.update(data)}" value="Update"/>
+            </h:panelGroup>
+          </div>
+        </ui:repeat>
+      </h:form>
+      <h:form>
+        <div id="map-options" class="options" style="display:none;">
+          <a class="closeLink">[X]</a>
+          <h:inputText class="map-options-x" size="3" value="${characters.x}"/>, <h:inputText class="map-options-y" size="3" value="${characters.y}"/>
+          <div id="map-options-move" style="display:none;">
+            <h:selectOneMenu value="${characters.target}">
+              <f:selectItems value="${characters.charItems}"/>
+            </h:selectOneMenu>
+            <h:commandButton value="Move" action="#{characters.move()}"/>
+          </div>
+          <div id="map-options-options">
+            <input type="button" value="Move someone here" onclick="showMove();"></input>
+            <input type="button" value="Add character here" onclick="showAdd();"></input>
+          </div>
+          <div id="map-options-add" style="display:none;">
+            <h:panelGrid columns="2">
+              <h:outputLabel value="Type"/>
+              <h:selectOneMenu value="${characters.newCharacter.type}">
+                <f:selectItems value="${characters.typeValues}"/>
+              </h:selectOneMenu>
+              <h:outputLabel value="Name"/>
+              <h:inputText value="${characters.newCharacter.name}"/>
+              <h:outputLabel value="Small"/>
+              <h:inputText value="${characters.newCharacter.small}"/>
+              <h:outputLabel value="Medium"/>
+              <h:inputText value="${characters.newCharacter.medium}"/>
+              <h:outputLabel value="HP"/>
+              <h:inputText value="${characters.newCharacter.hp}" size="3"/>
+              <h:outputLabel value="HPMax"/>
+              <h:inputText value="${characters.newCharacter.maxHp}" size="3"/>
+              <h:outputLabel value="Healing Surges"/>
+              <h:inputText value="${characters.newCharacter.healingSurge}" size="2"/>
+              <h:outputLabel value="Initiative"/>
+              <h:inputText value="${characters.newCharacter.initiative}" size="3"/>
+              <h:outputLabel value="Width"/>
+              <h:inputText value="${characters.newCharacter.width}" size="2"/>
+              <h:outputLabel value="Height"/>
+              <h:inputText value="${characters.newCharacter.height}" size="2"/>
+              <h:commandButton value="Add" action="#{characters.createFromMap}"/>
+            </h:panelGrid>
+          </div>
+          <div></div>
+        </div>
+      </h:form>
+    </div>
+    <div style="position:fixed;left: 0;top: 0; background-color:rgba(255,255,255,0.5); font-size: 10pt; font-weight: bold;" id="coords"></div>
+
+    <div>
+      <h:form>
+        <h:outputText value="File:"/>
+        <h:inputText value="${savegame.filename}"/>
+        <h:commandButton value="Save" action="#{savegame.save()}"/>
+      </h:form>
+      <h:form>
+        <h:outputText value="File:"/>
+        <h:inputText value="${savegame.filename}"/>
+        <h:commandButton value="Load" action="#{savegame.load()}"/>
+      </h:form>
+    </div>
+
+    <h:form>
+      <h:dataTable var="char" value="${characters.characters}">
+        <h:column>
+          <f:facet  name="header"><h:outputLabel value="Name"/></f:facet>
+          <h:outputLabel value="${char.name}"/>
+        </h:column>
+        <h:column>
+          <f:facet  name="header"><h:outputLabel value="Type"/></f:facet>
+          <h:selectOneMenu value="${char.type}">
+            <f:selectItems value="${characters.typeValues}"/>
+          </h:selectOneMenu>
+        </h:column>
+        <h:column>
+          <f:facet  name="header"><h:outputLabel value="HP"/></f:facet>
+          <h:inputText value="${char.hp}" size="3"/>
+        </h:column>
+        <h:column>
+          <f:facet  name="header"><h:outputLabel value="HPMax"/></f:facet>
+          <h:inputText value="${char.maxHp}" size="3"/>
+        </h:column>
+        <h:column>
+          <f:facet  name="header"><h:outputLabel value="Healing Surges"/></f:facet>
+          <h:inputText value="${char.healingSurge}" size="2"/>
+        </h:column>
+        <h:column>
+          <f:facet  name="header"><h:outputLabel value="Initiative"/></f:facet>
+          <h:inputText value="${char.initiative}" size="3"/>
+        </h:column>
+        <h:column>
+          <f:facet  name="header"><h:outputLabel value="X"/></f:facet>
+          <h:inputText value="${char.x}" size="3"/>
+        </h:column>
+        <h:column>
+          <f:facet  name="header"><h:outputLabel value="Y"/></f:facet>
+          <h:inputText value="${char.y}" size="3"/>
+        </h:column>
+        <h:column>
+          <f:facet  name="header"><h:outputLabel value="Width"/></f:facet>
+          <h:inputText value="${char.width}" size="2"/>
+        </h:column>
+        <h:column>
+          <f:facet  name="header"><h:outputLabel value="Height"/></f:facet>
+          <h:inputText value="${char.height}" size="2"/>
+        </h:column>
+        <h:column>
+          <f:facet  name="header"><h:outputLabel value="Options"/></f:facet>
+          <h:commandButton action="#{characters.remove()}" value="Remove"/>
+        </h:column>
+      </h:dataTable>
+      <h:commandButton action="#{characters.update}" value="update"/>
+    </h:form>
+
+    <div style="height:150px;">&nbsp;</div>
+
+    <a onclick="showInitiative();" id="showInitiative">[Open Initiative]</a>
+    <a onclick="showCombatLog();" id="showCombatLog">[Open Combat Log]</a>
+    <div id="initiative">
+      <a onclick="hideInitiative();">[close]</a>
+      <div id="initiativeContent">
+        <h:form>
+          <h:commandButton value="Next" action="#{combat.next()}"/>
+        </h:form>
+        <ui:repeat value="${combat.initiatives}" var="data">
+          <div style="background-image:url('${data.medium}')" class="initiativePortrait">
+            <div style="width: ${data.hpp}%;" class="initiativeHpBar"></div>
+            <div class="initiativeName">${data.name}</div>
+            <div class="initiativeNumber">${data.initiative}<br/>${data.hp}/${data.maxHp}</div>
+          </div>
+        </ui:repeat>
+      </div>
+    </div>
+    <div id="combatLog">
+      <a onclick="hideCombatLog();">[close]</a>
+      <div id="combatLogContent"></div>
+    </div>
+  </h:body>
+</html>
+

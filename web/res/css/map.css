@@ -1,0 +1,118 @@
+body,html{
+  height:100%;
+}
+.char{
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.hpBar{
+  position: absolute;
+  height: 2px;
+  top: 0px;
+  left: 0px;
+}
+.charTooltip{
+  width: 270px;
+}
+.charTooltipImage{
+  float: left;
+}
+.charTooltipContent{
+  display: inline-block;
+}
+.coordinatesTooltip{
+  position: absolute;
+  border: 2px solid black;
+  background: #EEEEEE;
+}
+.options{
+  font-size: 75%;
+  border: 1px solid black;
+  width: 220px;
+}
+.initiativePortrait{
+  position: relative;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100px;
+}
+.initiativeName{
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  background-color:rgba(255,255,255,0.5);
+}
+.initiativeNumber{
+  position: absolute;
+  top: 10px;
+  right: 0;
+  background-color:rgba(255,255,255,0.5);
+}
+.initiativeHpBar{
+  height: 4px; 
+  bottom:4px; 
+  left:0; 
+  background: #00FF00; 
+  position: absolute;
+}
+
+#combatLog{
+  font-size: 8pt;
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  width: 350px;
+  height: 150px;
+  background-color:rgba(255,255,230,0.5);
+}
+#initiative{
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  width: 120px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background-color:rgba(230,230,255,0.5);;
+}
+#showCombatLog{
+  font-size: 10pt;
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  background-color:rgba(255,255,230,0.5);
+}
+#showInitiative{
+  font-size: 10pt;
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  background-color:rgba(230,230,255,0.5);;
+}
+#coords{
+  position:absolute;
+  background-color:rgba(255,255,255,0.5); 
+  font-size: 10pt; 
+  font-weight: bold;
+}
+
+
+#map{
+  width:600px;
+  height:600px; 
+  background-image: url('../maps/map-forest-1.jpg');
+  position: relative;
+}
+#mapContainer{
+  overflow: hidden;
+  background-image: url('../img/bg.jpg');
+  width: 100%;
+  height: 100%;
+}
+#mapOverlay{
+  position:absolute; top:0px; left:0px;
+  background-color: rgba(0,0,0,0);
+}
+
+
