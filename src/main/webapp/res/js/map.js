@@ -79,7 +79,7 @@ $(function() {
   } else {
     new_uri = "ws:";
   }
-  new_uri += "//" + loc.host + "/DungeonsOnline/notifications";
+  new_uri += "//" + loc.host + "/dungeons-online/notifications";
 
   var websocket = new WebSocket(new_uri);
   websocket.onmessage = function(event) {

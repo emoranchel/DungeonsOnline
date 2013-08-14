@@ -1,0 +1,95 @@
+{
+    "shownCombatants": [
+        {
+            "name": "Momiji",
+            "x": 2,
+            "y": 13,
+            "width": 1,
+            "height": 1,
+            "tags": "",
+            "image": "Momiji",
+            "hp": 39,
+            "hpMax": 60,
+            "healingSurge": 7,
+            "type": "player",
+            "initiative": 0
+        },
+        {
+            "name": "Gosuto",
+            "x": 4,
+            "y": 11,
+            "width": 1,
+            "height": 1,
+            "tags": "",
+            "image": "Gosuto",
+            "hp": 31,
+            "hpMax": 55,
+            "healingSurge": 12,
+            "type": "ally",
+            "initiative": 0
+        },
+        {
+            "name": "Kimo",
+            "x": 1,
+            "y": 14,
+            "width": 1,
+            "height": 1,
+            "tags": "",
+            "image": "Kimo",
+            "hp": 30,
+            "hpMax": 42,
+            "healingSurge": 9,
+            "type": "ally",
+            "initiative": 0
+        },
+        {
+            "name": "Koshi",
+            "x": 5,
+            "y": 9,
+            "width": 1,
+            "height": 1,
+            "tags": "",
+            "image": "Koshi",
+            "hp": 51,
+            "hpMax": 51,
+            "healingSurge": 10,
+            "type": "ally",
+            "initiative": 0
+        },
+        {
+            "name": "Chitose",
+            "x": 2,
+            "y": 14,
+            "width": 1,
+            "height": 1,
+            "tags": "",
+            "image": "Chitose",
+            "hp": 37,
+            "hpMax": 47,
+            "healingSurge": 11,
+            "type": "ally",
+            "initiative": 0
+        },
+        {
+            "name": "Kaisoku",
+            "x": 5,
+            "y": 12,
+            "width": 1,
+            "height": 1,
+            "tags": "",
+            "image": "Kaisoku",
+            "hp": 80,
+            "hpMax": 100,
+            "healingSurge": -1,
+            "type": "npc",
+            "initiative": 0
+        }
+    ],
+    "hiddenCombatants": [],
+    "currentInitiative": "Momiji",
+    "combatMap": {
+        "width": 10,
+        "height": 30,
+        "url": "res/maps/forestchasm.jpg"
+    }
+}

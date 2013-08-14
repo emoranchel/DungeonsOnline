@@ -116,12 +116,11 @@ public class Combat implements Serializable {
 
   private void recalculateInitiatives() {
     String current = getCurrent();
-    List<Combatant> tempCombatants = getInitiativesRaw();
+    this.initiatives = getInitiativesRaw();
     if (current != null) {
       initiativeJumpTo(current);
     }
-    listeners.sendInitiativeUpdated(new ArrayList<>(tempCombatants));
-    this.initiatives = tempCombatants;
+    listeners.sendInitiativeUpdated(new ArrayList<>(this.initiatives));
   }
 
   private List<Combatant> getInitiativesRaw() {

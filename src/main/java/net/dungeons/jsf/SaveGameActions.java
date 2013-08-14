@@ -5,6 +5,7 @@ import net.dungeons.model.Combatant;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
@@ -30,10 +31,15 @@ public class SaveGameActions {
   private String campaignFilename = "/D:/dnd/campaign.json";
 
   public String loadCombat() throws IOException {
-    Combat combat = data.getCombat();
+    try (FileInputStream fin = new FileInputStream(combatFilename)) {
+      loadCombat(data.getCombat(), fin);
+    }
+    return null;
+  }
+
+  public static void loadCombat(Combat combat, InputStream fin) throws IOException {
     combat.clear();
-    try (FileInputStream fin = new FileInputStream(combatFilename);
-            JsonReader jsonReader = Json.createReader(fin)) {
+    try (JsonReader jsonReader = Json.createReader(fin)) {
       JsonObject rootObject = jsonReader.readObject();
       CombatMap combatMap = JsonConverter.toCombatMap(rootObject.getJsonObject("combatMap"));
       combat.setCombatMap(combatMap);
@@ -45,9 +51,9 @@ public class SaveGameActions {
       for (int i = 0; i < hiddenCombatants.size(); i++) {
         combat.getCombatants().addHidden(JsonConverter.toCharacter(hiddenCombatants.getJsonObject(i)));
       }
+      combat.updateCombatants();
       combat.initiativeJumpTo(rootObject.getString("currentInitiative", null));
     }
-    return null;
   }
 
   public String saveCombat() {
