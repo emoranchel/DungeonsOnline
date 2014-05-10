@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:components="http://java.sun.com/jsf/composite/components">
+  <c:set var="title" value="Battle Data"/>
+  <ui:composition template="admin-template.xhtml">
+    <ui:define name="content">
+      <h:form>
+        <h:panelGrid columns="2">
+          <h:outputText value="map"/>
+          <h:inputText value="${sessionData.combat.combatMap.url}"/>
+          <h:outputText value="width"/>
+          <h:inputText value="${sessionData.combat.combatMap.width}"/>
+          <h:outputText value="height"/>
+          <h:inputText value="${sessionData.combat.combatMap.height}"/>
+          <h:commandButton value="update" action="${combatDataActions.updateCombatMap(sessionData.combat.combatMap)}"/>
+        </h:panelGrid>
+      </h:form>
+      <h:form>
+        <h3>Combatants</h3>
+        <components:adminCharacterTable combatants="${sessionData.combat.combatants.combatants}" showHide="true" />
+        <h:commandButton action="#{combatDataActions.update}" value="update"/>
+        <h3>Hidden Combatants</h3>
+        <components:adminCharacterTable combatants="${sessionData.combat.combatants.hiddenCombatants}" showShow="true" />
+        <h:commandButton action="#{combatDataActions.update}" value="update"/>
+      </h:form>
+      ALL CHARS: <ui:repeat value="${sessionData.combat.combatants.all}" var="data">
+        <span>${data.name}</span> 
+      </ui:repeat>
+
+      <h3>Add a combatant</h3>
+      <h:form>
+        <h4>
+          <h:outputLabel value="Name"/>
+          <h:inputText value="${combatDataActions.combatant.name}"/>
+        </h4>
+        <components:adminEditCombatant value="${combatDataActions.combatant}" />
+        <h:commandButton value="Add Visible" action="#{combatDataActions.create(true)}"/>
+        <h:commandButton value="Add Hidden" action="#{combatDataActions.create(true)}"/>
+      </h:form>
+    </ui:define>
+  </ui:composition>
+</html>
+
