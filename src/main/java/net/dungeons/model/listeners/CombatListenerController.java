@@ -4,6 +4,7 @@ import net.dungeons.model.Combatant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import net.dungeons.model.Action;
 import net.dungeons.model.CombatMap;
 
@@ -41,9 +42,16 @@ public class CombatListenerController implements CombatListener, ListenerCollect
     fire(c, (listener, arg) -> listener.combatMapUpdated(arg));
   }
 
+  List<String> oldInitiatives;
+
   @Override
   public void initiativeUpdated(List<Combatant> order) {
-    fire(order, (listener, arg) -> listener.initiativeUpdated(arg));
+    List<String> newInitiatives = order.stream().map(Combatant::getName).collect(Collectors.toList());
+    if (!newInitiatives.equals(oldInitiatives)) {
+      fire(order, (listener, arg) -> listener.initiativeUpdated(arg));
+      oldInitiatives = newInitiatives;
+    }
+
   }
 
   @Override

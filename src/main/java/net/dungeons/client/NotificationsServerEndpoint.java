@@ -24,7 +24,7 @@ import net.dungeons.model.listeners.CombatListener;
         value = "/notifications",
         encoders = {NotificationEncoder.class})
 @RequestScoped
-public class NotificationsServerEndpoint22 {
+public class NotificationsServerEndpoint {
 
   private static final String COMBAT_LISTENER_KEY = "CombatlistenerForCharactersID";
   @Inject
@@ -92,7 +92,7 @@ public class NotificationsServerEndpoint22 {
     try {
       session.getBasicRemote().sendObject(notification);
     } catch (IOException | EncodeException ex) {
-      Logger.getLogger(NotificationsServerEndpoint22.class.getName()).log(Level.SEVERE, null, ex);
+      Logger.getLogger(NotificationsServerEndpoint.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
 

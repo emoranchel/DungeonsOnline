@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import net.dungeons.model.listeners.CombatListener;
 import net.dungeons.model.listeners.CombatListenerController;
 import net.dungeons.model.listeners.ListenerCollection;
@@ -61,11 +62,15 @@ public class Combat implements Serializable, ListenerCollection<CombatListener> 
   }
 
   public void clear() {
+    boolean empty = true;
     for (Combatant combatant : combatants) {
       listeners.combatantRemoved(combatant);
+      empty = false;
     }
-    combatants.clear();
-    recalculateInitiatives();
+    if (!empty) {
+      combatants.clear();
+      recalculateInitiatives();
+    }
   }
 
   public void updateCombatants() {
@@ -92,7 +97,9 @@ public class Combat implements Serializable, ListenerCollection<CombatListener> 
 
   public void addCombatant(Combatant combatant, boolean visible) {
     Combatant addedCombatant = visible ? combatants.addVisible(combatant) : combatants.addHidden(combatant);
-    listeners.combatantAdded(addedCombatant);
+    if (visible) {
+      listeners.combatantAdded(addedCombatant);
+    }
     recalculateInitiatives();
   }
 
@@ -121,8 +128,9 @@ public class Combat implements Serializable, ListenerCollection<CombatListener> 
     this.initiatives = getInitiativesRaw();
     if (current != null) {
       initiativeJumpTo(current);
+    }else{
+      listeners.initiativeUpdated(new ArrayList<>(this.initiatives));
     }
-    listeners.initiativeUpdated(new ArrayList<>(this.initiatives));
   }
 
   private List<Combatant> getInitiativesRaw() {
@@ -146,6 +154,20 @@ public class Combat implements Serializable, ListenerCollection<CombatListener> 
 
   public Combatants getCombatants() {
     return combatants;
+  }
+
+  public void load(CombatMap combatMap, List<Combatant> shownCombatants, List<Combatant> hiddenCombatants, String currentInitiative) {
+    clear();
+    setCombatMap(combatMap);
+    shownCombatants.stream().forEach((combatant) -> {
+      combatants.addVisible(combatant);
+      listeners.combatantAdded(combatant);
+    });
+    hiddenCombatants.stream().forEach((combatant) -> {
+      combatants.addHidden(combatant);
+    });
+    this.initiatives = getInitiativesRaw();
+    initiativeJumpTo(currentInitiative);
   }
 
 }

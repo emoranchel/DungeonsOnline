@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -47,22 +49,22 @@ public class SaveGameActions {
     return null;
   }
 
-  public static void loadCombat(Combat combat, InputStream fin) throws IOException {
-    combat.clear();
+  public static void loadCombat(Combat combate, InputStream fin) throws IOException {
     try (JsonReader jsonReader = Json.createReader(fin)) {
+      List<Combatant> shownCombatants = new ArrayList<>();
+      List<Combatant> hiddenCombatants = new ArrayList<>();
       JsonObject rootObject = jsonReader.readObject();
       CombatMap combatMap = JsonConverter.toCombatMap(rootObject.getJsonObject("combatMap"));
-      combat.setCombatMap(combatMap);
-      JsonArray shownCombatants = rootObject.getJsonArray("shownCombatants");
-      for (int i = 0; i < shownCombatants.size(); i++) {
-        combat.addCombatant(JsonConverter.toCharacter(shownCombatants.getJsonObject(i)), true);
+      JsonArray shownCombatantsJson = rootObject.getJsonArray("shownCombatants");
+      for (int i = 0; i < shownCombatantsJson.size(); i++) {
+        shownCombatants.add(JsonConverter.toCharacter(shownCombatantsJson.getJsonObject(i)));
       }
-      JsonArray hiddenCombatants = rootObject.getJsonArray("hiddenCombatants");
-      for (int i = 0; i < hiddenCombatants.size(); i++) {
-        combat.addCombatant(JsonConverter.toCharacter(hiddenCombatants.getJsonObject(i)), false);
+      JsonArray hiddenCombatantsJson = rootObject.getJsonArray("hiddenCombatants");
+      for (int i = 0; i < hiddenCombatantsJson.size(); i++) {
+        hiddenCombatants.add(JsonConverter.toCharacter(hiddenCombatantsJson.getJsonObject(i)));
       }
-      combat.updateCombatants();
-      combat.initiativeJumpTo(rootObject.getString("currentInitiative", null));
+      String currentInitiative = rootObject.getString("currentInitiative", null);
+      combate.load(combatMap, shownCombatants, hiddenCombatants, currentInitiative);
     }
   }
 
