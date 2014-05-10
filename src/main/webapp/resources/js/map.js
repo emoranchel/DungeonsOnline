@@ -28,19 +28,29 @@ $(function() {
 
   function updateCharacter(data) {
     var dataDiv = $("#char-" + data.name + "-tooltip-content");
-    var html = "<strong>" + data.name + "</strong><br>";
+    var html = "<div class=\"tooltip-name\">" + data.name + "</div>";
     if (data.hp) {
-      html += "<strong>HP:" + data.hp + "/" + data.hpMax + "</strong><br>";
+      html += "<div class=\"tooltip-hp\">HP:" + data.hp + "/" + data.hpMax + "</div>";
     }
     if (data.healingSurge) {
-      html += "<strong>Healing Surges:" + data.healingSurge + "<br>";
+      html += "<div class=\"tooltip-hs\">Healing Surges:" + data.healingSurge + "</div>";
+    }
+    if (data.effects) {
+      for (var i = 0; i < data.effects.length; i++) {
+        var effect = data.effects[i];
+        html += "<div class=\"tooltip-effect-"+(i%2===0?"even":"odd")+"\">";
+        html += "<div class=\"tooltip-effect-name\">" + effect.source + "&gt;" + effect.target + "</div>";
+        html += "<div class=\"tooltip-effect-effect\">" + effect.effect + "</div>";
+        html += "<div class=\"tooltip-effect-duration\">" + effect.duration + "</div>";
+        html += "</div>"
+      }
     }
     dataDiv.html(html);
     dataDiv.append(
             jQuery("<div/>", {
-      style: "height: 4px; " + getHpStyle(data),
-      class: "hpBar"
-    }));
+              style: "height: 4px; " + getHpStyle(data),
+              class: "hpBar"
+            }));
     $("#char-" + data.name).data("charData", data);
     $("#char-" + data.name).attr("style", getIconStyle(data));
     $("#char-" + data.name + "-hpBar").attr("style", getHpStyle(data));

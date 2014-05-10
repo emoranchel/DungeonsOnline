@@ -6,17 +6,11 @@ public class Character {
   private String name;
   private int hp;
   private int healingSurge;
-  private String small;
-  private String medium;
-  private int width;
-  private int height;
+  private String image;
+  private String size;
 
   public Character() {
     this.name = "char";
-    this.small = "res/chars/24px/.jpg";
-    this.medium = "res/chars/100px/.jpg";
-    this.width = 1;
-    this.height = 1;
   }
 
   public int getHp() {
@@ -43,37 +37,8 @@ public class Character {
     this.healingSurge = healingSurge;
   }
 
-  public String getSmall() {
-    return small;
-  }
 
-  public void setSmall(String small) {
-    this.small = small;
-  }
-
-  public String getMedium() {
-    return medium;
-  }
-
-  public void setMedium(String medium) {
-    this.medium = medium;
-  }
-
-  public int getWidth() {
-    return width;
-  }
-
-  public void setWidth(int width) {
-    this.width = width;
-  }
-
-  public int getHeight() {
-    return height;
-  }
-
-  public void setHeight(int height) {
-    this.height = height;
-  }
+  
 
   public CombatantType getDefaultType() {
     return defaultType;

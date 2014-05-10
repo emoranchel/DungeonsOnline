@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import net.dungeons.model.CombatMap;
 import net.dungeons.model.Combatant;
+import net.dungeons.model.StatusEffect;
 
 @RequestScoped
 @Named("combatDataActions")
@@ -43,7 +44,7 @@ public class CombatDataActions {
     data.getCombat().setCombatMap(combatMap);
     return null;
   }
-
+  
   public Combatant getCombatant() {
     return combatant;
   }

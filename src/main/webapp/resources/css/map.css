@@ -33,7 +33,7 @@
 .initiativePortrait{
   position: relative;
   background-repeat: no-repeat;
-  width: 100%;
+  width: 100px;
   height: 100px;
 }
 .initiativeName{
@@ -103,9 +103,24 @@
 }
 #mapContainer{
   overflow: hidden;
-  background-image: url('../img/bg.jpg');
+  background-image: url('../../res/img/bg.jpg');
   width: 100%;
   height: 100%;
 }
 
-
+.tooltip-name{
+  font-weight: bold;
+}
+.tooltip-hp{
+  font-size: .8em;
+  font-weight: bold;
+}
+.tooltip-hs{
+  font-size: .8em;
+  font-weight: normal;
+}
+.tooltip-effect-even{background: #cccccc;}
+.tooltip-effect-odd{background: #ffffff;}
+.tooltip-effect-name{font-size: .7em;}
+.tooltip-effect-effect{font-size: .7em;}
+.tooltip-effect-duration{font-size: .7em;}

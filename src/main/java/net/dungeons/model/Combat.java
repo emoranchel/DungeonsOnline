@@ -3,13 +3,13 @@ package net.dungeons.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import net.dungeons.model.listeners.CombatListener;
 import net.dungeons.model.listeners.CombatListenerController;
+import net.dungeons.model.listeners.ListenerCollection;
 
-public class Combat implements Serializable {
+public class Combat implements Serializable, ListenerCollection<CombatListener> {
 
   //
   private CombatMap combatMap;
@@ -17,11 +17,15 @@ public class Combat implements Serializable {
   private List<Combatant> initiatives;
   private final Combatants combatants;
   //
-  private final CombatListenerController listeners;
+  private final CombatListener listeners;
+  private final ListenerCollection<CombatListener> listenersC;
 
   public Combat() {
+    initiatives = new ArrayList<>();
     combatMap = new CombatMap();
-    listeners = new CombatListenerController();
+    final CombatListenerController combatListenerController = new CombatListenerController();
+    listenersC = combatListenerController;
+    listeners = combatListenerController;
     combatants = new Combatants();
     recalculateInitiatives();
   }
@@ -34,7 +38,7 @@ public class Combat implements Serializable {
     List<Combatant> initiativesCopy = initiatives;
     if (initiativesCopy.size() > 0) {
       initiativesCopy.add(initiativesCopy.remove(0));
-      listeners.sendInitiativeUpdated(getInitiatives());
+      listeners.initiativeUpdated(getInitiatives());
     }
   }
 
@@ -42,7 +46,7 @@ public class Combat implements Serializable {
     List<Combatant> initiativesCopy = initiatives;
     if (initiativesCopy.size() > 0) {
       initiativesCopy.add(0, initiativesCopy.remove(initiativesCopy.size() - 1));
-      listeners.sendInitiativeUpdated(getInitiatives());
+      listeners.initiativeUpdated(getInitiatives());
     }
   }
 
@@ -52,13 +56,13 @@ public class Combat implements Serializable {
       while (initiativesContains(initiativesCopy, name) && !initiativesCopy.get(0).getName().equals(name)) {
         initiativesCopy.add(initiativesCopy.remove(0));
       }
-      listeners.sendInitiativeUpdated(getInitiatives());
+      listeners.initiativeUpdated(getInitiatives());
     }
   }
 
   public void clear() {
     for (Combatant combatant : combatants) {
-      listeners.sendCombatantRemoved(combatant);
+      listeners.combatantRemoved(combatant);
     }
     combatants.clear();
     recalculateInitiatives();
@@ -66,52 +70,50 @@ public class Combat implements Serializable {
 
   public void updateCombatants() {
     for (Combatant c : combatants) {
-      listeners.sendCombatantUpdated(c);
+      listeners.combatantUpdated(c);
     }
     recalculateInitiatives();
   }
 
   public void updateCombatant(String combatantId) {
-    listeners.sendCombatantUpdated(combatants.getCombatant(combatantId));
+    listeners.combatantUpdated(combatants.getCombatant(combatantId));
     recalculateInitiatives();
   }
 
   public void hideCombatant(String combatantId) {
-    listeners.sendCombatantRemoved(combatants.hide(combatantId));
+    listeners.combatantRemoved(combatants.hide(combatantId));
     recalculateInitiatives();
   }
 
   public void showCombatant(String combatantId) {
-    listeners.sendCombatantAdded(combatants.show(combatantId));
+    listeners.combatantAdded(combatants.show(combatantId));
     recalculateInitiatives();
   }
 
   public void addCombatant(Combatant combatant, boolean visible) {
     Combatant addedCombatant = visible ? combatants.addVisible(combatant) : combatants.addHidden(combatant);
-    listeners.sendCombatantAdded(addedCombatant);
+    listeners.combatantAdded(addedCombatant);
     recalculateInitiatives();
   }
 
   public void removeCombatant(String combatantId) {
     Combatant combatant = combatants.remove(combatantId);
-    listeners.sendCombatantRemoved(combatant);
+    listeners.combatantRemoved(combatant);
     recalculateInitiatives();
   }
 
   public String getCurrent() {
-    List<Combatant> initiativesCopy = initiatives;
-    if (initiativesCopy != null && initiativesCopy.size() > 0) {
-      return initiativesCopy.get(0).getName();
-    }
-    return null;
+    return initiatives.stream().map(Combatant::getName).findFirst().orElse(null);
   }
 
+  @Override
   public void addListener(CombatListener combatListener) {
-    listeners.addListener(combatListener);
+    listenersC.addListener(combatListener);
   }
 
+  @Override
   public void removeListener(CombatListener combatListener) {
-    listeners.removeListener(combatListener);
+    listenersC.removeListener(combatListener);
   }
 
   private void recalculateInitiatives() {
@@ -120,28 +122,17 @@ public class Combat implements Serializable {
     if (current != null) {
       initiativeJumpTo(current);
     }
-    listeners.sendInitiativeUpdated(new ArrayList<>(this.initiatives));
+    listeners.initiativeUpdated(new ArrayList<>(this.initiatives));
   }
 
   private List<Combatant> getInitiativesRaw() {
     List<Combatant> tempCombatants = new LinkedList<>(combatants.getCombatants());
-    Collections.sort(tempCombatants, new Comparator<Combatant>() {
-      @Override
-      public int compare(Combatant o1, Combatant o2) {
-        return o2.getInitiative() - o1.getInitiative();
-      }
-    });
+    Collections.sort(tempCombatants, (Combatant o1, Combatant o2) -> o2.getInitiative() - o1.getInitiative());
     return tempCombatants;
   }
 
   private boolean initiativesContains(List<Combatant> initiativesCopy, String name) {
-    for (Combatant c : initiativesCopy) {
-      if (c.getName().equals(name)) {
-        return true;
-      }
-    }
-    return false;
-
+    return initiativesCopy.stream().anyMatch((c) -> (c.getName().equals(name)));
   }
 
   public CombatMap getCombatMap() {
@@ -150,10 +141,11 @@ public class Combat implements Serializable {
 
   public void setCombatMap(CombatMap combatMap) {
     this.combatMap = combatMap;
-    listeners.sendCombatMapUpdated(combatMap);
+    listeners.combatMapUpdated(combatMap);
   }
 
   public Combatants getCombatants() {
     return combatants;
   }
+
 }

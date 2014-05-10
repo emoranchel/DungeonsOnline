@@ -3,36 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-
-  <h:head>
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+  <head jsf:id="head">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="res/ui-custom/css/custom-theme/jquery-ui-1.10.2.custom.css" type="text/css"/> 
-    <link rel="stylesheet" href="res/css/styles.css" type="text/css"/> 
-
-    <script src="res/js/jquery-1.9.1.js" type="text/javascript" ></script>
-    <script src="res/ui-custom/js/jquery-ui-1.10.2.custom.js" type="text/javascript" ></script>
-
+    <link rel="stylesheet" type="text/css" jsf:name="css/custom-theme/jquery-ui-1.10.2.custom.css"/> 
+    <link rel="stylesheet" type="text/css" jsf:name="css/styles.css"/> 
+    <script type="text/javascript" jsf:name="js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" jsf:name="js/jquery-ui-1.10.2.custom.min.js"></script>
     <ui:insert name="resources"></ui:insert>
-    <title>Dungeons Admin:${title}</title>
-  </h:head>
-  <h:body>
-    <h1>
-      <a href="adminCombat.jsf">Combat </a>
-    </h1>
-    <h2>
-      <a href="adminCombatData.jsf">Data </a>
-      <a href="adminCombatEditMap.jsf">Edit Map </a>
-      <a href="adminCombatMap.jsf">Combat Map </a>
-    </h2>
-    <h1>
-      <a href="adminCampaign.jsf">Campaign </a>
-    </h1>
-    <h2>
-      <a href="adminCampaignCharacters.jsf">Characters </a>
-      <a href="adminCampaignQuests.jsf">Quests </a>
-    </h2>
-
+    <title>Dungeons Admin: ${title}</title>
+  </head>
+  <body jsf:id="body">
+    <nav>
+      <ui:insert name="navigation"></ui:insert>
+    </nav>
     <div class="separatedBlock">
       <h:form class="inlineForm">
         <h:outputText value="File:"/>
@@ -46,5 +30,5 @@
       </h:form>
     </div>
     <ui:insert name="content"></ui:insert>
-  </h:body>
+  </body>
 </html>

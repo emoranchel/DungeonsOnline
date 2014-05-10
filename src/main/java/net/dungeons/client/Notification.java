@@ -2,13 +2,14 @@ package net.dungeons.client;
 
 import net.dungeons.model.Combatant;
 import java.util.List;
+import net.dungeons.model.Action;
 import net.dungeons.model.CombatMap;
 
 public class Notification<T> {
 
   public enum Type {
 
-    combatantAdded, combatantUpdated, combatantRemoved, initiativeUpdated, combatMapUpdated;
+    combatantAdded, combatantUpdated, combatantRemoved, initiativeUpdated, combatMapUpdated, actionTaken;
   }
   private final T object;
   private final Type type;
@@ -31,6 +32,10 @@ public class Notification<T> {
 
   public static Notification<List<String>> initiativeUpdated(List<String> intiatives) {
     return new Notification<>(Type.initiativeUpdated, intiatives);
+  }
+
+  public static Notification<Action> actionTaken(Action action) {
+    return new Notification<>(Type.actionTaken, action);
   }
 
   private Notification(Type type, T object) {

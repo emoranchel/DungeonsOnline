@@ -6,7 +6,7 @@
   <groupId>net.dungeons</groupId>
   <artifactId>dungeons-online</artifactId>
   <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.2-SNAPSHOT</version>
   <name>DungeonsOnline</name>
   <url>NONE</url>
 
@@ -16,31 +16,11 @@
     <netbeans.hint.deploy.server>gfv3ee6</netbeans.hint.deploy.server>
   </properties>
 
-  <repositories>
-    <repository> 
-      <id>Java EE 7</id> 
-      <url>https://maven.java.net/content/groups/promoted/</url> 
-    </repository> 
-  </repositories>
-  
-  <pluginRepositories>
-    <pluginRepository>
-      <id>maven.java.net</id>
-      <name>Java.net Repository for Maven</name>
-      <url>https://maven.java.net/content/groups/promoted/</url>
-    </pluginRepository>
-    <pluginRepository>
-      <id>maven2-repository.dev.java.net</id>
-      <name>Java.net Repository for Maven</name>
-      <url>http://download.java.net/maven/glassfish/</url>
-    </pluginRepository>
-  </pluginRepositories>
-
   <dependencies>
     <dependency> 
       <groupId>javax</groupId> 
       <artifactId>javaee-web-api</artifactId> 
-      <version>7.0-b87</version> 
+      <version>7.0</version> 
     </dependency> 
     <dependency>
       <groupId>junit</groupId>
@@ -59,11 +39,11 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
-          <compilerArguments>
+          <source>1.8</source>
+          <target>1.8</target>
+          <!--compilerArguments>
             <endorseddirs>${endorsed.dir}</endorseddirs>
-          </compilerArguments>
+          </compilerArguments-->
         </configuration>
       </plugin>
       <plugin>
@@ -74,10 +54,7 @@
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
-      
-      
-      
-      <plugin>
+      <!--plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>2.1</version>
@@ -94,14 +71,14 @@
                 <artifactItem>
                   <groupId>javax</groupId>
                   <artifactId>javaee-endorsed-api</artifactId>
-                  <version>6.0</version>
+                  <version>7.0</version>
                   <type>jar</type>
                 </artifactItem>
               </artifactItems>
             </configuration>
           </execution>
         </executions>
-      </plugin>
+      </plugin-->
     </plugins>
   </build>
 

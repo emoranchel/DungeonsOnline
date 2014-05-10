@@ -8,19 +8,19 @@ public class Combatant implements Serializable {
 
   public static final int GRID_SIZE = 30;
   public static final int GRID_PADDING = 3;
+
   private CombatantType type = CombatantType.ally;
   private int hp;
   private int maxHp;
   private String name;
   private String image;
-  private String tags;
   private int x;
   private int y;
   private int healingSurge;
+  private int healValue;
+  private int totalHealingSurge;
   private int width;
   private int height;
-  private int damage;
-  private int heal;
   private int initiative;
   private boolean hidden;
   private final List<StatusEffect> effects;
@@ -33,24 +33,10 @@ public class Combatant implements Serializable {
     this.effects = new ArrayList<>();
   }
 
-  public void damage() {
-    this.hp -= this.damage;
-    this.damage = 0;
-  }
-
-  public void heal() {
-    this.hp += this.heal;
-    this.heal = maxHp / 4;
-    if (hp > maxHp) {
-      this.hp = maxHp;
-    }
-    healingSurge--;
-  }
-
   public void setMaxHp(int maxHp) {
     if (this.maxHp != maxHp) {
       this.maxHp = maxHp;
-      this.heal = this.maxHp / 4;
+      this.healValue = maxHp / 4;
     }
   }
 
@@ -78,6 +64,11 @@ public class Combatant implements Serializable {
   public String getIconStyle() {
     return ""
             + "background-image:url('ImageServlet?image=" + image + "'); "
+            + getBasicStyle();
+  }
+
+  public String getBasicStyle() {
+    return ""
             + "top:" + ((y * GRID_SIZE) + GRID_PADDING) + "px; "
             + "left:" + ((x * GRID_SIZE) + GRID_PADDING) + "px; "
             + "width:" + ((width * GRID_SIZE) - (GRID_PADDING * 2)) + "px; "
@@ -161,22 +152,6 @@ public class Combatant implements Serializable {
     this.height = height;
   }
 
-  public int getDamage() {
-    return damage;
-  }
-
-  public void setDamage(int damage) {
-    this.damage = damage;
-  }
-
-  public int getHeal() {
-    return heal;
-  }
-
-  public void setHeal(int heal) {
-    this.heal = heal;
-  }
-
   public int getInitiative() {
     return initiative;
   }
@@ -186,19 +161,11 @@ public class Combatant implements Serializable {
   }
 
   public void setName(String name) {
-    this.name = name;
+    this.name = name.replaceAll(" ", "_");
   }
 
   public List<StatusEffect> getEffects() {
     return effects;
-  }
-
-  public String getTags() {
-    return tags == null ? "" : tags;
-  }
-
-  public void setTags(String tags) {
-    this.tags = tags;
   }
 
   public boolean isHidden() {
@@ -207,6 +174,22 @@ public class Combatant implements Serializable {
 
   public void setHidden(boolean hidden) {
     this.hidden = hidden;
+  }
+
+  public int getTotalHealingSurge() {
+    return totalHealingSurge;
+  }
+
+  public void setTotalHealingSurge(int totalHealingSurge) {
+    this.totalHealingSurge = totalHealingSurge;
+  }
+
+  public int getHealValue() {
+    return healValue;
+  }
+
+  public void setHealValue(int healValue) {
+    this.healValue = healValue;
   }
 
   @Override
@@ -221,4 +204,5 @@ public class Combatant implements Serializable {
   public int hashCode() {
     return name.hashCode();
   }
+
 }

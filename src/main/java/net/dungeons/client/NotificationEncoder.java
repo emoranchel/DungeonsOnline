@@ -15,6 +15,7 @@ import javax.json.JsonWriter;
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
+import net.dungeons.model.Action;
 import net.dungeons.model.CombatMap;
 
 public class NotificationEncoder implements Encoder.TextStream<Notification> {
@@ -42,6 +43,8 @@ public class NotificationEncoder implements Encoder.TextStream<Notification> {
         return toArray((List<String>) notification.getObject());
       case combatMapUpdated:
         return JsonConverter.toJson((CombatMap) notification.getObject());
+      case actionTaken:
+        return JsonConverter.toJson((Action) notification.getObject());
     }
     return null;
   }

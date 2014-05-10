@@ -4,85 +4,66 @@ import net.dungeons.model.Combatant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import net.dungeons.model.Action;
 import net.dungeons.model.CombatMap;
 
-public class CombatListenerController {
+public class CombatListenerController implements CombatListener, ListenerCollection<CombatListener> {
 
-  private Set<CombatListener> listeners = new HashSet<>();
+  private final Set<CombatListener> listeners = new HashSet<>();
 
+  @Override
   public void addListener(CombatListener combatListener) {
     this.listeners.add(combatListener);
   }
 
+  @Override
   public void removeListener(CombatListener combatListener) {
     this.listeners.remove(combatListener);
   }
 
-  public void sendInitiativeUpdated(List<Combatant> initiative) {
-    if(initiative==null){return;}
-    Set<CombatListener> listenerCopy = new HashSet<>(listeners);
-    for (CombatListener listener : listenerCopy) {
-      try {
-        listener.initiativeUpdated(initiative);
-      } catch (Exception ex) {
-      }
-    }
+  @Override
+  public void combatantAdded(Combatant c) {
+    fire(c, (listener, arg) -> listener.combatantAdded(arg));
   }
 
-  public void sendCombatantUpdated(Combatant c) {
-    if(c==null){return;}
-    Set<CombatListener> listenersCopy = new HashSet<>(this.listeners);
-    for (CombatListener listener : listenersCopy) {
-      try {
-        listener.combatantUpdated(c);
-      } catch (Exception e) {
-      }
-    }
+  @Override
+  public void combatantRemoved(Combatant c) {
+    fire(c, (listener, arg) -> listener.combatantRemoved(arg));
   }
 
-  public void sendCombatantsUpdated(Iterable<Combatant> combatants) {
-    if(combatants==null){return;}
-    Set<CombatListener> listenersCopy = new HashSet<>(this.listeners);
-    for (CombatListener listener : listenersCopy) {
-      for (Combatant c : combatants) {
+  @Override
+  public void combatantUpdated(Combatant combatant) {
+    fire(combatant, (listener, arg) -> listener.combatantUpdated(arg));
+  }
+
+  @Override
+  public void combatMapUpdated(CombatMap c) {
+    fire(c, (listener, arg) -> listener.combatMapUpdated(arg));
+  }
+
+  @Override
+  public void initiativeUpdated(List<Combatant> order) {
+    fire(order, (listener, arg) -> listener.initiativeUpdated(arg));
+  }
+
+  @Override
+  public void actionTaken(Action action) {
+    fire(action, (listener, arg) -> listener.actionTaken(arg));
+  }
+
+  private <T> void fire(T arg, Trigger<T> trigger) {
+    if (arg != null) {
+      new HashSet<>(listeners).stream().forEach((listener) -> {
         try {
-          listener.combatantUpdated(c);
-        } catch (Exception e) {
+          trigger.fire(listener, arg);
+        } catch (Exception ex) {
         }
-      }
+      });
     }
   }
 
-  public void sendCombatantAdded(Combatant c) {
-    if(c==null){return;}
-    Set<CombatListener> listenersCopy = new HashSet<>(this.listeners);
-    for (CombatListener listener : listenersCopy) {
-      try {
-        listener.combatantAdded(c);
-      } catch (Exception e) {
-      }
-    }
-  }
+  private interface Trigger<T> {
 
-  public void sendCombatantRemoved(Combatant c) {
-    if(c==null){return;}
-    Set<CombatListener> listenersCopy = new HashSet<>(this.listeners);
-    for (CombatListener listener : listenersCopy) {
-      try {
-        listener.combatantRemoved(c);
-      } catch (Exception e) {
-      }
-    }
-  }
-
-  public void sendCombatMapUpdated(CombatMap c) {
-    if(c==null){return;}
-    Set<CombatListener> listenersCopy = new HashSet<>(this.listeners);
-    for (CombatListener listener : listenersCopy) {
-      try {
-        listener.combatMapUpdated(c);
-      } catch (Exception e) {
-      }
-    }
+    void fire(CombatListener listener, T arg) throws Exception;
   }
 }

@@ -1,12 +1,17 @@
 package net.dungeons.client;
 
+import java.util.List;
 import net.dungeons.model.CombatantType;
 import net.dungeons.model.Combatant;
 import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
+import net.dungeons.model.Action;
 import net.dungeons.model.CombatMap;
+import net.dungeons.model.StatusEffect;
 
 public class JsonConverter {
 
@@ -17,7 +22,7 @@ public class JsonConverter {
     obj.add("y", combatant.getY());
     obj.add("width", combatant.getWidth());
     obj.add("height", combatant.getHeight());
-    obj.add("tags", combatant.getTags());
+    obj.add("effects", createEffects(combatant.getEffects()));
     if (asView) {
       obj.add("image", "ImageServlet?image=" + combatant.getImage());
       switch (combatant.getType()) {
@@ -63,9 +68,15 @@ public class JsonConverter {
     combatant.setHp(obj.getInt("hp"));
     combatant.setMaxHp(obj.getInt("hpMax"));
     combatant.setHealingSurge(obj.getInt("healingSurge"));
+    combatant.setTotalHealingSurge(obj.getInt("totalHealingSurge", 0));
     combatant.setType(CombatantType.valueOf(obj.getString("type")));
     combatant.setInitiative(obj.getInt("initiative", 0));
-    combatant.setTags(obj.getString("tags", ""));
+    JsonArray effectArr = obj.getJsonArray("effects");
+    if (effectArr != null) {
+      for (JsonValue val : effectArr) {
+        combatant.getEffects().add(toEffect((JsonObject) val));
+      }
+    }
     return combatant;
   }
 
@@ -73,6 +84,7 @@ public class JsonConverter {
     obj.add("hp", combatant.getHp());
     obj.add("hpMax", combatant.getMaxHp());
     obj.add("healingSurge", combatant.getHealingSurge());
+    obj.add("totalHealingSurge", combatant.getTotalHealingSurge());
   }
 
   private static void addStatus(JsonObjectBuilder obj, Combatant combatant, CombatantType... sources) {
@@ -91,6 +103,11 @@ public class JsonConverter {
     return combatMap;
   }
 
+  public static JsonValue toJson(Action action) {
+    return Json.createObjectBuilder()
+            .add("desc", action.toString())
+            .build();
+  }
   public static JsonValue toJson(CombatMap combatMap) {
     return Json.createObjectBuilder()
             .add("width", combatMap.getWidth())
@@ -98,5 +115,27 @@ public class JsonConverter {
             .add("url", combatMap.getUrl())
             .build();
 
+  }
+
+  private static JsonArrayBuilder createEffects(List<StatusEffect> effects) {
+    JsonArrayBuilder arr = Json.createArrayBuilder();
+    for (StatusEffect effect : effects) {
+      arr.add(Json.createObjectBuilder()
+              .add("duration", effect.getDuration())
+              .add("effect", effect.getEffect())
+              .add("source", effect.getSource())
+              .add("target", effect.getTarget())
+      );
+    }
+    return arr;
+  }
+
+  private static StatusEffect toEffect(JsonObject jsonObject) {
+    StatusEffect effect = new StatusEffect();
+    effect.setDuration(jsonObject.getString("duration"));
+    effect.setEffect(jsonObject.getString("effect"));
+    effect.setSource(jsonObject.getString("source"));
+    effect.setTarget(jsonObject.getString("target"));
+    return effect;
   }
 }

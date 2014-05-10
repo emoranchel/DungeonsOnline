@@ -6,7 +6,6 @@ import net.dungeons.model.Combat;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import net.dungeons.model.Data;
 
 @SessionScoped
 @Named("sessionData")
@@ -14,7 +13,7 @@ public class SessionData implements Serializable {
 
   private Combat combat;
   @Inject
-  private Data data;
+  private ApplicationData data;
 
   @PostConstruct
   public void init() {

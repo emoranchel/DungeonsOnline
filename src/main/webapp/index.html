@@ -3,23 +3,21 @@
   <head>
     <title></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="res/ui-lightness/jquery-ui-1.10.2.custom.css" type="text/css"> 
-    <link rel="stylesheet" href="res/css/styles.css" type="text/css"> 
-    <link rel="stylesheet" href="res/css/map.css" type="text/css"> 
-    <script src="res/js/jquery-1.9.1.js" type="text/javascript" ></script>
-    <script src="res/js/jquery-ui-1.10.2.custom.min.js" type="text/javascript" ></script>
-    <script src="res/js/map-commons.js" type="text/javascript" ></script>
-    <script src="res/js/map-html.js" type="text/javascript" ></script>
-    <script src="res/js/map.js" type="text/javascript" ></script>
-    <script src="res/js/map-overlay.js" type="text/javascript" ></script>
+    <link rel="stylesheet" href="resources/css/custom-theme/jquery-ui-1.10.2.custom.css" type="text/css"> 
+    <link rel="stylesheet" href="resources/css/styles.css" type="text/css"> 
+    <link rel="stylesheet" href="resources/css/map.css" type="text/css">
+    <script src="resources/js/jquery-1.9.1.js" type="text/javascript" ></script>
+    <script src="resources/js/jquery-ui-1.10.2.custom.min.js" type="text/javascript" ></script>
+    <script src="resources/js/map-commons.js" type="text/javascript" ></script>
+    <script src="resources/js/map-html.js" type="text/javascript" ></script>
+    <script src="resources/js/map.js" type="text/javascript" ></script>
+    <script src="resources/js/map-overlay.js" type="text/javascript" ></script>
   </head>
   <body>
-
     <div id="mapContainer">
       <div id="map">
       </div>
     </div>
-
     <a onclick="showInitiative();" id="showInitiative">[Open Initiative]</a>
     <a onclick="showCombatLog();" id="showCombatLog">[Open Combat Log]</a>
     <div id="initiative">
@@ -28,7 +26,9 @@
     </div>
     <div id="combatLog">
       <a onclick="hideCombatLog();">[close]</a>
-      <div id="combatLogContent"></div>
+      <div id="combatLogContent">
+          Dev Version
+      </div>
     </div>
 
     <div id="mapOptions" style="display:none;">

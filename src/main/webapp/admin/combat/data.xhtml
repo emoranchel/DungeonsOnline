@@ -4,43 +4,63 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:components="http://java.sun.com/jsf/composite/components">
+      xmlns:components="http://java.sun.com/jsf/composite/components"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
   <c:set var="title" value="Battle Data"/>
-  <ui:composition template="admin-template.xhtml">
+  <ui:composition template="/WEB-INF/templates/admin-template.xhtml">
+    <ui:define name="navigation">
+      <ul>
+        <li>Combat
+          <ul>
+            <li>Data</li>
+            <li><h:link outcome="/admin/combat/battle" value="Battle"/></li>
+            <li><h:link outcome="/admin/combat/editMap" value="Edit Map"/></li>
+            <li><h:link outcome="/admin/combat/map" value="Combat Map"/></li>
+          </ul>
+        </li>
+      </ul>
+    </ui:define>
+    <ui:define name="resources">
+    </ui:define>
     <ui:define name="content">
-      <h:form>
-        <h:panelGrid columns="2">
-          <h:outputText value="map"/>
-          <h:inputText value="${sessionData.combat.combatMap.url}"/>
-          <h:outputText value="width"/>
-          <h:inputText value="${sessionData.combat.combatMap.width}"/>
-          <h:outputText value="height"/>
-          <h:inputText value="${sessionData.combat.combatMap.height}"/>
-          <h:commandButton value="update" action="${combatDataActions.updateCombatMap(sessionData.combat.combatMap)}"/>
-        </h:panelGrid>
-      </h:form>
-      <h:form>
-        <h3>Combatants</h3>
-        <components:adminCharacterTable combatants="${sessionData.combat.combatants.combatants}" showHide="true" />
-        <h:commandButton action="#{combatDataActions.update}" value="update"/>
-        <h3>Hidden Combatants</h3>
-        <components:adminCharacterTable combatants="${sessionData.combat.combatants.hiddenCombatants}" showShow="true" />
-        <h:commandButton action="#{combatDataActions.update}" value="update"/>
-      </h:form>
-      ALL CHARS: <ui:repeat value="${sessionData.combat.combatants.all}" var="data">
-        <span>${data.name}</span> 
-      </ui:repeat>
-
-      <h3>Add a combatant</h3>
-      <h:form>
-        <h4>
-          <h:outputLabel value="Name"/>
-          <h:inputText value="${combatDataActions.combatant.name}"/>
-        </h4>
-        <components:adminEditCombatant value="${combatDataActions.combatant}" />
-        <h:commandButton value="Add Visible" action="#{combatDataActions.create(true)}"/>
-        <h:commandButton value="Add Hidden" action="#{combatDataActions.create(true)}"/>
-      </h:form>
+      <div style="width: 100%; display: table;">
+        <div style="display: table-row;">
+          <div style="display: table-cell; width: auto;">
+            <h:form>
+              <h3>Combatants</h3>
+              <components:adminCharacterTable combatants="${sessionData.combat.combatants.combatants}" showHide="true" />
+              <h:commandButton action="#{combatDataActions.update}" value="update"/>
+              <h3>Hidden Combatants</h3>
+              <components:adminCharacterTable combatants="${sessionData.combat.combatants.hiddenCombatants}" showShow="true" />
+              <h:commandButton action="#{combatDataActions.update}" value="update"/>
+            </h:form>
+          </div>
+          <div style="display: table-cell; width: 260px;">
+            <h3>Map Properties</h3>
+            <h:form>
+              <h:panelGrid columns="2">
+                <h:outputText value="map"/>
+                <h:inputText value="${sessionData.combat.combatMap.url}"/>
+                <h:outputText value="width"/>
+                <h:inputText value="${sessionData.combat.combatMap.width}"/>
+                <h:outputText value="height"/>
+                <h:inputText value="${sessionData.combat.combatMap.height}"/>
+                <h:commandButton value="update" action="${combatDataActions.updateCombatMap(sessionData.combat.combatMap)}"/>
+              </h:panelGrid>
+            </h:form>
+            <h3>Add a combatant</h3>
+            <h:form>
+              <h4>
+                <h:outputLabel value="Name"/>
+                <h:inputText value="${combatDataActions.combatant.name}"/>
+              </h4>
+              <components:adminEditCombatant value="${combatDataActions.combatant}" />
+              <h:commandButton value="Add Visible" action="#{combatDataActions.create(true)}"/>
+              <h:commandButton value="Add Hidden" action="#{combatDataActions.create(false)}"/>
+            </h:form>
+          </div>
+        </div>
+      </div>
     </ui:define>
   </ui:composition>
 </html>

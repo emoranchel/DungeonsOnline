@@ -5,27 +5,35 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      >
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
   <c:set var="title" value="Battle Map"/>
-  <ui:composition template="admin-template.xhtml">
+  <ui:composition template="/WEB-INF/templates/admin-template.xhtml">
     <ui:define name="resources">
-      <link rel="stylesheet" href="res/css/map.css" type="text/css"/> 
-      <link rel="stylesheet" href="res/css/map-admin.css" type="text/css"/> 
-      <script src="res/js/map-admin.js" type="text/javascript" ></script>
-      <script src="res/js/map-commons.js" type="text/javascript" ></script>
-      <script src="res/js/map-overlay.js" type="text/javascript" ></script>
+      <link rel="stylesheet" type="text/css" jsf:name="css/map.css"/> 
+      <link rel="stylesheet" type="text/css" jsf:name="css/map-admin.css"/> 
+      <script type="text/javascript" src="${applicationData.path('/resources/js/javaEE.js')}"></script>
+    </ui:define>
+    <ui:define name="navigation">
+      <ul>
+        <li>Combat
+          <ul>
+            <li><h:link outcome="/admin/combat/data" value="Data"/></li>
+            <li><h:link outcome="/admin/combat/battle" value="Battle"/></li>
+            <li><h:link outcome="/admin/combat/editMap" value="Edit Map"/></li>
+            <li>Combat Map</li>
+          </ul>
+        </li>
+      </ul>
     </ui:define>
     <ui:define name="content">
-
       <div id="mapContainer">
-        <div id="map" style="background-image: url('${sessionData.combat.combatMap.url}'); width:${sessionData.combat.combatMap.width*30}px; height:${sessionData.combat.combatMap.height*30}px;">
+        <div id="map" style="background-image:url('${applicationData.absPath(sessionData.combat.combatMap.url)}'); width:${sessionData.combat.combatMap.width*30}px; height:${sessionData.combat.combatMap.height*30}px;">
           <h:panelGroup id="mapContent">
             <ui:repeat value="${sessionData.combat.combatants.all}" var="data">
               <div id="char-${data.name}-tooltip" style="display:none;">
                 ${data.name}<br/>
-                ${data.tags}
               </div>
-              <div id="char-${data.name}" class="char" style="${data.iconStyle}" data-char="${data.name}" >
+              <div id="char-${data.name}" class="char" style="background-image:url('${applicationData.path('/ImageServlet')}?image=${data.image}'); ${data.basicStyle})" data-char="${data.name}" >
                 <div class="hpBar" style="width: ${data.hppPer}; background: ${data.color};"></div>
               </div>
             </ui:repeat>
@@ -51,25 +59,11 @@
                 </h:panelGroup>
                 <h:form class="blockForm">
                   <div>
-                    Damage: 
-                    <h:inputText value="${data.damage}" size="1"/>
-                    <h:commandButton action="#{combatCharActions.dodamage(data.name)}" value="Damage">
-                      <f:ajax execute="@form" render=":charOptions :mapContent :formInitiatives"/>
-                    </h:commandButton>
-                  </div>
-                  <div>
-                    Heal: 
-                    <h:inputText value="${data.heal}" size="1"/>
-                    <h:commandButton action="#{combatCharActions.doheal(data.name)}" value="Heal">
-                      <f:ajax execute="@form" render=":charOptions :mapContent :formInitiatives"/>
-                    </h:commandButton>
-                  </div>
-                  <div>
                     <h:commandButton action="#{combatDataActions.show(data.name)}" value="Show" rendered="${data.hidden}">
-                      <f:ajax render=":charOptions :mapContent :formInitiatives"/>
+                      <f:ajax render="@form :charOptions :mapContent :formInitiatives"/>
                     </h:commandButton>
                     <h:commandButton action="#{combatDataActions.hide(data.name)}" value="Hide" rendered="${not data.hidden}">
-                      <f:ajax render=":charOptions :mapContent :formInitiatives"/>
+                      <f:ajax render="@form :charOptions :mapContent :formInitiatives"/>
                     </h:commandButton>
                   </div>
                 </h:form>
@@ -107,7 +101,7 @@
               <f:ajax execute=":formInitiatives" render=":charOptions :mapContent :formInitiatives"/>
             </h:commandButton>
             <ui:repeat value="${initiativeActions.initiatives}" var="data">
-              <div style="background-image:url('ImageServlet?image=${data.image}')" class="initiativePortrait" data-char="${data.name}" id="char-${data.name}-init">
+              <div style="background-image:url('${applicationData.path('/ImageServlet')}?image=${data.image}')" class="initiativePortrait" data-char="${data.name}" id="char-${data.name}-init">
                 <div style="width: ${data.hppPer}; background-color: ${data.color};" class="initiativeHpBar"></div>
                 <div class="initiativeName">${data.name}</div>
                 <div class="initiativeNumber">${data.initiative}<br/>${data.hp}/${data.maxHp}</div>

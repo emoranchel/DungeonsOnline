@@ -4,43 +4,141 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:components="http://java.sun.com/jsf/composite/components">
+      xmlns:components="http://java.sun.com/jsf/composite/components"
+      xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
   <c:set var="title" value="Battle Data"/>
-  <ui:composition template="admin-template.xhtml">
-    <ui:define name="content">
-      <h:form>
-        <h:panelGrid columns="2">
-          <h:outputText value="map"/>
-          <h:inputText value="${sessionData.combat.combatMap.url}"/>
-          <h:outputText value="width"/>
-          <h:inputText value="${sessionData.combat.combatMap.width}"/>
-          <h:outputText value="height"/>
-          <h:inputText value="${sessionData.combat.combatMap.height}"/>
-          <h:commandButton value="update" action="${combatDataActions.updateCombatMap(sessionData.combat.combatMap)}"/>
-        </h:panelGrid>
-      </h:form>
-      <h:form>
-        <h3>Combatants</h3>
-        <components:adminCharacterTable combatants="${sessionData.combat.combatants.combatants}" showHide="true" />
-        <h:commandButton action="#{combatDataActions.update}" value="update"/>
-        <h3>Hidden Combatants</h3>
-        <components:adminCharacterTable combatants="${sessionData.combat.combatants.hiddenCombatants}" showShow="true" />
-        <h:commandButton action="#{combatDataActions.update}" value="update"/>
-      </h:form>
-      ALL CHARS: <ui:repeat value="${sessionData.combat.combatants.all}" var="data">
-        <span>${data.name}</span> 
-      </ui:repeat>
+  <ui:composition template="/WEB-INF/templates/admin-template.xhtml">
+    <ui:define name="navigation">
+      <ul>
+        <li>Combat
+          <ul>
+            <li><h:link outcome="/admin/combat/data" value="Data"/></li>
+            <li>Battle</li>
+            <li><h:link outcome="/admin/combat/editMap" value="Edit Map"/></li>
+            <li><h:link outcome="/admin/combat/map" value="Combat Map"/></li>
+          </ul>
+        </li>
+      </ul>
+    </ui:define>
+    <ui:define name="resources">
+      <link rel="stylesheet" type="text/css" jsf:name="css/map.css"/> 
+      <link rel="stylesheet" type="text/css" jsf:name="css/map-admin.css"/> 
+      <script type="text/javascript" jsf:name="js/map-commons.js"></script>
+      <script type="text/javascript" jsf:name="js/map-overlay.js"></script>
+      <script type="text/javascript" jsf:name="js/map-battle.js"></script>
+      <style>
+        .initiativePortrait{
+          float: left;
+        }
+      </style>
+    </ui:define>
 
-      <h3>Add a combatant</h3>
-      <h:form>
-        <h4>
-          <h:outputLabel value="Name"/>
-          <h:inputText value="${combatDataActions.combatant.name}"/>
-        </h4>
-        <components:adminEditCombatant value="${combatDataActions.combatant}" />
-        <h:commandButton value="Add Visible" action="#{combatDataActions.create(true)}"/>
-        <h:commandButton value="Add Hidden" action="#{combatDataActions.create(true)}"/>
-      </h:form>
+    <ui:define name="content">
+      <datalist id="combatants">
+        <ui:repeat value="${sessionData.combat.combatants.combatants}" var="combatant"><option>${combatant.name}</option></ui:repeat> 
+      </datalist>
+      <datalist id="durations">
+        <option>Start of [caster] turn</option>
+        <option>End of [caster] turn</option>
+        <option>Start of [target] turn</option>
+        <option>End of [target] turn</option>
+        <option>Save Ends</option>
+      </datalist>
+
+      <div style="width: 100%; display: table;">
+        <div style="display: table-row;">
+          <div style="display: table-cell; width: 300px;">
+            <h:form>
+              <h:commandButton value="&lt;&lt; Previous" action="#{initiativeActions.prevInitiative()}" />
+              <h:commandButton value="Next &gt;&gt;" action="#{initiativeActions.nextInitiative()}" />
+            </h:form>
+            <h3>Current Turn</h3>
+            <h4>#{sessionData.combat.current}</h4>
+            <h:form id="TurnActionForm">
+              <h:panelGroup rendered="#{not empty turnActions.actions}">
+                <h:dataTable value="#{turnActions.actions}" var="action" style="width: 100%;">
+                  <h:column>
+                    <h:panelGroup layout="block" style="position:relative; width: 100%; font-size: 10pt;">
+                      ${action}
+                      <h:commandLink value="X" action="${turnActions.removeAction(action)}" style="position:absolute; right: 0; top:0; font-size: 6pt; border: 1px solid black;">
+                        <f:ajax render="@form"/>
+                      </h:commandLink>
+                    </h:panelGroup>
+                  </h:column>
+                </h:dataTable>
+                <h:commandButton value="Apply" action="#{turnActions.apply()}" />
+                <h:commandButton value="Reset" action="#{turnActions.clear()}" />
+              </h:panelGroup>
+            </h:form>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <h:form style="display:block;">
+              <h3>Workspace</h3>
+              <h:panelGrid columns="2" style="">
+                source:<input type="text" list="combatants" jsf:value="#{turnActions.source}" />
+                target:<input type="text" list="combatants" jsf:value="#{turnActions.target}"/>
+                x:<h:inputText value="#{turnActions.x}"/>
+                y:<h:inputText value="#{turnActions.y}"/>
+                heal:<h:inputText value="#{turnActions.heal}"/>
+                healing surge:<h:selectBooleanCheckbox value="#{turnActions.healingSurge}"/>
+                ignore max:<h:selectBooleanCheckbox value="#{turnActions.ignoreMax}"/>
+                damage:<h:inputText value="#{turnActions.damage}"/>
+                effect:<h:inputText value="#{turnActions.effect}"/>
+                duration:<input type="text" list="durations" jsf:value="#{turnActions.duration}"/>
+                <h:commandButton value="Move" action="#{turnActions.moveAction()}">
+                  <f:ajax render=":TurnActionForm" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="Heal" action="#{turnActions.healAction()}">
+                  <f:ajax render=":TurnActionForm" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="Damage" action="#{turnActions.damageAction()}">
+                  <f:ajax render=":TurnActionForm" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="Effect" action="#{turnActions.addEffectAction()}">
+                  <f:ajax render=":TurnActionForm" execute="@form"/>
+                </h:commandButton>
+              </h:panelGrid>
+            </h:form>
+          </div>
+          <div style="display: table-cell;">
+            <h3>Map</h3>
+            <div id="mapContainer">
+              <div id="map" style="background-image:url('${applicationData.absPath(sessionData.combat.combatMap.url)}'); width:${sessionData.combat.combatMap.width*30}px; height:${sessionData.combat.combatMap.height*30}px;">
+                <ui:repeat value="${sessionData.combat.combatants.all}" var="data">
+                  <div id="char-${data.name}" class="char" style="background-image:url('${applicationData.path('/ImageServlet')}?image=${data.image}'); ${data.basicStyle})" data-char="${data.name}" >
+                    <div class="hpBar" style="width: ${data.hppPer}; background: ${data.color};"></div>
+                  </div>
+                </ui:repeat>
+              </div>
+            </div>
+            <h3>Combatants</h3>
+            <h:form>
+              <ui:repeat value="${initiativeActions.initiatives}" var="data">
+                <div style="background-image:url('${applicationData.path('/ImageServlet')}?image=${data.image}')" class="initiativePortrait">
+                  <div style="width: ${data.hppPer}; background-color: ${data.color};" class="initiativeHpBar"></div>
+                  <div class="initiativeName">${data.name}</div>
+                  <div class="initiativeNumber">${data.initiative}<br/>${data.hp}/${data.maxHp}<br/>${fn:length(data.effects)}</div>
+                </div>
+                <ui:repeat value="#{data.effects}" var="effect">
+                  <div style="display: inline-block; height: 100px; font-size: 14px; overflow: hidden; border: 1px solid #999999;">
+                    ${effect.source} &gt; ${effect.target}<br />
+                    ${effect.effect}<br/>
+                    ${effect.duration}<br/>
+                    <h:commandButton value="-" action="#{turnActions.removeEffectAction(effect)}">
+                      <f:ajax render=":TurnActionForm"/>
+                    </h:commandButton>
+                  </div>
+                </ui:repeat>
+              </ui:repeat>
+            </h:form>
+          </div>
+        </div>
+      </div>
+
     </ui:define>
   </ui:composition>
 </html>

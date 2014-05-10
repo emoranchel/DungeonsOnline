@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,8 +28,17 @@ public class SaveGameActions {
 
   @Inject
   private SessionData data;
-  private String combatFilename = "/D:/dnd/combat.json";
-  private String campaignFilename = "/D:/dnd/campaign.json";
+  private String combatFilename = "/C:/dnd/combat.json";
+  private String campaignFilename = "/C:/dnd/campaign.json";
+
+  @PostConstruct
+  public void init() {
+    try {
+      loadCombat();
+    } catch (IOException ex) {
+      Logger.getLogger(SaveGameActions.class.getName()).log(Level.SEVERE, null, ex);
+    }
+  }
 
   public String loadCombat() throws IOException {
     try (FileInputStream fin = new FileInputStream(combatFilename)) {
@@ -45,11 +55,11 @@ public class SaveGameActions {
       combat.setCombatMap(combatMap);
       JsonArray shownCombatants = rootObject.getJsonArray("shownCombatants");
       for (int i = 0; i < shownCombatants.size(); i++) {
-        combat.getCombatants().addVisible(JsonConverter.toCharacter(shownCombatants.getJsonObject(i)));
+        combat.addCombatant(JsonConverter.toCharacter(shownCombatants.getJsonObject(i)), true);
       }
       JsonArray hiddenCombatants = rootObject.getJsonArray("hiddenCombatants");
       for (int i = 0; i < hiddenCombatants.size(); i++) {
-        combat.getCombatants().addHidden(JsonConverter.toCharacter(hiddenCombatants.getJsonObject(i)));
+        combat.addCombatant(JsonConverter.toCharacter(hiddenCombatants.getJsonObject(i)), false);
       }
       combat.updateCombatants();
       combat.initiativeJumpTo(rootObject.getString("currentInitiative", null));

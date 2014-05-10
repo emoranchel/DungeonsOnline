@@ -3,16 +3,27 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      >
+
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
   <c:set var="title" value="Battle Map"/>
   <c:set value="30" var="gridSize"/>
   <c:set value="3" var="gridPadding"/>
-  <ui:composition template="admin-template.xhtml">
+  <ui:composition template="/WEB-INF/templates/admin-template.xhtml">
+    <ui:define name="navigation">
+      <ul>
+        <li><h:link outcome="/admin/combat/data" value="Combat"/>
+          <ul>
+            <li><h:link outcome="/admin/combat/data" value="Data"/></li>
+            <li><h:link outcome="/admin/combat/battle" value="Battle"/></li>
+            <li><h:link outcome="/admin/combat/editMap" value="Edit Map"/></li>
+            <li><h:link outcome="/admin/combat/map" value="Combat Map"/></li>
+          </ul>
+        </li>
+      </ul>
+    </ui:define>
     <ui:define name="resources">
     </ui:define>
     <ui:define name="content">
     </ui:define>
   </ui:composition>
 </html>
-
-

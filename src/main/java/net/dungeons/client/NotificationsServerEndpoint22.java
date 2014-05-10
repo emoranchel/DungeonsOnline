@@ -3,8 +3,10 @@ package net.dungeons.client;
 import net.dungeons.model.Combat;
 import net.dungeons.model.Combatant;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.websocket.EncodeException;
@@ -14,6 +16,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import net.dungeons.jsf.SessionData;
+import net.dungeons.model.Action;
 import net.dungeons.model.CombatMap;
 import net.dungeons.model.listeners.CombatListener;
 
@@ -21,7 +24,7 @@ import net.dungeons.model.listeners.CombatListener;
         value = "/notifications",
         encoders = {NotificationEncoder.class})
 @RequestScoped
-public class NotificationsServerEndpoint {
+public class NotificationsServerEndpoint22 {
 
   private static final String COMBAT_LISTENER_KEY = "CombatlistenerForCharactersID";
   @Inject
@@ -31,37 +34,42 @@ public class NotificationsServerEndpoint {
   public void onOpen(final Session session) throws IOException, EncodeException {
     Combat combat = data.getCombat();
 
-    session.getBasicRemote().sendObject(Notification.combatMapUpdated(combat.getCombatMap()));
+    send(session, Notification.combatMapUpdated(combat.getCombatMap()));
     for (Combatant combatant : combat.getCombatants()) {
-      session.getBasicRemote().sendObject(Notification.combatantAdded(combatant));
+      send(session, Notification.combatantAdded(combatant));
     }
-    session.getBasicRemote().sendObject(Notification.initiativeUpdated(convertInitiatives(combat.getInitiatives())));
+    send(session, Notification.initiativeUpdated(convertInitiatives(combat.getInitiatives())));
 
     CombatListener combatListener = new CombatListener() {
       @Override
-      public void combatantUpdated(Combatant combatant) throws Exception {
-        session.getBasicRemote().sendObject(Notification.combatantUpdated(combatant));
+      public void combatantUpdated(Combatant combatant) {
+        send(session, Notification.combatantUpdated(combatant));
       }
 
       @Override
-      public void combatantAdded(Combatant combatant) throws Exception {
-        session.getBasicRemote().sendObject(Notification.combatantAdded(combatant));
+      public void combatantAdded(Combatant combatant) {
+        send(session, Notification.combatantAdded(combatant));
       }
 
       @Override
-      public void combatantRemoved(Combatant combatant) throws Exception {
-        session.getBasicRemote().sendObject(Notification.combatantRemoved(combatant));
+      public void combatantRemoved(Combatant combatant) {
+        send(session, Notification.combatantRemoved(combatant));
       }
 
       @Override
-      public void initiativeUpdated(List<Combatant> order) throws Exception {
+      public void initiativeUpdated(List<Combatant> order) {
         List<String> initiative = convertInitiatives(order);
-        session.getBasicRemote().sendObject(Notification.initiativeUpdated(initiative));
+        send(session, Notification.initiativeUpdated(initiative));
       }
 
       @Override
-      public void combatMapUpdated(CombatMap combatMap) throws Exception {
-        session.getBasicRemote().sendObject(Notification.combatMapUpdated(combatMap));
+      public void combatMapUpdated(CombatMap combatMap) {
+        send(session, Notification.combatMapUpdated(combatMap));
+      }
+
+      @Override
+      public void actionTaken(Action action) {
+        send(session, Notification.actionTaken(action));
       }
     };
 
@@ -80,11 +88,15 @@ public class NotificationsServerEndpoint {
   public void onMessage(String message) {
   }
 
-  private List<String> convertInitiatives(List<Combatant> order) {
-    List<String> initiative = new ArrayList<>();
-    for (Combatant combatant : order) {
-      initiative.add(combatant.getName());
+  private void send(Session session, Notification notification) {
+    try {
+      session.getBasicRemote().sendObject(notification);
+    } catch (IOException | EncodeException ex) {
+      Logger.getLogger(NotificationsServerEndpoint22.class.getName()).log(Level.SEVERE, null, ex);
     }
-    return initiative;
+  }
+
+  private List<String> convertInitiatives(List<Combatant> order) {
+    return order.stream().map(Combatant::getName).collect(Collectors.toList());
   }
 }
