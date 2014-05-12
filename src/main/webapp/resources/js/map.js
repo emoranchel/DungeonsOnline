@@ -82,6 +82,10 @@ $(function() {
     recalculateMapContainer();
     $("#map").trigger("mapUpdated");
   }
+  
+  function updateLog(data){
+    $("#combatLogContent").append("<br>"+data.desc);
+  }
 
   var loc = window.location, new_uri;
   if (loc.protocol === "https:") {
@@ -109,6 +113,9 @@ $(function() {
     }
     if ("combatMapUpdated" === action.action) {
       updateMap(action.object);
+    }
+    if ("actionTaken" === action.action){
+      updateLog(action.object);
     }
   };
 

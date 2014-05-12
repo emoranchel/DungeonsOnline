@@ -29,20 +29,16 @@ public class JsonConverter {
         case ally:
           addHpBar(obj, combatant);
           addHpData(obj, combatant);
-          addStatus(obj, combatant, CombatantType.values());
           break;
         case npc:
           addHpBar(obj, combatant);
-          addStatus(obj, combatant, CombatantType.ally, CombatantType.player);
           break;
         case enemy:
           addHpBar(obj, combatant);
-          addStatus(obj, combatant, CombatantType.ally, CombatantType.player);
           break;
         case player:
           addHpBar(obj, combatant);
           addHpData(obj, combatant);
-          addStatus(obj, combatant, CombatantType.values());
           break;
         default:
           break;
@@ -50,7 +46,6 @@ public class JsonConverter {
     } else {
       obj.add("image", combatant.getImage());
       addHpData(obj, combatant);
-      addStatus(obj, combatant, CombatantType.values());
       obj.add("type", combatant.getType().name());
       obj.add("initiative", combatant.getInitiative());
     }
@@ -85,9 +80,6 @@ public class JsonConverter {
     obj.add("hpMax", combatant.getMaxHp());
     obj.add("healingSurge", combatant.getHealingSurge());
     obj.add("totalHealingSurge", combatant.getTotalHealingSurge());
-  }
-
-  private static void addStatus(JsonObjectBuilder obj, Combatant combatant, CombatantType... sources) {
   }
 
   private static void addHpBar(JsonObjectBuilder obj, Combatant combatant) {

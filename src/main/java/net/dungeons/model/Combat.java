@@ -3,8 +3,10 @@ package net.dungeons.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import net.dungeons.model.listeners.CombatListener;
 import net.dungeons.model.listeners.CombatListenerController;
@@ -168,6 +170,19 @@ public class Combat implements Serializable, ListenerCollection<CombatListener> 
     });
     this.initiatives = getInitiativesRaw();
     initiativeJumpTo(currentInitiative);
+  }
+
+  void apply(List<Action> actions) {
+    Set<Combatant> updatedCombatants = new HashSet<>();
+    actions.stream().forEach((action) -> {
+      Combatant targetCombatant = combatants.get(action.getTarget());
+      if (targetCombatant != null) {
+        action.apply(targetCombatant);
+        updatedCombatants.add(targetCombatant);
+        listeners.actionTaken(action);
+      }
+    });
+    updatedCombatants.stream().forEach((c) -> listeners.combatantUpdated(c));
   }
 
 }

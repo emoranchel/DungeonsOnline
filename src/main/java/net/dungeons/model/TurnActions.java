@@ -73,17 +73,7 @@ public class TurnActions implements Serializable {
 
   public void apply() {
     Combat combat = sessionData.getCombat();
-    Set<String> updatedCombatants = new HashSet<>();
-    for (Action action : actions) {
-      Combatant targetCombatant = combat.getCombatants().get(action.getTarget());
-      if (targetCombatant != null) {
-        action.apply(targetCombatant);
-        updatedCombatants.add(targetCombatant.getName());
-      }
-    }
-    for (String c : updatedCombatants) {
-      combat.updateCombatant(c);
-    }
+    combat.apply(new ArrayList<>(actions));
     clear();
   }
 
