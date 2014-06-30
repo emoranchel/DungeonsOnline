@@ -2,9 +2,8 @@ package net.dungeons.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -35,25 +34,33 @@ public class TurnActions implements Serializable {
   }
 
   public void moveAction() {
-    add(new Action.MoveAction(source, target, x, y));
+    Arrays.asList(target.split(",")).stream().forEach((target) -> {
+      add(new Action.MoveAction(source, target.trim(), x, y));
+    });
     reset();
   }
 
   public void damageAction() {
-    add(new Action.DamageAction(source, target, damage));
+    Arrays.asList(target.split(",")).stream().forEach((target) -> {
+      add(new Action.DamageAction(source, target.trim(), damage));
+    });
     reset();
   }
 
   public void healAction() {
-    add(new Action.HealAction(source, target, heal, healingSurge, ignoreMax));
+    Arrays.asList(target.split(",")).stream().forEach((target) -> {
+      add(new Action.HealAction(source, target.trim(), heal, healingSurge, ignoreMax));
+    });
     reset();
   }
 
   public void addEffectAction() {
-    StatusEffect status = new StatusEffect();
-    status.setDuration(duration);
-    status.setEffect(effect);
-    add(new Action.AddEffectAction(source, target, status));
+    Arrays.asList(target.split(",")).stream().forEach((target) -> {
+      StatusEffect status = new StatusEffect();
+      status.setDuration(duration);
+      status.setEffect(effect);
+      add(new Action.AddEffectAction(source, target.trim(), status));
+    });
     reset();
   }
 
@@ -85,6 +92,9 @@ public class TurnActions implements Serializable {
   @PostConstruct
   public void reset() {
     this.source = "";
+    if (sessionData.getCombat().getCurrent() != null) {
+      this.source = sessionData.getCombat().getCurrent();
+    }
     this.target = "";
     this.effect = "";
     this.duration = "";
