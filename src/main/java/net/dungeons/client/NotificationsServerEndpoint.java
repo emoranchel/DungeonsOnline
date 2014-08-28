@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.annotation.ManagedBean;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.websocket.EncodeException;
@@ -23,7 +24,7 @@ import net.dungeons.model.listeners.CombatListener;
 @ServerEndpoint(
         value = "/notifications",
         encoders = {NotificationEncoder.class})
-@RequestScoped
+@ManagedBean
 public class NotificationsServerEndpoint {
 
   private static final String COMBAT_LISTENER_KEY = "CombatlistenerForCharactersID";
