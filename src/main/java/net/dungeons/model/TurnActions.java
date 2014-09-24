@@ -54,6 +54,10 @@ public class TurnActions implements Serializable {
     reset();
   }
 
+  public void addEndTurnAction() {
+    add(Action.END_TURN);
+  }
+
   public void addEffectAction() {
     Arrays.asList(target.split(",")).stream().forEach((target) -> {
       StatusEffect status = new StatusEffect();
@@ -75,7 +79,13 @@ public class TurnActions implements Serializable {
   }
 
   private void add(Action action) {
-    actions.add(action);
+    if (actions.contains(Action.END_TURN)) {
+      actions.remove(Action.END_TURN);
+      actions.add(action);
+      actions.add(Action.END_TURN);
+    } else {
+      actions.add(action);
+    }
   }
 
   public void apply() {

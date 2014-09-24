@@ -67,7 +67,6 @@ public class Combatants implements Iterable<Combatant> {
       } else {
         shownCombatants.add(combatant);
       }
-      combatant.setHidden(false);
       return combatant;
     }
     return null;

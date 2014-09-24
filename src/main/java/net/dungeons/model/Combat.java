@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import net.dungeons.model.listeners.CombatListener;
 import net.dungeons.model.listeners.CombatListenerController;
 import net.dungeons.model.listeners.ListenerCollection;
@@ -180,6 +179,9 @@ public class Combat implements Serializable, ListenerCollection<CombatListener> 
         action.apply(targetCombatant);
         updatedCombatants.add(targetCombatant);
         listeners.actionTaken(action);
+      }
+      if(action == Action.END_TURN){
+        nextInitiative();
       }
     });
     updatedCombatants.stream().forEach((c) -> listeners.combatantUpdated(c));

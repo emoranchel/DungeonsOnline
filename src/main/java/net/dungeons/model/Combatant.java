@@ -64,6 +64,7 @@ public class Combatant implements Serializable {
   public String getIconStyle() {
     return ""
             + "background-image:url('ImageServlet?image=" + image + "'); "
+            + "border:1px solid " + getColor() + "; "
             + getBasicStyle();
   }
 
@@ -73,7 +74,6 @@ public class Combatant implements Serializable {
             + "left:" + ((x * GRID_SIZE) + GRID_PADDING) + "px; "
             + "width:" + ((width * GRID_SIZE) - (GRID_PADDING * 2)) + "px; "
             + "height:" + ((height * GRID_SIZE) - (GRID_PADDING * 2)) + "px; "
-            + "border:1px solid " + getColor() + "; "
             + "opacity: " + (hidden ? "0.5" : "1.0") + "; ";
   }
 

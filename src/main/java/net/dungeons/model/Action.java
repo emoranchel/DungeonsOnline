@@ -5,6 +5,17 @@ public abstract class Action {
   protected String source;
   protected String target;
 
+  public static final Action END_TURN = new Action(null, null) {
+    @Override
+    public void apply(Combatant target) {
+    }
+
+    @Override
+    public String toString() {
+      return "END TURN";
+    }
+  };
+
   protected Action(String source, String target) {
     this.source = source;
     this.target = target;

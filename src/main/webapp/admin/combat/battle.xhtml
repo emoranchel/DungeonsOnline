@@ -28,6 +28,7 @@
       <script type="text/javascript" jsf:name="js/map-commons.js"></script>
       <script type="text/javascript" jsf:name="js/map-overlay.js"></script>
       <script type="text/javascript" jsf:name="js/map-battle.js"></script>
+      <script type="text/javascript" jsf:name="admin/battle.js"></script>
       <style>
         .initiativePortrait{
           float: left;
@@ -51,10 +52,8 @@
         <div style="display: table-row;">
           <div style="display: table-cell; width: 300px;">
             <h:form>
-              <h:commandButton value="&lt;&lt; Previous" action="#{initiativeActions.prevInitiative()}" >
-              </h:commandButton>
-              <h:commandButton value="Next &gt;&gt;" action="#{initiativeActions.nextInitiative()}" >
-              </h:commandButton>
+              <h:commandButton value="&lt;&lt; Previous" action="#{initiativeActions.prevInitiative()}" />
+              <h:commandButton value="Next &gt;&gt;" action="#{initiativeActions.nextInitiative()}" />
             </h:form>
             <h3>Current Turn</h3>
             <h4>#{sessionData.combat.current}</h4>
@@ -74,6 +73,9 @@
                 <h:commandButton value="Reset" action="#{turnActions.clear()}" />
               </h:panelGroup>
             </h:form>
+            <button  id="nextTurnButton">
+              <span class="ui-icon ui-icon-play" style="display: inline-block"/>&nbsp;&nbsp;Next Turn
+            </button>
           </div>
           <div style="display: table-cell;">
             <h3>Map</h3>
@@ -111,10 +113,10 @@
             <h:form style="display:block;" id="workspaceForm">
               <h3>Workspace</h3>
               <h:panelGrid columns="2" style="">
-                source:<input type="text" list="combatants" jsf:value="#{turnActions.source}" />
-                target:<input type="text" list="combatants" jsf:value="#{turnActions.target}"/>
-                x:<h:inputText value="#{turnActions.x}"/>
-                y:<h:inputText value="#{turnActions.y}"/>
+                source:<input type="text" list="combatants" jsf:value="#{turnActions.source}" class="JSFWorkspaceSource" />
+                target:<input type="text" list="combatants" jsf:value="#{turnActions.target}" class="JSFWorkspaceTarget"/>
+                x:<h:inputText value="#{turnActions.x}" class="JSFWorkspaceInputX"/>
+                y:<h:inputText value="#{turnActions.y}" class="JSFWorkspaceInputY"/>
                 heal:<h:inputText value="#{turnActions.heal}"/>
                 healing surge:<h:selectBooleanCheckbox value="#{turnActions.healingSurge}"/>
                 ignore max:<h:selectBooleanCheckbox value="#{turnActions.ignoreMax}"/>
@@ -131,6 +133,9 @@
                   <f:ajax render=":TurnActionForm" execute="@form"/>
                 </h:commandButton>
                 <h:commandButton value="Effect" action="#{turnActions.addEffectAction()}">
+                  <f:ajax render=":TurnActionForm" execute="@form"/>
+                </h:commandButton>
+                <h:commandButton value="End Turn" action="#{turnActions.addEndTurnAction()}" class="JSFendTurnCommandButton">
                   <f:ajax render=":TurnActionForm" execute="@form"/>
                 </h:commandButton>
               </h:panelGrid>
