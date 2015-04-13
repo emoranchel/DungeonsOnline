@@ -12,6 +12,7 @@
     <script src="resources/js/map-html.js" type="text/javascript" ></script>
     <script src="resources/js/map.js" type="text/javascript" ></script>
     <script src="resources/js/map-overlay.js" type="text/javascript" ></script>
+    <script src="resources/js/map-commands.js" type="text/javascript" ></script>
   </head>
   <body>
     <div id="mapContainer">
@@ -24,10 +25,41 @@
       <a onclick="hideInitiative();">[close]</a>
       <div id="initiativeContent"></div>
     </div>
+    <div id="commandsArea">
+      <div>
+        <h4>Commands</h4>
+        <button>Actions</button>
+        <button id="commandPowers">Powers</button>
+        <button>Skills</button>
+        <button>Status</button>
+      </div>
+    </div>
+    <div id="commandPowerList">
+      <h4>Powers</h4>
+      <div class="power atwill-power" title="Hit and prepare counter">Riposte Strike
+        <div class="detailCard" title="Riposte Strike">
+          asdasda s<br>
+          das<br>
+          d asd<br>
+          sa<br>
+          d <br>
+        </div>
+      </div>
+
+      <div class="power atwill-power">Thunderwave</div>
+      <div class="power atwill-power">Vicius Mockery</div>
+      <div class="power encounter-power">Healing Strike</div>
+      <div class="power encounter-power">Impact Shot</div>
+      <div class="power encounter-power">Flamboyant Strike</div>
+      <div class="power encounter-power">Tumble</div>
+      <div class="power encounter-power">Ignoble Escape</div>
+      <div class="power daily-power">Blinding Barrage</div>
+      <div class="power daily-power">Walking Wounded</div>
+    </div>
     <div id="combatLog">
       <a onclick="hideCombatLog();">[close]</a>
       <div id="combatLogContent">
-          Dev Version
+        Dev Version
       </div>
     </div>
 
