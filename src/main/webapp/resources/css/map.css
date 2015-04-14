@@ -56,45 +56,6 @@
   position: absolute;
 }
 
-#combatLog{
-  font-size: 8pt;
-  position: fixed;
-  right: 120px;
-  bottom: 0px;
-  width: 350px;
-  height: 150px;
-  background-color:rgba(255,255,230,0.5);
-}
-
-#commandsArea{
-  font-size: 12pt;
-  position: fixed;
-  bottom: 0px;
-  left: 0px;
-}
-
-#commandPowerList{
-  position: fixed;
-  bottom: 40px;
-  left: 10px;
-  background-color: rgba(255,255,255,0.5);
-  border: 1px solid #666666;
-}
-
-.atwill-power{
-  background-color: #99ffcc;
-}
-.encounter-power{
-  background-color: #ff6666;
-}
-.daily-power{
-  background-color: #cccccc;
-}
-.power{
-  width: 250px;
-  text-align: left;
-}
-
 #initiative{
   position: fixed;
   right: 0px;
