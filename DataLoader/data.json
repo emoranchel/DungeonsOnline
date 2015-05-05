@@ -1,0 +1,403 @@
+{
+  "characters": [{
+      "name": "Akemi",
+      "class": {
+        "name": "Shaman",
+        "hs": 7,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 12,
+        "constitution": 15,
+        "dexterity": 16,
+        "intelligence": 10,
+        "wisdom": 18,
+        "charisma": 10
+      }
+    }, {
+      "name": "Albed",
+      "class": {
+        "name": "Cleric",
+        "hs": 7,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 10,
+        "constitution": 10,
+        "dexterity": 14,
+        "intelligence": 8,
+        "wisdom": 20,
+        "charisma": 15
+      }
+    }, {
+      "name": "Boruda",
+      "class": {
+        "name": "Monk",
+        "hs": 7,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 15,
+        "constitution": 10,
+        "dexterity": 20,
+        "intelligence": 10,
+        "wisdom": 13,
+        "charisma": 9
+      }
+    }, {
+      "name": "Chitose",
+      "class": {
+        "name": "Bard",
+        "hs": 7,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 10,
+        "constitution": 12,
+        "dexterity": 10,
+        "intelligence": 14,
+        "wisdom": 8,
+        "charisma": 21
+      }
+    }, {
+      "name": "Etamaru",
+      "class": {
+        "name": "Ranger",
+        "hs": 6,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 17,
+        "constitution": 11,
+        "dexterity": 17,
+        "intelligence": 10,
+        "wisdom": 16,
+        "charisma": 10
+      }
+    }, {
+      "name": "Gosuto",
+      "class": {
+        "name": "Battlemind",
+        "hs": 9,
+        "initHP": 15,
+        "hplvl": 6
+      },
+      "abilities": {
+        "strength": 11,
+        "constitution": 19,
+        "dexterity": 10,
+        "intelligence": 10,
+        "wisdom": 15,
+        "charisma": 14
+      }
+    }, {
+      "name": "Hanna",
+      "class": {
+        "name": "RunePriest",
+        "hs": 7,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 19,
+        "constitution": 16,
+        "dexterity": 11,
+        "intelligence": 10,
+        "wisdom": 15,
+        "charisma": 10
+      }
+    }, {
+      "name": "Haruko",
+      "class": {
+        "name": "Assassin",
+        "hs": 6,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 10,
+        "constitution": 12,
+        "dexterity": 17,
+        "intelligence": 11,
+        "wisdom": 10,
+        "charisma": 18
+      }
+    }, {
+      "name": "Hatta",
+      "class": {
+        "name": "Warlock",
+        "hs": 6,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 10,
+        "constitution": 14,
+        "dexterity": 11,
+        "intelligence": 13,
+        "wisdom": 10,
+        "charisma": 20
+      }
+    }, {
+      "name": "Kaede",
+      "class": {
+        "name": "Bard",
+        "hs": 7,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 10,
+        "constitution": 10,
+        "dexterity": 8,
+        "intelligence": 11,
+        "wisdom": 15,
+        "charisma": 21
+      }
+    }, {
+      "name": "Kaze",
+      "class": {
+        "name": "Paladin",
+        "hs": 10,
+        "initHP": 15,
+        "hplvl": 6
+      },
+      "abilities": {
+        "strength": 11,
+        "constitution": 12,
+        "dexterity": 11,
+        "intelligence": 8,
+        "wisdom": 17,
+        "charisma": 19
+      }
+    }, {
+      "name": "Kimozukashi",
+      "class": {
+        "name": "Psion",
+        "hs": 6,
+        "initHP": 12,
+        "hplvl": 4
+      },
+      "abilities": {
+        "strength": 10,
+        "constitution": 13,
+        "dexterity": 10,
+        "intelligence": 19,
+        "wisdom": 14,
+        "charisma": 14
+      }
+    }, {
+      "name": "Kohi",
+      "class": {
+        "name": "Sorcerer",
+        "hs": 6,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 12,
+        "constitution": 11,
+        "dexterity": 17,
+        "intelligence": 13,
+        "wisdom": 8,
+        "charisma": 19
+      }
+    }, {
+      "name": "Koshi",
+      "class": {
+        "name": "Druid",
+        "hs": 7,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 10,
+        "constitution": 11,
+        "dexterity": 14,
+        "intelligence": 10,
+        "wisdom": 21,
+        "charisma": 9
+      }
+    }, {
+      "name": "Kuro",
+      "class": {
+        "name": "Wizard",
+        "hs": 6,
+        "initHP": 10,
+        "hplvl": 4
+      },
+      "abilities": {
+        "strength": 10,
+        "constitution": 15,
+        "dexterity": 10,
+        "intelligence": 20,
+        "wisdom": 12,
+        "charisma": 10
+      }
+    }, {
+      "name": "Kusanagi",
+      "class": {
+        "name": "Fighter",
+        "hs": 9,
+        "initHP": 15,
+        "hplvl": 6
+      },
+      "abilities": {
+        "strength": 18,
+        "constitution": 12,
+        "dexterity": 14,
+        "intelligence": 10,
+        "wisdom": 14,
+        "charisma": 12
+      }
+    }, {
+      "name": "Kyodin",
+      "class": {
+        "name": "Paladin",
+        "hs": 10,
+        "initHP": 15,
+        "hplvl": 6
+      },
+      "abilities": {
+        "strength": 19,
+        "constitution": 10,
+        "dexterity": 10,
+        "intelligence": 10,
+        "wisdom": 11,
+        "charisma": 17
+      }
+    }, {
+      "name": "Mamoru",
+      "class": {
+        "name": "Invoker",
+        "hs": 6,
+        "initHP": 10,
+        "hplvl": 4
+      },
+      "abilities": {
+        "strength": 11,
+        "constitution": 16,
+        "dexterity": 12,
+        "intelligence": 12,
+        "wisdom": 17,
+        "charisma": 10
+      }
+    }, {
+      "name": "Riku",
+      "class": {
+        "name": "Warlord",
+        "hs": 7,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 10,
+        "constitution": 15,
+        "dexterity": 8,
+        "intelligence": 13,
+        "wisdom": 10,
+        "charisma": 19
+      }
+    }, {
+      "name": "Shina",
+      "class": {
+        "name": "Avenger",
+        "hs": 7,
+        "initHP": 14,
+        "hplvl": 6
+      },
+      "abilities": {
+        "strength": 11,
+        "constitution": 10,
+        "dexterity": 15,
+        "intelligence": 14,
+        "wisdom": 19,
+        "charisma": 10
+      }
+    }, {
+      "name": "Shiririn",
+      "class": {
+        "name": "Warden",
+        "hs": 9,
+        "initHP": 17,
+        "hplvl": 7
+      },
+      "abilities": {
+        "strength": 18,
+        "constitution": 17,
+        "dexterity": 11,
+        "intelligence": 10,
+        "wisdom": 14,
+        "charisma": 10
+      }
+    }, {
+      "name": "Tomoko",
+      "class": {
+        "name": "Cleric",
+        "hs": 7,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 14,
+        "constitution": 12,
+        "dexterity": 10,
+        "intelligence": 10,
+        "wisdom": 16,
+        "charisma": 17
+      }
+    }, {
+      "name": "Tsuton",
+      "class": {
+        "name": "Fighter",
+        "hs": 9,
+        "initHP": 15,
+        "hplvl": 6
+      },
+      "abilities": {
+        "strength": 19,
+        "constitution": 12,
+        "dexterity": 14,
+        "intelligence": 10,
+        "wisdom": 14,
+        "charisma": 8
+      }
+    }, {
+      "name": "Vash",
+      "class": {
+        "name": "Seeker",
+        "hs": 7,
+        "initHP": 12,
+        "hplvl": 5
+      },
+      "abilities": {
+        "strength": 14,
+        "constitution": 13,
+        "dexterity": 15,
+        "intelligence": 10,
+        "wisdom": 18,
+        "charisma": 11
+      }
+    }, {
+      "name": "Yameheiwa",
+      "class": {
+        "name": "Barbarian",
+        "hs": 8,
+        "initHP": 15,
+        "hplvl": 6
+      },
+      "abilities": {
+        "strength": 20,
+        "constitution": 17,
+        "dexterity": 10,
+        "intelligence": 10,
+        "wisdom": 10,
+        "charisma": 13
+      }
+    }]
+}

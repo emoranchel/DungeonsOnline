@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+  <!-- INTERFACE -->
+  <cc:interface>
+    <cc:attribute name="stat" required="true"/>
+  </cc:interface>
+
+  <!-- IMPLEMENTATION -->
+  <cc:implementation>
+    <div class="tooltip">
+      <h3>#{cc.attrs.stat.name} #{cc.attrs.stat}</h3>
+      <table>
+        <c:if test="#{cc.attrs.stat.base != 0}">
+          <tr><td>Base</td><td>#{cc.attrs.stat.base}</td></tr>
+        </c:if>
+        <c:forEach items="#{cc.attrs.stat.mods}" var="smod">
+          <tr><td>#{smod.name}</td><td>#{smod.value}</td></tr>
+        </c:forEach>
+      </table>
+    </div>
+  </cc:implementation>
+</html>

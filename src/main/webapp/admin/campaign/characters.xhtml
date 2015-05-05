@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:components="http://java.sun.com/jsf/composite/components"
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+  <c:set var="title" value="Battle Data"/>
+  <ui:composition template="/WEB-INF/templates/admin-template.xhtml">
+    <ui:define name="navigation">
+      <ul>
+        <li>Campaign | <h:link outcome="/admin/combat/data" value="Battle"/>
+          <ul>
+            <li>Characters</li>
+            <li>Powers</li>
+            <li>Equipment</li>
+            <li><h:link outcome="/admin/campaign/data" value="Data"/></li>
+          </ul>
+        </li>
+      </ul>
+    </ui:define>
+    <ui:define name="resources">
+      <script>
+        $(function () {
+          $(".tooltip").each(function () {
+            var tooltipDiv = $(this);
+            //tooltipDiv.parent().tooltip();
+            tooltipDiv.parent().tooltip({content: function () {
+                return tooltipDiv.html();
+              }});
+            tooltipDiv.hide();
+          });
+        });
+      </script>
+    </ui:define>
+    <ui:define name="content">
+      <ul>
+        <c:forEach items="${characters.CList}" var="cha">
+          <li><a href="#${cha.name}">${cha.name}</a></li>
+        </c:forEach>
+      </ul>
+      <c:forEach items="${characters.CList}" var="cha">
+        <div>
+          <a name="${cha.name}"/>
+          <h4 style="clear: both">${cha.name}</h4>
+          <table>
+            <tr><td>${cha.charClass}</td><td>${cha.level}</td><td>+${cha.bonus}</td></tr>
+          </table>
+          <div style="float:left">
+            <table>
+              <tr><td>STR</td><td title="">${cha.strength}<components:statTooltip stat="${cha.strength}"/></td><td>${cha.strength.bonusStr}</td><td title="">${cha.strAttack}<components:statTooltip stat="${cha.strAttack}"/></td></tr>
+              <tr><td>CON</td><td title="">${cha.constitution}<components:statTooltip stat="${cha.constitution}"/></td><td>${cha.constitution.bonusStr}</td><td title="">${cha.conAttack}<components:statTooltip stat="${cha.conAttack}"/></td></tr>
+              <tr><td>DEX</td><td title="">${cha.dexterity}<components:statTooltip stat="${cha.dexterity}"/></td><td>${cha.dexterity.bonusStr}</td><td title="">${cha.dexAttack}<components:statTooltip stat="${cha.dexAttack}"/></td></tr>
+              <tr><td>INT</td><td title="">${cha.intelligence}<components:statTooltip stat="${cha.intelligence}"/></td><td>${cha.intelligence.bonusStr}</td><td title="">${cha.intAttack}<components:statTooltip stat="${cha.intAttack}"/></td></tr>
+              <tr><td>WIS</td><td title="">${cha.wisdom}<components:statTooltip stat="${cha.wisdom}"/></td><td>${cha.wisdom.bonusStr}</td><td title="">${cha.wisAttack}<components:statTooltip stat="${cha.wisAttack}"/></td></tr>
+              <tr><td>CHA</td><td title="">${cha.charisma}<components:statTooltip stat="${cha.charisma}"/></td><td>${cha.charisma.bonusStr}</td><td title="">${cha.chaAttack}<components:statTooltip stat="${cha.chaAttack}"/></td></tr>
+            </table>
+            <table>
+              <tr><td>HP</td><td title="">${cha.hp}<components:statTooltip stat="${cha.hp}"/></td></tr>
+              <tr><td>Healing Surges</td><td title="">${cha.healingSurges}<components:statTooltip stat="${cha.healingSurges}"/></td></tr>
+            </table>
+            <table>
+              <tr><td>Init</td><td title="">${cha.initiative}<components:statTooltip stat="${cha.initiative}"/></td></tr>
+            </table>
+            <table>
+              <tr><td>Speed</td><td title="">${cha.speed}<components:statTooltip stat="${cha.speed}"/></td></tr>
+            </table>
+            <table>
+              <tr><td>AC</td><td title="">${cha.armorClass}<components:statTooltip stat="${cha.armorClass}"/></td></tr>
+              <tr><td>FORT</td><td title="">${cha.fortitude}<components:statTooltip stat="${cha.fortitude}"/></td></tr>
+              <tr><td>REF</td><td title="">${cha.reflexes}<components:statTooltip stat="${cha.reflexes}"/></td></tr>
+              <tr><td>WILL</td><td title="">${cha.willpower}<components:statTooltip stat="${cha.willpower}"/></td></tr>
+            </table>
+
+          </div>
+          <div style="float: left">
+            <table>
+              <c:forEach items="${cha.skills}" var="skill">
+                <tr><td>${skill.name}</td><td>${skill.ability}</td><td title="">${skill.bonusStr}<components:statTooltip stat="${skill.stat}"/></td></tr>
+              </c:forEach>
+            </table>
+          </div>
+        </div>
+      </c:forEach>
+    </ui:define>
+  </ui:composition>
+</html>
+

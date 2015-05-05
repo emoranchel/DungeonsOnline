@@ -15,7 +15,7 @@
     </ui:define>
     <ui:define name="navigation">
       <ul>
-        <li>Combat
+        <li>Combat | <h:link outcome="/admin/campaign/characters" value="Campaign"/>
           <ul>
             <li><h:link outcome="/admin/combat/data" value="Data"/></li>
             <li><h:link outcome="/admin/combat/battle" value="Battle"/></li>
@@ -23,6 +23,7 @@
             <li>Combat Map</li>
           </ul>
         </li>
+        <li><h:link outcome="/admin/campaign/characters">campaign</h:link>></li>
       </ul>
     </ui:define>
     <ui:define name="content">

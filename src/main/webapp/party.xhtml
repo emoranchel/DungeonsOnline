@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+  <head>
+    <title>Characters</title>
+  </head>
+  <body>
+    <h:dataTable value="${characters.CList}" var="cha" border="1">
+      <h:column>
+        <f:facet name="header">Name</f:facet>
+          ${cha.name}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Class</f:facet>
+          ${cha.charClass}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Level</f:facet>
+          ${cha.level}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Str</f:facet>
+          ${cha.strength}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Con</f:facet>
+          ${cha.constitution}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Dex</f:facet>
+          ${cha.dexterity}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Int</f:facet>
+          ${cha.intelligence}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Wis</f:facet>
+          ${cha.wisdom}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Cha</f:facet>
+          ${cha.charisma}
+      </h:column>
+      <h:column>
+        <f:facet name="header">InitialHP</f:facet>
+          ${cha.initialHP}
+      </h:column>
+      <h:column>
+        <f:facet name="header">HPPerLevel</f:facet>
+          ${cha.hpPerLevel}
+      </h:column>
+      <h:column>
+        <f:facet name="header">HP</f:facet>
+        ${cha.hpMax} [${cha.healingSurges}]
+      </h:column>
+    </h:dataTable>
+  </body>
+</html>
+

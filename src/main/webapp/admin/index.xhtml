@@ -11,13 +11,9 @@
   <ui:composition template="/WEB-INF/templates/admin-template.xhtml">
     <ui:define name="navigation">
       <ul>
-        <li><h:link outcome="/admin/combat/data" value="Combat"/>
-          <ul>
-            <li><h:link outcome="/admin/combat/data" value="Data"/></li>
-            <li><h:link outcome="/admin/combat/battle" value="Battle"/></li>
-            <li><h:link outcome="/admin/combat/editMap" value="Edit Map"/></li>
-            <li><h:link outcome="/admin/combat/map" value="Combat Map"/></li>
-          </ul>
+        <li>
+          <h:link outcome="/admin/combat/data" value="Combat"/> | 
+          <h:link outcome="/admin/campaign/characters" value="Campaign"/>
         </li>
       </ul>
     </ui:define>
