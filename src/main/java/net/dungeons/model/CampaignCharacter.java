@@ -1,8 +1,15 @@
 package net.dungeons.model;
 
+import java.io.StringReader;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 import net.dungeons.data.Chara;
+import net.dungeons.data.CharaBonus;
 
 public class CampaignCharacter {
 
@@ -34,6 +41,8 @@ public class CampaignCharacter {
   private final CharacterStat wisAttack;
   private final CharacterStat chaAttack;
 
+  private final Map<String, CharacterStat> allStats = new HashMap<>();
+
   private final List<CharacterSkill> skills;
 
   public CampaignCharacter(Chara cha) {
@@ -48,7 +57,13 @@ public class CampaignCharacter {
     this.wisdom = new AbilityScore("WIS", cha.getWisdom());
     this.charisma = new AbilityScore("CHA", cha.getCharisma());
 
-    this.skills = cha.getSkills().stream().map((s) -> new CharacterSkill(s, this)).collect(Collectors.toList());
+    this.skills = cha.getSkills().stream()
+            .map((s) -> {
+              CharacterSkill skill = new CharacterSkill(s, this);
+              allStats.put("SKILL:" + skill.getName(), skill.getStat());
+              return skill;
+            })
+            .collect(Collectors.toList());
 
     this.strAttack = new CharacterStat("STR-Attack", 0, true);
     strAttack.addMod("STR", strength::getBonus);
@@ -78,7 +93,7 @@ public class CampaignCharacter {
     this.healingSurges.addMod("Constitution Bonus", () -> (Math.max(0, constitution.getBonus())));
 
     this.hp = new CharacterStat("HP", initialHP, false);
-    this.hp.addMod("Constitution Bonus", () -> constitution.getValue());
+    this.hp.addMod("Constitution Bonus", constitution::getValue);
     this.hp.addMod("Level", () -> ((level - 1) * (hpPerLevel + (Math.max(0, constitution.getBonus())))));
 
     this.armorClass = new CharacterStat("AC", 10, false);
@@ -101,6 +116,37 @@ public class CampaignCharacter {
 
     this.speed = new CharacterStat("Speed", 6, false);
 
+    allStats.put("STR", strength);
+    allStats.put("CON", constitution);
+    allStats.put("DEX", dexterity);
+    allStats.put("INT", intelligence);
+    allStats.put("WIS", wisdom);
+    allStats.put("CHA", charisma);
+
+    cha.getBonuses().stream().forEach((bonus) -> {
+      String bonusName = bonus.getName();
+      bonusesAsMap(bonus).forEach((key, value) -> {
+        allStats.get(key).addMod(bonusName, getBonus(value));
+      });
+    });
+  }
+
+  private Map<String, String> bonusesAsMap(CharaBonus charBonus) {
+    try (JsonReader reader = Json.createReader(new StringReader(charBonus.getBonus()))) {
+      JsonObject jsonBonus = reader.readObject();
+      return jsonBonus.entrySet()
+              .stream().collect(
+                      Collectors.toMap((entry) -> {
+                        return entry.getKey();
+                      }, (entry) -> {
+                        return jsonBonus.getString(entry.getKey());
+                      })
+              );
+    }
+  }
+
+  private StatCalculus getBonus(String value) {
+    return () -> Integer.parseInt(value);
   }
 
   public CharacterStat getHealingSurges() {

@@ -42,8 +42,7 @@
       </ul>
       <c:forEach items="${characters.CList}" var="cha">
         <div>
-          <a name="${cha.name}"/>
-          <h4 style="clear: both">${cha.name}</h4>
+          <h4 style="clear: both"><a name="${cha.name}">${cha.name}</a></h4>
           <table>
             <tr><td>${cha.charClass}</td><td>${cha.level}</td><td>+${cha.bonus}</td></tr>
           </table>
@@ -72,7 +71,6 @@
               <tr><td>REF</td><td title="">${cha.reflexes}<components:statTooltip stat="${cha.reflexes}"/></td></tr>
               <tr><td>WILL</td><td title="">${cha.willpower}<components:statTooltip stat="${cha.willpower}"/></td></tr>
             </table>
-
           </div>
           <div style="float: left">
             <table>
