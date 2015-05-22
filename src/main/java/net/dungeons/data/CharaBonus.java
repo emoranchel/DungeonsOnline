@@ -1,11 +1,5 @@
 package net.dungeons.data;
 
-import java.io.StringReader;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,12 +22,13 @@ public class CharaBonus {
   @Basic(optional = false)
   @NotNull
   private String name;
-  @Basic(optional = false)
-  @NotNull
+  @Basic(optional = true)
   private String chara;
   @Basic(optional = false)
   @NotNull
   private String bonus;
+  @Basic(optional = true)
+  private String description;
 
   public CharaBonus() {
   }
@@ -75,6 +70,14 @@ public class CharaBonus {
 
   public void setBonus(String bonus) {
     this.bonus = bonus;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
 }

@@ -11,7 +11,7 @@
       <ul>
         <li>Campaign | <h:link outcome="/admin/combat/data" value="Battle"/>
           <ul>
-            <li>Characters</li>
+            <li><h:link outcome="/admin/campaign/characters" value="Characters"/></li>
             <li>Powers</li>
             <li>Equipment</li>
             <li>Data</li>
@@ -23,6 +23,7 @@
     </ui:define>
     <ui:define name="content">
       <h:form>
+        <h1>Ability Scores</h1>
         <h2>Characters</h2>
         <h:commandButton action="${adminCampaign.saveAll}" value="Save All"/>
         <h:dataTable value="${adminCampaign.characters}" var="cha">
@@ -61,7 +62,8 @@
           </h:column>
         </h:dataTable>
         <h:commandButton action="${adminCampaign.saveAll}" value="Save All"/>
-        <br/>
+        <br style="clear: both;"/>
+        <h1>Skills</h1>
         <c:forEach items="${adminCampaign.characters}" var="cha">
           <div  style="float: left">
             <h2>${cha.name}</h2>
@@ -72,6 +74,26 @@
             </h:dataTable>
           </div>
         </c:forEach>
+        <br style="clear: both;"/>
+        <h1>Features and Bonuses</h1>
+        <c:forEach items="${adminCampaign.characters}" var="cha">
+          <div  style="float: left">
+            <h2>${cha.name}</h2>
+            <c:forEach items="${cha.bonuses}" var="feature">
+              ${feature.id}:${feature.chara}:${feature.name}:${feature.bonus}:${feature.description}
+              <h:commandButton value="Remove" action="${adminCampaign.removeFeat(cha, feature)}"/>
+              <br/>
+            </c:forEach>
+          </div>
+        </c:forEach>
+        <br style="clear: both;"/>
+        NEW FEATURE:<br/>
+        character:<h:inputText value="${adminCampaign.newfeature.chara}" size="20"/><br/>
+        feature name:<h:inputText value="${adminCampaign.newfeature.name}" size="20"/><br/>
+        bonus: <h:inputText value="${adminCampaign.newfeature.bonus}" size="20"/><br/>
+        description: <h:inputText value="${adminCampaign.newfeature.description}" size="20"/><br/>
+        <h:commandButton value="ADD NEW" action="${adminCampaign.addFeature()}"/>
+
         <br style="clear: both"/>
         <h:commandButton action="${adminCampaign.saveAll}" value="Save All"/>
       </h:form>

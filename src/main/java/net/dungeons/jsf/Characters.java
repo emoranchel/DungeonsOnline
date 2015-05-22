@@ -21,12 +21,14 @@ public class Characters {
 
   @PostConstruct
   public void init() {
+    long startTime = System.currentTimeMillis();
     CriteriaQuery<Chara> cq = em.getCriteriaBuilder().createQuery(Chara.class);
     this.characters = em.createQuery(cq.select(cq.from(Chara.class)))
             .getResultList().stream()
             .parallel()
             .map(CampaignCharacter::new)
             .collect(Collectors.toList());
+    System.out.println("Loading time: " + (System.currentTimeMillis() - startTime) + "ms");
   }
 
   public List<CampaignCharacter> getCList() {
