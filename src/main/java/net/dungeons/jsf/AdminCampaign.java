@@ -11,6 +11,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 import net.dungeons.data.Chara;
 import net.dungeons.data.CharaBonus;
+import net.dungeons.model.Bonus;
+import net.dungeons.model.CharacterBonus;
 
 @Named("adminCampaign")
 @RequestScoped
@@ -69,6 +71,10 @@ public class AdminCampaign {
 
   public void setNewfeature(CharaBonus newfeature) {
     this.newfeature = newfeature;
+  }
+  
+  public List<Bonus> displayBonus(CharaBonus cb){
+    return new CharacterBonus(cb).getBonuses();
   }
 
 }

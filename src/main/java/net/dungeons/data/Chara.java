@@ -64,7 +64,7 @@ public class Chara implements Serializable {
   private String ctype;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinColumn(name = "chara")
+  @JoinColumn()
   private List<CharaSkill> skills;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

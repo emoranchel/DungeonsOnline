@@ -2,14 +2,24 @@ package net.dungeons.model;
 
 public class Bonus {
 
-  public static String toString(int bonus) {
-    if (bonus > 0) {
-      return "+" + bonus;
-    }
-    if (bonus < 0) {
-      return "-" + bonus;
-    }
-    return "";
+  private final String stat;
+  private final String value;
+
+  public Bonus(String stat, String value) {
+    this.stat = stat;
+    this.value = value;
+  }
+
+  public String getStat() {
+    return stat;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public StatCalculus getBonus() {
+    return () -> Integer.parseInt(value);
   }
 
 }

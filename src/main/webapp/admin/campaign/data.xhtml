@@ -65,6 +65,18 @@
 
         });
       </script>
+      <script>
+        $(function () {
+          $(".tooltip").each(function () {
+            var tooltipDiv = $(this);
+            //tooltipDiv.parent().tooltip();
+            tooltipDiv.parent().tooltip({content: function () {
+                return tooltipDiv.html();
+              }});
+            tooltipDiv.hide();
+          });
+        });
+      </script>
     </ui:define>
     <ui:define name="content">
       <h:form>
@@ -154,7 +166,15 @@
                 <td style="vertical-align: top;">
 
                   <c:forEach items="${cha.bonuses}" var="feature">
-                    ${feature.id}:${feature.chara}:${feature.name}:${feature.bonus}:${feature.description}
+                    <span title="">${feature.name}<div class="tooltip">
+                        <h4>${feature.name}</h4>
+                        ${feature.description}
+                        <table>
+                          <c:forEach items="${adminCampaign.displayBonus(feature)}" var="bonus">
+                            <tr><td>${bonus.stat}</td><td>${bonus.value}</td></tr>
+                          </c:forEach>
+                        </table>
+                      </div></span>
                     <h:commandButton value="X" action="${adminCampaign.removeFeat(cha, feature)}"/>
                     <br/>
                   </c:forEach>
@@ -170,8 +190,22 @@
         <h:form>
           <h:inputText value="${adminCampaign.newfeature.name}" size="20"/><br/>
           <h:inputTextarea value="${adminCampaign.newfeature.description}" rows="3" cols="20"/><br/>
+          <select>
+            <option value="">Select one</option>
+            <option value="">Ability Score</option>
+            <option value="">Attacks</option>
+            <option value="">Hit Points</option>
+            <option value="">Defenses</option>
+            <option value="">Other Attributes</option>
+            <option value="">Skills</option>
+          </select>
           <select id="addNewFeatureSelectFeat">
+            <option value="STR">Strength</option>
+            <option value="CON">Constitution</option>
             <option value="DEX">Dexterity</option>
+            <option value="INT">Intelligence</option>
+            <option value="WIS">Wisdom</option>
+            <option value="CHA">Charisma</option>
           </select>
           <input type="text" size="2" id="addNewFeatureValueFeat"/>
           <input type="button" value="+" id="addNewFeatureAddButton" />

@@ -44,6 +44,7 @@ public class CampaignCharacter {
   private final Map<String, CharacterStat> allStats = new HashMap<>();
 
   private final List<CharacterSkill> skills;
+  private final List<CharacterBonus> bonuses;
 
   public CampaignCharacter(Chara cha) {
     this.name = cha.getName();
@@ -64,6 +65,8 @@ public class CampaignCharacter {
               return skill;
             })
             .collect(Collectors.toList());
+
+    this.bonuses = cha.getBonuses().stream().map(CharacterBonus::new).collect(Collectors.toList());
 
     this.strAttack = new CharacterStat("STR-Attack", 0, true);
     strAttack.addMod("STR", strength::getBonus);
@@ -99,7 +102,7 @@ public class CampaignCharacter {
     this.armorClass = new CharacterStat("AC", 10, false);
     this.armorClass.addMod("DEX", dexterity::getBonus); // add armor restriction
 
-    this.initiative = new CharacterStat("Init", 0, true);
+    this.initiative = new CharacterStat("Initiative", 0, true);
     this.initiative.addMod("DEX", dexterity::getBonus); // add armor restriction
 
     this.reflexes = new CharacterStat("REF", 10, false);
@@ -123,30 +126,9 @@ public class CampaignCharacter {
     allStats.put("WIS", wisdom);
     allStats.put("CHA", charisma);
 
-    cha.getBonuses().stream().forEach((bonus) -> {
-      String bonusName = bonus.getName();
-      bonusesAsMap(bonus).forEach((key, value) -> {
-        allStats.get(key).addMod(bonusName, getBonus(value));
-      });
+    bonuses.stream().forEach((bonus) -> {
+      bonus.getBonuses().stream().forEach((b) -> allStats.get(b.getStat()).addMod(bonus.getName(), b.getBonus()));
     });
-  }
-
-  private Map<String, String> bonusesAsMap(CharaBonus charBonus) {
-    try (JsonReader reader = Json.createReader(new StringReader(charBonus.getBonus()))) {
-      JsonObject jsonBonus = reader.readObject();
-      return jsonBonus.entrySet()
-              .stream().collect(
-                      Collectors.toMap((entry) -> {
-                        return entry.getKey();
-                      }, (entry) -> {
-                        return jsonBonus.getString(entry.getKey());
-                      })
-              );
-    }
-  }
-
-  private StatCalculus getBonus(String value) {
-    return () -> Integer.parseInt(value);
   }
 
   public CharacterStat getHealingSurges() {
@@ -247,6 +229,10 @@ public class CampaignCharacter {
 
   public CharacterStat getChaAttack() {
     return chaAttack;
+  }
+
+  public List<CharacterBonus> getBonuses() {
+    return bonuses;
   }
 
 }

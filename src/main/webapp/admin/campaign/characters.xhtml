@@ -47,7 +47,11 @@
             <tr><td>${cha.charClass}</td><td>${cha.level}</td><td>+${cha.bonus}</td></tr>
           </table>
           <div style="float:left">
-            <table>
+            <table width="100%">
+              <thead>
+                <tr><th colspan="4">Ability Scores</th></tr>
+                <tr style="font-size: .60em"><th>Ability</th><th>Score</th><th>Mod</th><th>Mod+Lvl</th></tr>
+              </thead>
               <tr><td>STR</td><td title="">${cha.strength}<components:statTooltip stat="${cha.strength}"/></td><td>${cha.strength.bonusStr}</td><td title="">${cha.strAttack}<components:statTooltip stat="${cha.strAttack}"/></td></tr>
               <tr><td>CON</td><td title="">${cha.constitution}<components:statTooltip stat="${cha.constitution}"/></td><td>${cha.constitution.bonusStr}</td><td title="">${cha.conAttack}<components:statTooltip stat="${cha.conAttack}"/></td></tr>
               <tr><td>DEX</td><td title="">${cha.dexterity}<components:statTooltip stat="${cha.dexterity}"/></td><td>${cha.dexterity.bonusStr}</td><td title="">${cha.dexAttack}<components:statTooltip stat="${cha.dexAttack}"/></td></tr>
@@ -55,27 +59,54 @@
               <tr><td>WIS</td><td title="">${cha.wisdom}<components:statTooltip stat="${cha.wisdom}"/></td><td>${cha.wisdom.bonusStr}</td><td title="">${cha.wisAttack}<components:statTooltip stat="${cha.wisAttack}"/></td></tr>
               <tr><td>CHA</td><td title="">${cha.charisma}<components:statTooltip stat="${cha.charisma}"/></td><td>${cha.charisma.bonusStr}</td><td title="">${cha.chaAttack}<components:statTooltip stat="${cha.chaAttack}"/></td></tr>
             </table>
-            <table>
+            <table width="100%">
+              <thead>
+                <tr><th colspan="2">Hit Points</th></tr>
+              </thead>
               <tr><td>HP</td><td title="">${cha.hp}<components:statTooltip stat="${cha.hp}"/></td></tr>
               <tr><td>Healing Surges</td><td title="">${cha.healingSurges}<components:statTooltip stat="${cha.healingSurges}"/></td></tr>
             </table>
-            <table>
-              <tr><td>Init</td><td title="">${cha.initiative}<components:statTooltip stat="${cha.initiative}"/></td></tr>
+            <table width="100%">
+              <tr><th>Initiative</th><td title="">${cha.initiative}<components:statTooltip stat="${cha.initiative}"/></td></tr>
             </table>
-            <table>
-              <tr><td>Speed</td><td title="">${cha.speed}<components:statTooltip stat="${cha.speed}"/></td></tr>
+            <table width="100%">
+              <tr><th>Speed</th><td title="">${cha.speed}<components:statTooltip stat="${cha.speed}"/></td></tr>
             </table>
-            <table>
-              <tr><td>AC</td><td title="">${cha.armorClass}<components:statTooltip stat="${cha.armorClass}"/></td></tr>
-              <tr><td>FORT</td><td title="">${cha.fortitude}<components:statTooltip stat="${cha.fortitude}"/></td></tr>
-              <tr><td>REF</td><td title="">${cha.reflexes}<components:statTooltip stat="${cha.reflexes}"/></td></tr>
-              <tr><td>WILL</td><td title="">${cha.willpower}<components:statTooltip stat="${cha.willpower}"/></td></tr>
+            <table width="100%">
+              <thead>
+                <tr><th colspan="2">Defenses</th></tr>
+              </thead>
+              <tr><td>Armor Class</td><td title="">${cha.armorClass}<components:statTooltip stat="${cha.armorClass}"/></td></tr>
+              <tr><td>Fortitude</td><td title="">${cha.fortitude}<components:statTooltip stat="${cha.fortitude}"/></td></tr>
+              <tr><td>Reflexes</td><td title="">${cha.reflexes}<components:statTooltip stat="${cha.reflexes}"/></td></tr>
+              <tr><td>Will</td><td title="">${cha.willpower}<components:statTooltip stat="${cha.willpower}"/></td></tr>
             </table>
           </div>
-          <div style="float: left">
+          <div style="float: left; margin-left: 5px;">
             <table>
+              <thead>
+                <tr><th>Skill</th><th>Ability</th><th>Bonus</th></tr>
+              </thead>
               <c:forEach items="${cha.skills}" var="skill">
                 <tr><td>${skill.name}</td><td>${skill.ability}</td><td title="">${skill.bonusStr}<components:statTooltip stat="${skill.stat}"/></td></tr>
+              </c:forEach>
+            </table>
+          </div>
+          <div style="float: left; margin-left: 5px;">
+            <table>
+              <thead><tr><th>Features and Bonuses</th></tr></thead>
+              <c:forEach items="${cha.bonuses}" var="bonus">
+                <tr><td title="">${bonus.name}
+                    <div class="tooltip">
+                      <h3>#{bonus.name}</h3>
+                      ${bonus.description}
+                      <table>
+                        <c:forEach items="#{bonus.bonuses}" var="smod">
+                          <tr><td>#{smod.stat}</td><td>#{smod.value}</td></tr>
+                        </c:forEach>
+                      </table>
+                    </div>
+                  </td></tr>
               </c:forEach>
             </table>
           </div>

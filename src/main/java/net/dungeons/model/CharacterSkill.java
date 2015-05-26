@@ -45,7 +45,7 @@ public class CharacterSkill {
   }
 
   public String getBonusStr() {
-    return Bonus.toString(getBonus());
+    return bonus.toString();
   }
 
   public int getBonus() {

@@ -79,5 +79,5 @@ public class CharaBonus {
   public void setDescription(String description) {
     this.description = description;
   }
-
+  
 }
