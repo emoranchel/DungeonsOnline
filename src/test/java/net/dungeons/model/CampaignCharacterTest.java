@@ -6,7 +6,6 @@ import net.dungeons.data.Chara;
 import net.dungeons.data.CharaBonus;
 import net.dungeons.data.CharaClass;
 import net.dungeons.data.CharaSkill;
-import net.dungeons.data.CharaSkillPK;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -58,7 +57,6 @@ public class CampaignCharacterTest {
     cha.setCharClass(cla);
     cha.setConstitution(10);
     List<CharaSkill> skills = new ArrayList<>();
-    skills.add(new CharaSkill(new CharaSkillPK(null, "Acrobatics"), "DEX"));
     cha.setSkills(skills);
 
     cha.setBonuses(new ArrayList<>());
@@ -78,7 +76,7 @@ public class CampaignCharacterTest {
     cha.setBonuses(bonuses);
 
     character = new CampaignCharacter(cha);
-    assertEquals("Acrobatics=4", 6, character.getSkills().get(0).getBonus());
+    assertEquals("Acrobatics=4", 6, character.getSkill("Acrobatics").getBonus());
     assertEquals("WIS", 18, character.getWisdom().getValue());
     assertEquals("STR", 11, character.getStrength().getValue());
     assertEquals("CON", 11, character.getConstitution().getValue());

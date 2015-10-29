@@ -46,11 +46,13 @@ public class AdminCampaign {
   public void addFeature() {
     chars.replaceAll((c) -> {
       if (c.getName().equals(newfeature.getChara())) {
+        em.persist(newfeature);
         c.getBonuses().add(newfeature);
         c = em.merge(c);
       }
       return c;
     });
+    newfeature = new CharaBonus();
   }
 
   @Transactional

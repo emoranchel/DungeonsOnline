@@ -1,15 +1,10 @@
 package net.dungeons.model;
 
-import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import net.dungeons.data.Chara;
-import net.dungeons.data.CharaBonus;
 
 public class CampaignCharacter {
 
@@ -45,6 +40,7 @@ public class CampaignCharacter {
 
   private final List<CharacterSkill> skills;
   private final List<CharacterBonus> bonuses;
+  private final List<CharacterItem> items;
 
   public CampaignCharacter(Chara cha) {
     this.name = cha.getName();
@@ -58,15 +54,16 @@ public class CampaignCharacter {
     this.wisdom = new AbilityScore("WIS", cha.getWisdom());
     this.charisma = new AbilityScore("CHA", cha.getCharisma());
 
-    this.skills = cha.getSkills().stream()
-            .map((s) -> {
-              CharacterSkill skill = new CharacterSkill(s, this);
-              allStats.put("SKILL:" + skill.getName(), skill.getStat());
-              return skill;
-            })
-            .collect(Collectors.toList());
+    this.skills = SkillCollection.getBaseSkills(this);
+
+    this.skills.addAll(cha.getSkills().stream()
+            .map((s) -> new CharacterSkill(s, this))
+            .collect(Collectors.toList()));
+
+    this.skills.stream().forEach((skill) -> allStats.put("SKILL:" + skill.getName(), skill.getStat()));
 
     this.bonuses = cha.getBonuses().stream().map(CharacterBonus::new).collect(Collectors.toList());
+    this.items = cha.getItem().stream().map(CharacterItem::new).collect(Collectors.toList());
 
     this.strAttack = new CharacterStat("STR-Attack", 0, true);
     strAttack.addMod("STR", strength::getBonus);
@@ -97,12 +94,13 @@ public class CampaignCharacter {
 
     this.hp = new CharacterStat("HP", initialHP, false);
     this.hp.addMod("Constitution Bonus", constitution::getValue);
-    this.hp.addMod("Level", () -> ((level - 1) * (hpPerLevel + (Math.max(0, constitution.getBonus())))));
+    this.hp.addMod("Level (" + hpPerLevel + "+" + (Math.max(0, constitution.getBonus())) + ")", () -> ((level - 1) * (hpPerLevel + (Math.max(0, constitution.getBonus())))));
 
     this.armorClass = new CharacterStat("AC", 10, false);
     this.armorClass.addMod("DEX", dexterity::getBonus); // add armor restriction
 
     this.initiative = new CharacterStat("Initiative", 0, true);
+    this.initiative.addMod("Level", this::getBonus);
     this.initiative.addMod("DEX", dexterity::getBonus); // add armor restriction
 
     this.reflexes = new CharacterStat("REF", 10, false);
@@ -125,9 +123,14 @@ public class CampaignCharacter {
     allStats.put("INT", intelligence);
     allStats.put("WIS", wisdom);
     allStats.put("CHA", charisma);
+    
+    allStats.put("AC", armorClass);
 
     bonuses.stream().forEach((bonus) -> {
       bonus.getBonuses().stream().forEach((b) -> allStats.get(b.getStat()).addMod(bonus.getName(), b.getBonus()));
+    });
+    items.stream().filter(CharacterItem::isWorn).forEach((item) -> {
+      item.getBonuses().stream().forEach((b) -> allStats.get(b.getStat()).addMod(item.getName(), b.getBonus()));
     });
   }
 
@@ -233,6 +236,19 @@ public class CampaignCharacter {
 
   public List<CharacterBonus> getBonuses() {
     return bonuses;
+  }
+
+  public List<CharacterItem> getItems() {
+    return items;
+  }
+
+  CharacterSkill getSkill(String name) {
+    for (CharacterSkill skill : skills) {
+      if (name.equals(skill.getName())) {
+        return skill;
+      }
+    }
+    return null;
   }
 
 }

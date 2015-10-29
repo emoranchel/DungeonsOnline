@@ -126,63 +126,50 @@
       <c:forEach items="${adminCampaign.characters}" var="cha">
         <div id="${cha.name}" class="characterDetail" title="${cha.name}">
           <h:form>
-            <table>
-              <thead>
-                <tr>
-                  <th>Scores</th>
-                  <th>Skills</th>
-                  <th>Features</th>
-                </tr>
-              </thead>
-              <tr style="font-size: .8em;">
-                <td style="vertical-align: top;">
-
-                  <table>
-                    <tr><td>LVL</td><td><h:inputText value="${cha.lvl}" size="2"/></td></tr>
-                    <tr><td></td><td></td></tr>
-                    <tr><td>Type</td><td><h:selectOneMenu value="${cha.ctype}">
-                          <f:selectItems value="${adminCampaign.types}"></f:selectItems>
-                        </h:selectOneMenu></td></tr>
-                    <tr><td></td><td></td></tr>
-                    <tr><td>STR</td><td><h:inputText value="${cha.strength}" size="2"/></td></tr>
-                    <tr><td>CON</td><td><h:inputText value="${cha.constitution}" size="2"/></td></tr>
-                    <tr><td>DEX</td><td><h:inputText value="${cha.dexterity}" size="2"/></td></tr>
-                    <tr><td>INT</td><td><h:inputText value="${cha.intelligence}" size="2"/></td></tr>
-                    <tr><td>WIS</td><td><h:inputText value="${cha.wisdom}" size="2"/></td></tr>
-                    <tr><td>CHA</td><td><h:inputText value="${cha.charisma}" size="2"/></td></tr>
-                  </table>
-
-                  <h:commandButton value="SAVE" action="${adminCampaign.save(cha)}"/>
-                </td>
-                <td style="vertical-align: top;">
-
-                  <h:dataTable value="${cha.skills}" var="skill">
-                    <h:column><f:facet name="header">Name</f:facet>${skill.id.skill}</h:column>
-                    <h:column><f:facet name="header">Ability</f:facet>${skill.ability}</h:column>
-                    <h:column><f:facet name="header">Bonus</f:facet><h:inputText value="${skill.bonus}" size="2"/></h:column>
-                  </h:dataTable>
-
-                </td>
-                <td style="vertical-align: top;">
-
-                  <c:forEach items="${cha.bonuses}" var="feature">
-                    <span title="">${feature.name}<div class="tooltip">
-                        <h4>${feature.name}</h4>
-                        ${feature.description}
-                        <table>
-                          <c:forEach items="${adminCampaign.displayBonus(feature)}" var="bonus">
-                            <tr><td>${bonus.stat}</td><td>${bonus.value}</td></tr>
-                          </c:forEach>
-                        </table>
-                      </div></span>
-                    <h:commandButton value="X" action="${adminCampaign.removeFeat(cha, feature)}"/>
-                    <br/>
-                  </c:forEach>
-                  <input type="button" value="ADD NEW" class="addNewFeatureButton"/>  
-
-                </td>
-              </tr>
-            </table>
+            <div style="float: left;">
+              <h4>Scores</h4>
+              <table>
+                <tr><td>LVL</td><td><h:inputText value="${cha.lvl}" size="2"/></td></tr>
+                <tr><td>Type</td><td>
+                    <h:selectOneMenu value="${cha.ctype}">
+                      <f:selectItems value="${adminCampaign.types}"></f:selectItems>
+                    </h:selectOneMenu>
+                  </td></tr>
+                <tr><td>STR</td><td><h:inputText value="${cha.strength}" size="2"/></td></tr>
+                <tr><td>CON</td><td><h:inputText value="${cha.constitution}" size="2"/></td></tr>
+                <tr><td>DEX</td><td><h:inputText value="${cha.dexterity}" size="2"/></td></tr>
+                <tr><td>INT</td><td><h:inputText value="${cha.intelligence}" size="2"/></td></tr>
+                <tr><td>WIS</td><td><h:inputText value="${cha.wisdom}" size="2"/></td></tr>
+                <tr><td>CHA</td><td><h:inputText value="${cha.charisma}" size="2"/></td></tr>
+              </table>
+            </div>
+            <div style="float: left;">
+              <h4>Skills</h4>
+              <h:dataTable value="${cha.skills}" var="skill">
+                <h:column><f:facet name="header">Name</f:facet>${skill.id.skill}</h:column>
+                <h:column><f:facet name="header">Ability</f:facet>${skill.ability}</h:column>
+              </h:dataTable>
+            </div>
+            <div style="float: left;">
+              <h4>Features</h4>
+              <c:forEach items="${cha.bonuses}" var="feature">
+                <span title="">[${feature.lvl}] ${feature.name}<div class="tooltip">
+                    <h4>${feature.name}</h4>
+                    ${feature.description}
+                    <table>
+                      <c:forEach items="${adminCampaign.displayBonus(feature)}" var="bonus">
+                        <tr><td>${bonus.stat}</td><td>${bonus.value}</td></tr>
+                      </c:forEach>
+                    </table>
+                  </div></span>
+                <h:commandButton value="X" action="${adminCampaign.removeFeat(cha, feature)}"/>
+                <br/>
+              </c:forEach>
+              <input type="button" value="ADD NEW" class="addNewFeatureButton"/>  
+            </div>
+            <div style="clear: both;">
+              <h:commandButton value="SAVE" action="${adminCampaign.save(cha)}"/>
+            </div>
           </h:form>
         </div>
       </c:forEach>

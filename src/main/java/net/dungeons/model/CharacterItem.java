@@ -7,20 +7,26 @@ import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonString;
-import net.dungeons.data.CharaBonus;
+import net.dungeons.data.CharaItem;
 
-public class CharacterBonus {
+public class CharacterItem {
 
   private final String name;
   private final String description;
-  private final int level;
+  private final String damage;
+  private final int count;
+  private final String slot;
+  private final boolean worn;
   private final List<Bonus> bonuses;
 
-  public CharacterBonus(CharaBonus bonus) {
-    this.name = bonus.getName();
-    this.description = bonus.getDescription();
-    this.level = bonus.getLvl();
-    try (JsonReader reader = Json.createReader(new StringReader(bonus.getBonus()))) {
+  public CharacterItem(CharaItem charaItem) {
+    this.name = charaItem.getName();
+    this.description = charaItem.getDescription();
+    this.count = charaItem.getCnt();
+    this.slot = charaItem.getSlot();
+    this.worn = charaItem.isWorn();
+    this.damage = charaItem.getDamage();
+    try (JsonReader reader = Json.createReader(new StringReader(charaItem.getBonus()))) {
       JsonObject jsonBonus = reader.readObject();
       this.bonuses = jsonBonus.entrySet()
               .stream()
@@ -28,6 +34,7 @@ public class CharacterBonus {
                 return new Bonus(entry.getKey(), ((JsonString) entry.getValue()).getString());
               }).collect(Collectors.toList());
     }
+
   }
 
   public String getName() {
@@ -38,12 +45,24 @@ public class CharacterBonus {
     return description;
   }
 
+  public int getCount() {
+    return count;
+  }
+
+  public String getSlot() {
+    return slot;
+  }
+
+  public boolean isWorn() {
+    return worn;
+  }
+
   public List<Bonus> getBonuses() {
     return bonuses;
   }
 
-  public int getLevel() {
-    return level;
+  public String getDamage() {
+    return damage;
   }
 
 }

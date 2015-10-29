@@ -8,12 +8,12 @@ public class CharacterSkill {
   private final CharacterStat bonus;
   private final String ability;
 
-  public CharacterSkill(CharaSkill skill, CampaignCharacter chara) {
-    this.name = skill.getSkill();
-    this.bonus = new CharacterStat(skill.getSkill(), skill.getBonus(), true);
-    this.ability = skill.getAbility();
+  public CharacterSkill(String ability, String name, CampaignCharacter chara) {
+    this.name = name;
+    this.bonus = new CharacterStat(name, 0, true);
+    this.ability = ability;
     this.bonus.addMod("LEVEL", chara::getBonus);
-    switch (skill.getAbility()) {
+    switch (ability) {
       case "STR":
         this.bonus.addMod("STR", chara.getStrength()::getBonus);
         break;
@@ -34,6 +34,10 @@ public class CharacterSkill {
         break;
       default:
     }
+  }
+
+  public CharacterSkill(CharaSkill skill, CampaignCharacter chara) {
+    this(skill.getAbility(), skill.getSkill(), chara);
   }
 
   public String getName() {

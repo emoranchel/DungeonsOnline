@@ -64,12 +64,16 @@ public class Chara implements Serializable {
   private String ctype;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinColumn()
+  @JoinColumn(name = "chara")
   private List<CharaSkill> skills;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinColumn(name = "chara")
   private List<CharaBonus> bonuses;
+
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JoinColumn(name = "chara")
+  private List<CharaItem> item;
 
   public Chara() {
   }
@@ -179,6 +183,14 @@ public class Chara implements Serializable {
 
   public void setBonuses(List<CharaBonus> bonuses) {
     this.bonuses = bonuses;
+  }
+
+  public List<CharaItem> getItem() {
+    return item;
+  }
+
+  public void setItem(List<CharaItem> item) {
+    this.item = item;
   }
 
   @Override

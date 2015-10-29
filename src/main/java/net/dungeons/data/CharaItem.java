@@ -1,5 +1,6 @@
 package net.dungeons.data;
 
+import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +11,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "CHARBONUS")
-public class CharaBonus {
+@Table(name = "CHARITEM")
+public class CharaItem implements Serializable {
 
   @Id
   @Basic(optional = false)
@@ -19,34 +20,29 @@ public class CharaBonus {
   @Column(name = "ID")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
-
   @Basic(optional = false)
   @NotNull
   private String name;
-
+  @Basic(optional = false)
+  @NotNull
+  private String slot;
+  @Basic(optional = false)
+  @NotNull
+  private String bonus;
+  @Basic(optional = true)
+  private String description;
+  @Basic(optional = true)
+  private String damage;
+  @Basic(optional = true)
+  private int cnt; //1->N = item count, 0 -> Item depleted, -1 Item cant be counted.
+  @Basic(optional = false)
+  @NotNull
+  private boolean worn;
   @Basic(optional = false)
   @NotNull
   private String chara;
 
-  @Basic(optional = false)
-  @NotNull
-  private String bonus;
-
-  @Basic(optional = true)
-  private String description;
-
-  @Basic(optional = false)
-  @NotNull
-  private int lvl;
-
-  public CharaBonus() {
-  }
-
-  public CharaBonus(int id, String name, String chara, String bonus) {
-    this.id = id;
-    this.name = name;
-    this.chara = chara;
-    this.bonus = bonus;
+  public CharaItem() {
   }
 
   public int getId() {
@@ -65,12 +61,12 @@ public class CharaBonus {
     this.name = name;
   }
 
-  public String getChara() {
-    return chara;
+  public String getSlot() {
+    return slot;
   }
 
-  public void setChara(String chara) {
-    this.chara = chara;
+  public void setSlot(String slot) {
+    this.slot = slot;
   }
 
   public String getBonus() {
@@ -89,11 +85,36 @@ public class CharaBonus {
     this.description = description;
   }
 
-  public int getLvl() {
-    return lvl;
+  public String getDamage() {
+    return damage;
   }
 
-  public void setLvl(int lvl) {
-    this.lvl = lvl;
+  public void setDamage(String damage) {
+    this.damage = damage;
   }
+
+  public boolean isWorn() {
+    return worn;
+  }
+
+  public void setWorn(boolean worn) {
+    this.worn = worn;
+  }
+
+  public String getChara() {
+    return chara;
+  }
+
+  public void setChara(String chara) {
+    this.chara = chara;
+  }
+
+  public int getCnt() {
+    return cnt;
+  }
+
+  public void setCnt(int cnt) {
+    this.cnt = cnt;
+  }
+
 }

@@ -41,7 +41,7 @@
         </c:forEach>
       </ul>
       <c:forEach items="${characters.CList}" var="cha">
-        <div>
+        <div style="font-size: 0.8em;">
           <h4 style="clear: both"><a name="${cha.name}">${cha.name}</a></h4>
           <table>
             <tr><td>${cha.charClass}</td><td>${cha.level}</td><td>+${cha.bonus}</td></tr>
@@ -94,9 +94,11 @@
           </div>
           <div style="float: left; margin-left: 5px;">
             <table>
-              <thead><tr><th>Features and Bonuses</th></tr></thead>
+              <thead><tr><th colspan="2">Features and Bonuses</th></tr></thead>
               <c:forEach items="${cha.bonuses}" var="bonus">
-                <tr><td title="">${bonus.name}
+                <tr>
+                  <td>#{bonus.level}</td>
+                  <td title="">${bonus.name}
                     <div class="tooltip">
                       <h3>#{bonus.name}</h3>
                       ${bonus.description}
@@ -109,6 +111,65 @@
                   </td></tr>
               </c:forEach>
             </table>
+          </div>
+          <div style="float: left; margin-left: 5px;">
+            <table>
+              <thead><tr><th colspan="2">Inventory</th></tr>
+                <tr style="font-size: 0.6em;"><th>Item</th><th>Slot</th></tr></thead>
+              <c:forEach items="${cha.items}" var="item">
+                <tr>
+                  <td title=""><input type="checkbox" readonly="true" jsf:value="${item.worn}"/>${item.name}
+                      <div class="tooltip">
+                        <h3>${item.name}</h3>
+                        <h4>${item.slot}</h4>
+                        ${item.count}<br/>
+                        ${item.description}<br/>
+                        ${item.damage}<br/>
+                        <table>
+                          <c:forEach items="#{item.bonuses}" var="smod">
+                            <tr><td>#{smod.stat}</td><td>#{smod.value}</td></tr>
+                          </c:forEach>
+                        </table>
+                      </div></td>
+                  <td>${item.slot}</td></tr>
+              </c:forEach>
+            </table>
+
+          </div>
+          <div style="clear: both;">
+            <table>
+              <thead>
+                <tr><th colspan="10">Powers</th></tr>
+                <tr style="font-size: .6em">
+                  <th>Level</th>
+                  <th>Type</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Action</th>
+                  <th>Range</th>
+                  <th>Target</th>
+                  <th>Attack</th>
+                  <th>Effect</th>
+                  <th>More</th>
+                </tr>
+              </thead>
+              <c:forEach items="${cha.bonuses}" var="bonus">
+                <tr>
+                  <td>#{bonus.level}</td>
+                  <td title="">${bonus.name}
+                    <div class="tooltip">
+                      <h3>#{bonus.name}</h3>
+                      ${bonus.description}
+                      <table>
+                        <c:forEach items="#{bonus.bonuses}" var="smod">
+                          <tr><td>#{smod.stat}</td><td>#{smod.value}</td></tr>
+                        </c:forEach>
+                      </table>
+                    </div>
+                  </td></tr>
+              </c:forEach>
+            </table>
+
           </div>
         </div>
       </c:forEach>

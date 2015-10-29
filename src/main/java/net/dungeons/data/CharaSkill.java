@@ -21,10 +21,6 @@ public class CharaSkill implements Serializable {
   @Size(min = 1, max = 3)
   @Column(name = "ABILITY")
   private String ability;
-  @Basic(optional = false)
-  @NotNull
-  @Column(name = "BONUS")
-  private int bonus;
 
   public CharaSkill() {
   }
@@ -64,14 +60,6 @@ public class CharaSkill implements Serializable {
 
   public void setAbility(String ability) {
     this.ability = ability;
-  }
-
-  public int getBonus() {
-    return bonus;
-  }
-
-  public void setBonus(int bonus) {
-    this.bonus = bonus;
   }
 
   @Override
