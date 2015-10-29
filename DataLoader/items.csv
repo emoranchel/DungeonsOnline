@@ -1,2 +1,2 @@
-Kaze;Longsword;A normal longsword;1;1d8;Weapon;true;{}
+Kaze;Flaming Longsword;A normal longsword;1;1d8+1d6Fire;Weapon;true;{"STR":"+1"};{powerData}
 Kaze;Full Plate Armor;;1;;Armor;true;{"AC":"+8"}

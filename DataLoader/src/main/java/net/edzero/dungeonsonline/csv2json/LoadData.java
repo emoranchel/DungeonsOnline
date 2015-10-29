@@ -13,19 +13,24 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class LoadData {
+public class LoadData implements AutoCloseable {
 
-  public static void main(String[] args) throws Exception {
-    try (Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/DungeonsOnline", "dungeons", "online")) {
-      executeCleanup(conn);
-      insertCharacters(conn);
-      insertSkills(conn);
-      insertBonuses(conn);
-      insertItems(conn);
+  private final Connection conn;
+
+  public LoadData() throws SQLException {
+    this.conn = DriverManager.getConnection("jdbc:derby://localhost:1527/DungeonsOnline", "dungeons", "online");
+  }
+
+  @Override
+  public void close() {
+    try {
+      this.conn.close();
+    } catch (Exception ex) {
+      ex.printStackTrace();
     }
   }
 
-  private static void insertCharacters(Connection conn) throws Exception {
+  private void insertCharacters() throws Exception {
     Map<String, CharClass> classes = new HashMap<>();
     Map<String, Chara> chars = new HashMap<>();
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("chars.csv")))) {
@@ -86,7 +91,7 @@ public class LoadData {
     }
   }
 
-  public static void insertSkills(Connection conn) throws Exception {
+  public void insertSkills() throws Exception {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("charSkills.csv")));
             PreparedStatement insertSkill = conn.prepareStatement("Insert into CharSkill(chara, skill, ability) values(?,?,?)")) {
       String line;
@@ -105,7 +110,7 @@ public class LoadData {
     }
   }
 
-  public static void insertItems(Connection conn) throws Exception {
+  public void insertItems() throws Exception {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("items.csv")));
             PreparedStatement insertSkill = conn.prepareStatement(
                     "Insert into CharItem(chara, name, description, cnt, damage, slot, worn, bonus) values(?,?,?,?,?,?,?,?)")) {
@@ -129,7 +134,7 @@ public class LoadData {
     }
   }
 
-  public static void insertBonuses(Connection conn) throws Exception {
+  public void insertBonuses() throws Exception {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("bonuses.csv")));
             PreparedStatement insertSkill = conn.prepareStatement("Insert into CharBonus(chara, lvl, name, description, bonus) values(?,?,?,?,?)")) {
       String line;
@@ -148,18 +153,56 @@ public class LoadData {
       }
     }
   }
-
-  private static void executeCleanup(Connection conn) throws Exception {
-    execute(conn, "DELETE from CHARBONUS");
-    execute(conn, "DELETE from CHARSKILL");
-    execute(conn, "DELETE from CHARITEM");
-    execute(conn, "DELETE from CHARACTERS");
-    execute(conn, "DELETE from CHARCLASS");
+  public void insertPowers() throws Exception {
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("powers.csv")));
+            PreparedStatement insertSkill = conn.prepareStatement(
+                    "Insert into CharPower(chara, source, name, description, type, act, target, range, attack, effect, more ) values(?,?,?,?,?,?,?,?,?,?,?)")) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        String[] data = line.split(";");
+        try {
+          insertSkill.setString(1, data[0]);
+          insertSkill.setString(2, data[1]);
+          insertSkill.setString(3, data[2]);
+          insertSkill.setString(4, data[3]);
+          insertSkill.setString(5, data[4]);
+          insertSkill.setString(6, data[5]);
+          insertSkill.setString(7, data[6]);
+          insertSkill.setString(8, data[7]);
+          insertSkill.setString(9, data[8]);
+          insertSkill.setString(10, data[9]);
+          insertSkill.setString(11, data[10]);
+          insertSkill.executeUpdate();
+        } catch (SQLException ex) {
+          Logger.getLogger(LoadData.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      }
+    }
   }
 
-  private static void execute(Connection conn, String sql) throws Exception {
+  private void executeCleanup() throws Exception {
+    execute("DELETE from CHARBONUS");
+    execute("DELETE from CHARSKILL");
+    execute("DELETE from CHARITEM");
+    execute("DELETE from CHARPOWER");
+    execute("DELETE from CHARACTERS");
+    execute("DELETE from CHARCLASS");
+  }
+
+  private void execute(String sql) throws Exception {
     try (Statement stmt = conn.createStatement()) {
       stmt.execute(sql);
+    }
+  }
+
+  public static void main(String[] args) throws Exception {
+    try (LoadData loader = new LoadData()) {
+      loader.executeCleanup();
+      loader.insertCharacters();
+      loader.insertSkills();
+      loader.insertBonuses();
+      loader.insertItems();
+      loader.insertPowers();
     }
   }
 

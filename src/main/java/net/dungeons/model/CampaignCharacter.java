@@ -41,6 +41,7 @@ public class CampaignCharacter {
   private final List<CharacterSkill> skills;
   private final List<CharacterBonus> bonuses;
   private final List<CharacterItem> items;
+  private final List<CharacterPower> powers;
 
   public CampaignCharacter(Chara cha) {
     this.name = cha.getName();
@@ -64,6 +65,7 @@ public class CampaignCharacter {
 
     this.bonuses = cha.getBonuses().stream().map(CharacterBonus::new).collect(Collectors.toList());
     this.items = cha.getItem().stream().map(CharacterItem::new).collect(Collectors.toList());
+    this.powers = cha.getPowers().stream().map(CharacterPower::new).collect(Collectors.toList());
 
     this.strAttack = new CharacterStat("STR-Attack", 0, true);
     strAttack.addMod("STR", strength::getBonus);
@@ -94,7 +96,8 @@ public class CampaignCharacter {
 
     this.hp = new CharacterStat("HP", initialHP, false);
     this.hp.addMod("Constitution Bonus", constitution::getValue);
-    this.hp.addMod("Level (" + hpPerLevel + "+" + (Math.max(0, constitution.getBonus())) + ")", () -> ((level - 1) * (hpPerLevel + (Math.max(0, constitution.getBonus())))));
+    this.hp.addMod("Level (" + hpPerLevel + "+" + (Math.max(0, constitution.getBonus())) + ")",
+            () -> ((level - 1) * (hpPerLevel + (Math.max(0, constitution.getBonus())))));
 
     this.armorClass = new CharacterStat("AC", 10, false);
     this.armorClass.addMod("DEX", dexterity::getBonus); // add armor restriction
@@ -123,7 +126,7 @@ public class CampaignCharacter {
     allStats.put("INT", intelligence);
     allStats.put("WIS", wisdom);
     allStats.put("CHA", charisma);
-    
+
     allStats.put("AC", armorClass);
 
     bonuses.stream().forEach((bonus) -> {
@@ -240,6 +243,10 @@ public class CampaignCharacter {
 
   public List<CharacterItem> getItems() {
     return items;
+  }
+
+  public List<CharacterPower> getPowers() {
+    return powers;
   }
 
   CharacterSkill getSkill(String name) {

@@ -119,18 +119,18 @@
               <c:forEach items="${cha.items}" var="item">
                 <tr>
                   <td title=""><input type="checkbox" readonly="true" jsf:value="${item.worn}"/>${item.name}
-                      <div class="tooltip">
-                        <h3>${item.name}</h3>
-                        <h4>${item.slot}</h4>
-                        ${item.count}<br/>
-                        ${item.description}<br/>
-                        ${item.damage}<br/>
-                        <table>
-                          <c:forEach items="#{item.bonuses}" var="smod">
-                            <tr><td>#{smod.stat}</td><td>#{smod.value}</td></tr>
-                          </c:forEach>
-                        </table>
-                      </div></td>
+                    <div class="tooltip">
+                      <h3>${item.name}</h3>
+                      <h4>${item.slot}</h4>
+                      ${item.count}<br/>
+                      ${item.description}<br/>
+                      ${item.damage}<br/>
+                      <table>
+                        <c:forEach items="#{item.bonuses}" var="smod">
+                          <tr><td>#{smod.stat}</td><td>#{smod.value}</td></tr>
+                        </c:forEach>
+                      </table>
+                    </div></td>
                   <td>${item.slot}</td></tr>
               </c:forEach>
             </table>
@@ -141,7 +141,7 @@
               <thead>
                 <tr><th colspan="10">Powers</th></tr>
                 <tr style="font-size: .6em">
-                  <th>Level</th>
+                  <th>Source</th>
                   <th>Type</th>
                   <th>Name</th>
                   <th>Description</th>
@@ -153,20 +153,19 @@
                   <th>More</th>
                 </tr>
               </thead>
-              <c:forEach items="${cha.bonuses}" var="bonus">
+              <c:forEach items="${cha.powers}" var="power">
                 <tr>
-                  <td>#{bonus.level}</td>
-                  <td title="">${bonus.name}
-                    <div class="tooltip">
-                      <h3>#{bonus.name}</h3>
-                      ${bonus.description}
-                      <table>
-                        <c:forEach items="#{bonus.bonuses}" var="smod">
-                          <tr><td>#{smod.stat}</td><td>#{smod.value}</td></tr>
-                        </c:forEach>
-                      </table>
-                    </div>
-                  </td></tr>
+                  <td>#{power.source}</td>
+                  <td>#{power.type}</td>
+                  <td>#{power.name}</td>
+                  <td>#{power.description}</td>
+                  <td>#{power.action}</td>
+                  <td>#{power.range}</td>
+                  <td>#{power.target}</td>
+                  <td>#{power.attack}</td>
+                  <td>#{power.effect}</td>
+                  <td>#{power.more}</td>
+                </tr>
               </c:forEach>
             </table>
 

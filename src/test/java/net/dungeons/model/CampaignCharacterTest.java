@@ -22,6 +22,8 @@ public class CampaignCharacterTest {
     cha.setConstitution(10);
     cha.setSkills(new ArrayList<>());
     cha.setBonuses(new ArrayList<>());
+    cha.setItem(new ArrayList<>());
+    cha.setPowers(new ArrayList<>());
 
     assertEquals("Check Lvl=1 con=10 ", 10 + 10, new CampaignCharacter(cha).getHp().getValue());
 
@@ -60,6 +62,8 @@ public class CampaignCharacterTest {
     cha.setSkills(skills);
 
     cha.setBonuses(new ArrayList<>());
+    cha.setItem(new ArrayList<>());
+    cha.setPowers(new ArrayList<>());
 
     CampaignCharacter character = new CampaignCharacter(cha);
 

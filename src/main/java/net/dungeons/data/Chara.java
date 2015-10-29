@@ -75,6 +75,10 @@ public class Chara implements Serializable {
   @JoinColumn(name = "chara")
   private List<CharaItem> item;
 
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JoinColumn(name = "chara")
+  private List<CharaPower> powers;
+
   public Chara() {
   }
 
@@ -191,6 +195,14 @@ public class Chara implements Serializable {
 
   public void setItem(List<CharaItem> item) {
     this.item = item;
+  }
+
+  public List<CharaPower> getPowers() {
+    return powers;
+  }
+
+  public void setPowers(List<CharaPower> powers) {
+    this.powers = powers;
   }
 
   @Override
