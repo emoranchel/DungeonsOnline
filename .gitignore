@@ -166,3 +166,5 @@ pip-log.txt
 #mo
 /target/
 /DataLoader/target/
+/DungeonsOnline/target/
+/DataManager/target/

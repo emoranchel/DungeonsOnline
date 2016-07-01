@@ -1,0 +1,9 @@
+'CLASS FEATURES
+'Category;Name;Source;Type;BuffText;Bonus;Details
+Class;Sneak Attack;Rogue Class Feature;Inmediate;+2d8 Damage on advantage;{"Property":"If you have combat advantage against an attacked enemy add 2d8 damage"}
+
+'COMMON FEATS
+
+
+'CHARACTER SPECIFIC FEATURES
+Character;Momiji Class Skills;Momiji level 1;Passive;;{"SKILL:Acrobatics":"+2","SKILL:Athletics":"+2"};

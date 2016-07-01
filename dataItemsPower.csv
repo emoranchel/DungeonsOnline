@@ -1,0 +1,4 @@
+'Name;Source;Type;Action;Range;Attack;Damage;Effect;Miss;Details
+
+Lifedrinker dagger +1;Basic Melee Attack;AtWill;Standard Action;Melee;STR vs AC;1[W]+STR;;No damage;
+Lifedrinker dagger +1;Basic Ranged Attack;AtWill;Standard Action;5/10;DEX vs AC;1[W];;No damage;

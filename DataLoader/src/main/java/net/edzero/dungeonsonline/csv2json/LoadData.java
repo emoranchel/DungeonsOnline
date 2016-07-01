@@ -1,209 +1,191 @@
 package net.edzero.dungeonsonline.csv2json;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class LoadData implements AutoCloseable {
+public class LoadData {
 
   private final Connection conn;
+  private final String prefix;
 
-  public LoadData() throws SQLException {
-    this.conn = DriverManager.getConnection("jdbc:derby://localhost:1527/DungeonsOnline", "dungeons", "online");
-  }
+  public LoadData(Connection conn, String prefix) {
+    this.conn = conn;
+    this.prefix = prefix;
 
-  @Override
-  public void close() {
-    try {
-      this.conn.close();
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
-
-  private void insertCharacters() throws Exception {
-    Map<String, CharClass> classes = new HashMap<>();
-    Map<String, Chara> chars = new HashMap<>();
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("chars.csv")))) {
-      String line;
-      while ((line = reader.readLine()) != null) {
-        String[] data = line.split(",");
-
-        CharClass cclass = new CharClass();
-        cclass.setName(data[1]);
-        cclass.setHs(Integer.parseInt(data[2]));
-        cclass.setInitialHp(Integer.parseInt(data[3]));
-        cclass.setHpLevel(Integer.parseInt(data[4]));
-        classes.put(cclass.getName(), cclass);
-
-        Chara chara = new Chara();
-        chara.setName(data[0]);
-        chara.setCharClass(data[1]);
-        chara.setStrenght(Integer.parseInt(data[5]));
-        chara.setConstitution(Integer.parseInt(data[6]));
-        chara.setDexterity(Integer.parseInt(data[7]));
-        chara.setIntelligence(Integer.parseInt(data[8]));
-        chara.setWisdom(Integer.parseInt(data[9]));
-        chara.setCharisma(Integer.parseInt(data[10]));
-        chara.setLevel(Integer.parseInt(data[11]));
-
-        chars.put(chara.getName(), chara);
-      }
-    }
-    try (PreparedStatement insertClass = conn.prepareStatement("Insert into CharClass(name, hplevel, initialhp, healingsurges) values(?,?,?,?)");
-            PreparedStatement insertChars = conn.prepareStatement("Insert into Characters(name, Strength,constitution,dexterity,intelligence,wisdom,charisma,charclass,lvl) values(?,?,?,?,?,?,?,?,?)");) {
-      classes.values().stream().forEach((charClass) -> {
-        try {
-          insertClass.setString(1, charClass.getName());
-          insertClass.setInt(2, charClass.getHpLevel());
-          insertClass.setInt(3, charClass.getInitialHp());
-          insertClass.setInt(4, charClass.getHs());
-          insertClass.executeUpdate();
-        } catch (SQLException ex) {
-          Logger.getLogger(LoadData.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      });
-      chars.values().stream().forEach((chara) -> {
-        try {
-          insertChars.setString(1, chara.getName());
-          insertChars.setInt(2, chara.getStrenght());
-          insertChars.setInt(3, chara.getConstitution());
-          insertChars.setInt(4, chara.getDexterity());
-          insertChars.setInt(5, chara.getIntelligence());
-          insertChars.setInt(6, chara.getWisdom());
-          insertChars.setInt(7, chara.getCharisma());
-          insertChars.setString(8, chara.getCharClass());
-          insertChars.setInt(9, chara.getLevel());
-          insertChars.executeUpdate();
-        } catch (SQLException ex) {
-          Logger.getLogger(LoadData.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      });
-    }
-  }
-
-  public void insertSkills() throws Exception {
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("charSkills.csv")));
-            PreparedStatement insertSkill = conn.prepareStatement("Insert into CharSkill(chara, skill, ability) values(?,?,?)")) {
-      String line;
-      while ((line = reader.readLine()) != null) {
-        String[] data = line.split(",");
-        String name = data[0];
-        try {
-          insertSkill.setString(1, data[0]);
-          insertSkill.setString(2, data[2]);
-          insertSkill.setString(3, data[1]);
-          insertSkill.executeUpdate();
-        } catch (SQLException ex) {
-          Logger.getLogger(LoadData.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      }
-    }
-  }
-
-  public void insertItems() throws Exception {
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("items.csv")));
-            PreparedStatement insertSkill = conn.prepareStatement(
-                    "Insert into CharItem(chara, name, description, cnt, damage, slot, worn, bonus) values(?,?,?,?,?,?,?,?)")) {
-      String line;
-      while ((line = reader.readLine()) != null) {
-        String[] data = line.split(";");
-        try {
-          insertSkill.setString(1, data[0]);
-          insertSkill.setString(2, data[1]);
-          insertSkill.setString(3, data[2]);
-          insertSkill.setInt(4, Integer.parseInt(data[3]));
-          insertSkill.setString(5, data[4]);
-          insertSkill.setString(6, data[5]);
-          insertSkill.setBoolean(7, Boolean.parseBoolean(data[6]));
-          insertSkill.setString(8, data[7]);
-          insertSkill.executeUpdate();
-        } catch (SQLException ex) {
-          Logger.getLogger(LoadData.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      }
-    }
-  }
-
-  public void insertBonuses() throws Exception {
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("bonuses.csv")));
-            PreparedStatement insertSkill = conn.prepareStatement("Insert into CharBonus(chara, lvl, name, description, bonus) values(?,?,?,?,?)")) {
-      String line;
-      while ((line = reader.readLine()) != null) {
-        String[] data = line.split(";");
-        try {
-          insertSkill.setString(1, data[0]);
-          insertSkill.setInt(2, Integer.parseInt(data[1]));
-          insertSkill.setString(3, data[2]);
-          insertSkill.setString(4, data[3]);
-          insertSkill.setString(5, data[4]);
-          insertSkill.executeUpdate();
-        } catch (SQLException ex) {
-          Logger.getLogger(LoadData.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      }
-    }
-  }
-  public void insertPowers() throws Exception {
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("powers.csv")));
-            PreparedStatement insertSkill = conn.prepareStatement(
-                    "Insert into CharPower(chara, source, name, description, type, act, target, range, attack, effect, more ) values(?,?,?,?,?,?,?,?,?,?,?)")) {
-      String line;
-      while ((line = reader.readLine()) != null) {
-        String[] data = line.split(";");
-        try {
-          insertSkill.setString(1, data[0]);
-          insertSkill.setString(2, data[1]);
-          insertSkill.setString(3, data[2]);
-          insertSkill.setString(4, data[3]);
-          insertSkill.setString(5, data[4]);
-          insertSkill.setString(6, data[5]);
-          insertSkill.setString(7, data[6]);
-          insertSkill.setString(8, data[7]);
-          insertSkill.setString(9, data[8]);
-          insertSkill.setString(10, data[9]);
-          insertSkill.setString(11, data[10]);
-          insertSkill.executeUpdate();
-        } catch (SQLException ex) {
-          Logger.getLogger(LoadData.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      }
-    }
   }
 
   private void executeCleanup() throws Exception {
-    execute("DELETE from CHARBONUS");
-    execute("DELETE from CHARSKILL");
-    execute("DELETE from CHARITEM");
-    execute("DELETE from CHARPOWER");
-    execute("DELETE from CHARACTERS");
-    execute("DELETE from CHARCLASS");
+    execute(conn, "DELETE from CHARSKILL");
+    execute(conn, "DELETE from CHARPOWER");
+    execute(conn, "DELETE from CHARITEM");
+    execute(conn, "DELETE from CHARFEAT");
+    execute(conn, "DELETE from CHARACTERS");
+    execute(conn, "DELETE from DATAPOWER");
+    execute(conn, "DELETE from DATAITEMPOWER");
+    execute(conn, "DELETE from DATAITEM");
+    execute(conn, "DELETE from DATAFEATPOWER");
+    execute(conn, "DELETE from DATAFEAT");
+    execute(conn, "DELETE from DATACLASS");
+
   }
 
-  private void execute(String sql) throws Exception {
+  private static void execute(Connection conn, String sql) throws Exception {
     try (Statement stmt = conn.createStatement()) {
       stmt.execute(sql);
     }
   }
 
   public static void main(String[] args) throws Exception {
-    try (LoadData loader = new LoadData()) {
+    try (Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/DungeonsOnline", "dungeons", "online")) {
+      LoadData loader = new LoadData(conn, "../");
       loader.executeCleanup();
+
+      loader.insertDataClass();
+      loader.insertDataFeat();
+      loader.insertDataFeatPower();
+      loader.insertDataItem();
+      loader.insertDataItemPower();
+      loader.insertDataPower();
       loader.insertCharacters();
-      loader.insertSkills();
-      loader.insertBonuses();
-      loader.insertItems();
-      loader.insertPowers();
+      loader.insertCharFeat();
+      loader.insertCharItem();
+      loader.insertCharPower();
+      loader.insertCharSkill();
     }
+  }
+
+  private void insertDataClass() throws Exception {
+    SqlInserter.fromFile(prefix + "dataClasses.csv", ";")
+            .stringColumn("NAME")
+            .intColumn("HealingSurges")
+            .intColumn("InitialHP")
+            .intColumn("HPLEVEL")
+            .insertInto(conn, "DATACLASS");
+  }
+
+  private void insertDataFeat() throws Exception {
+    SqlInserter.fromFile(prefix + "dataFeats.csv", ";")
+            .stringColumn("Category")
+            .stringColumn("name")
+            .stringColumn("source")
+            .stringColumn("type")
+            .stringColumn("buffText")
+            .stringColumn("bonus")
+            .stringColumn("details")
+            .insertInto(conn, "DATAFEAT");
+  }
+
+  private void insertDataFeatPower() throws Exception {
+    SqlInserter.fromFile(prefix + "dataFeatsPower.csv", ";")
+            .stringColumn("FEATNAME")
+            .stringColumn("SOURCE")
+            .stringColumn("TYPE")
+            .stringColumn("ACT")
+            .stringColumn("RANGE")
+            .stringColumn("ATTACK")
+            .stringColumn("DAMAGE")
+            .stringColumn("EFFECT")
+            .stringColumn("MISS")
+            .stringColumn("DETAILS")
+            .column("NAME", (statement, data) -> {
+              statement.setString(11, data.getString(0));
+            })
+            .insertInto(conn, "DATAFEATPOWER");
+  }
+
+  private void insertDataItem() throws Exception {
+    SqlInserter.fromFile(prefix + "dataItems.csv", ";")
+            .stringColumn("NAME")
+            .stringColumn("SLOT")
+            .intColumn("LVL")
+            .stringColumn("BUFFTEXT")
+            .stringColumn("BONUS")
+            .stringColumn("WeaponDamage")
+            .stringColumn("Details")
+            .insertInto(conn, "DATAITEM");
+  }
+
+  private void insertDataItemPower() throws Exception {
+    SqlInserter.fromFile(prefix + "dataItemsPower.csv", ";")
+            .stringColumn("ITEMNAME")
+            .stringColumn("SOURCE")
+            .stringColumn("TYPE")
+            .stringColumn("ACT")
+            .stringColumn("RANGE")
+            .stringColumn("ATTACK")
+            .stringColumn("DAMAGE")
+            .stringColumn("EFFECT")
+            .stringColumn("MISS")
+            .stringColumn("DETAILS")
+            .column("NAME", (statement, data) -> {
+              statement.setString(11, data.getString(0));
+            })
+            .insertInto(conn, "DATAITEMPOWER");
+  }
+
+  private void insertDataPower() throws Exception {
+    SqlInserter.fromFile(prefix + "dataPowers.csv", ";")
+            .stringColumn("NAME")
+            .stringColumn("SOURCE")
+            .stringColumn("TYPE")
+            .stringColumn("ACT")
+            .stringColumn("RANGE")
+            .stringColumn("ATTACK")
+            .stringColumn("DAMAGE")
+            .stringColumn("EFFECT")
+            .stringColumn("MISS")
+            .stringColumn("DETAILS")
+            .insertInto(conn, "DATAPOWER");
+  }
+
+  private void insertCharacters() throws Exception {
+    SqlInserter.fromFile(prefix + "characters.csv", ";")
+            .stringColumn("NAME")
+            .stringColumn("CharClass")
+            .intColumn("STRENGTH")
+            .intColumn("CONSTITUTION")
+            .intColumn("DEXTERITY")
+            .intColumn("INTELLIGENCE")
+            .intColumn("WISDOM")
+            .intColumn("CHARISMA")
+            .intColumn("LVL")
+            .insertInto(conn, "CHARACTERS");
+
+  }
+
+  private void insertCharFeat() throws Exception {
+    SqlInserter.fromFile(prefix + "charFeats.csv", ";")
+            .stringColumn("chara")
+            .intColumn("lvl")
+            .stringColumn("featName")
+            .insertInto(conn, "CHARFEAT");
+  }
+
+  private void insertCharItem() throws Exception {
+    SqlInserter.fromFile(prefix + "charItems.csv", ";")
+            .stringColumn("chara")
+            .booleanColumn("worn")
+            .intColumn("cnt")
+            .stringColumn("itemname")
+            .insertInto(conn, "CHARITEM");
+  }
+
+  private void insertCharPower() throws Exception {
+    SqlInserter.fromFile(prefix + "charPowers.csv", ";")
+            .stringColumn("chara")
+            .intColumn("lvl")
+            .stringColumn("powerName")
+            .insertInto(conn, "CHARPOWER");
+  }
+
+  private void insertCharSkill() throws Exception {
+    SqlInserter.fromFile(prefix + "charSkills.csv", ";")
+            .stringColumn("chara")
+            .stringColumn("ability")
+            .stringColumn("skill")
+            .insertInto(conn, "CHARSKILL");
+
   }
 
 }

@@ -1,0 +1,5 @@
+'Name;Slot;Level;BuffText;Bonus;WeaponDamage;Details
+
+Bracers of perfect shot;Arms;3;+2 damage on ranged basic attacks;;;{"Property":"When you hit with a ranged basic attack, Gain +2 item bonus to damage roll."}
+Darkleaf leather armor +1;Armor;1;+2 AC vs first attack;{"AC":3};;{"Armor Bonus":"+2","Enhancement":"+1", "Property":"Gain +2 bonus AC the first attack made against you in each encounter."}
+Lifedrinker dagger +1;Weapon;5;Gain 5 temp HP with kills. Critical 1d6 Necrotic;;1d4+1;{"Type":"Simple Melee - Light blade","Damage":"1d4+1","Proficiency Bonus":3,"Range":"5/10","Properties":"Light thrown, Off-Hand","Enhancement":"+1 attack and damage rolls","Critical":"1d6 necrotic damage", "property":"When you drop an enemy to 0 hit points or fewer with a melee attack made with this weapon, gain 5 temp hit points"}

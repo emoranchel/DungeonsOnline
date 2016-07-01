@@ -1,0 +1,5 @@
+'Name;Source;Type;Action;Range;Attack;Damage;Effect;Miss;Details
+
+Riposte Strike;Rogue Attack 1;AtWill;Standard Action;Melee Weapon;DEX vs AC;1[W]+DEX;Counter next hit;;{"Target":"One Creature", "Keywords":"Martial, Weapon","Requirement":"You must be wielding a light-blade","Effect":"If the target attacks you before your next turn you make another attack as immediate interrupt: Str vs AC and deals 1[W]+Str damage."}
+Tumble;Rogue Utility 2;Encounter;Move Action;Personal;;;You Shift your speed;
+Walking Wounded;Rogue Attack 5;Daily;Standard Action;Melee or Ranged Weapon;DEX vs FORT;2[W]+DEX;Target knocked prone;Half damage, target not prone;
