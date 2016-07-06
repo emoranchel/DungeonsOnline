@@ -13,7 +13,7 @@ public interface JsonIterator<T> {
 
   public T item(String name, String value);
 
-  public static void forEach(String json, JsonIterator<Void> iterator) {
+  public static void objectForEach(String json, JsonIterator<Void> iterator) {
     try (JsonReader reader = Json.createReader(new StringReader(json))) {
       JsonObject jsonBonus = reader.readObject();
       jsonBonus.entrySet()
@@ -27,7 +27,7 @@ public interface JsonIterator<T> {
     }
   }
 
-  public static <T> List<T> toList(String json, JsonIterator<T> iterator) {
+  public static <T> List<T> objectToList(String json, JsonIterator<T> iterator) {
     try (JsonReader reader = Json.createReader(new StringReader(json))) {
       JsonObject jsonBonus = reader.readObject();
       return jsonBonus.entrySet()

@@ -109,7 +109,9 @@
               </ui:repeat>
             </h:form>
           </div>
+
           <div style="display: table-cell; width: 300px;">
+            <input type="hidden" value="#{sessionData.combat.current}" class="JSFWorkspaceTurn"/>
             <h:form style="display:block;" id="workspaceForm">
               <h3>Workspace</h3>
               <h:panelGrid columns="2" style="">

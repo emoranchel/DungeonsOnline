@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+  <c:set var="title" value="Battle Data"/>
+  <ui:composition template="/WEB-INF/templates/admin-template.xhtml">
+    <ui:define name="navigation">
+      <ul>
+        <li>Campaign | <h:link outcome="/admin/combat/data" value="Battle"/>
+          <ul>
+            <li><h:link outcome="/admin/campaign/characters" value="Characters"/></li>
+            <li><h:link outcome="/admin/campaign/deck" value="Soul Deck"/></li>
+            <li><h:link outcome="/admin/campaign/armory" value="Armory"/></li>
+            <li>Data<br/>
+              <span style="font-size: .75em;">
+                Characters | 
+                <h:link outcome="/admin/campaign/data-classes" value="Classes"/> | 
+                <h:link outcome="/admin/campaign/data-items" value="Items"/> | 
+                <h:link outcome="/admin/campaign/data-features" value="Features"/> | 
+                <h:link outcome="/admin/campaign/data-powers" value="Powers"/> 
+              </span>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </ui:define>
+    <ui:define name="resources">
+
+    </ui:define>
+    <ui:define name="content">
+      <h:form>
+        <h:commandButton action="${adminCharacters.saveAll}" value="Save All"/>
+        <h:dataTable value="${adminCharacters.characters}" var="cha">
+          <h:column>
+            <f:facet name="header">Name</f:facet><a class="nameLink" href="#">${cha.name}</a>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Class</f:facet>${cha.charClass.name}
+          </h:column>
+          <h:column>
+            <f:facet name="header">Type</f:facet>
+            <h:selectOneMenu value="${cha.ctype}">
+              <f:selectItems value="${adminCharacters.types}"></f:selectItems>
+            </h:selectOneMenu>
+          </h:column>
+          <h:column>
+            <f:facet name="header">LVL</f:facet><h:inputText value="${cha.lvl}" size="2"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">STR</f:facet><h:inputText value="${cha.strength}" size="2"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">CON</f:facet><h:inputText value="${cha.constitution}" size="2"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">DEX</f:facet><h:inputText value="${cha.dexterity}" size="2"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">INT</f:facet><h:inputText value="${cha.intelligence}" size="2"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">WIS</f:facet><h:inputText value="${cha.wisdom}" size="2"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">CHA</f:facet><h:inputText value="${cha.charisma}" size="2"/>
+          </h:column>
+        </h:dataTable>
+        <h:commandButton action="${adminCharacters.saveAll}" value="Save All"/>
+      </h:form>
+      <br style="clear: both;"/>
+    </ui:define>
+  </ui:composition>
+</html>
+

@@ -13,9 +13,9 @@
         <li>Campaign | <h:link outcome="/admin/combat/data" value="Battle"/>
           <ul>
             <li>Characters</li>
-            <li>Powers</li>
-            <li>Equipment</li>
-            <li><h:link outcome="/admin/campaign/data" value="Data"/></li>
+            <li><h:link outcome="/admin/campaign/deck" value="Soul Deck"/></li>
+            <li><h:link outcome="/admin/campaign/armory" value="Armory"/></li>
+            <li><h:link outcome="/admin/campaign/data-chars" value="Data"/></li>
           </ul>
         </li>
       </ul>
@@ -82,6 +82,7 @@
               <tr><td>Will</td><td title="">${cha.willpower}<components:statTooltip stat="${cha.willpower}"/></td></tr>
             </table>
           </div>
+
           <div style="float: left; margin-left: 5px;">
             <table>
               <thead>
@@ -92,83 +93,160 @@
               </c:forEach>
             </table>
           </div>
-          <div style="float: left; margin-left: 5px;">
-            <table>
-              <thead><tr><th colspan="2">Features and Bonuses</th></tr></thead>
-              <c:forEach items="${cha.bonuses}" var="bonus">
-                <tr>
-                  <td>#{bonus.level}</td>
-                  <td title="">${bonus.name}
-                    <div class="tooltip">
-                      <h3>#{bonus.name}</h3>
-                      ${bonus.description}
-                      <table>
-                        <c:forEach items="#{bonus.bonuses}" var="smod">
-                          <tr><td>#{smod.stat}</td><td>#{smod.value}</td></tr>
-                        </c:forEach>
-                      </table>
-                    </div>
-                  </td></tr>
-              </c:forEach>
-            </table>
-          </div>
-          <div style="float: left; margin-left: 5px;">
-            <table>
-              <thead><tr><th colspan="2">Inventory</th></tr>
-                <tr style="font-size: 0.6em;"><th>Item</th><th>Slot</th></tr></thead>
-              <c:forEach items="${cha.items}" var="item">
-                <tr>
-                  <td title=""><input type="checkbox" readonly="true" jsf:value="${item.worn}"/>${item.name}
-                    <div class="tooltip">
-                      <h3>${item.name}</h3>
-                      <h4>${item.slot}</h4>
-                      ${item.count}<br/>
-                      ${item.description}<br/>
-                      ${item.damage}<br/>
-                      <table>
-                        <c:forEach items="#{item.bonuses}" var="smod">
-                          <tr><td>#{smod.stat}</td><td>#{smod.value}</td></tr>
-                        </c:forEach>
-                      </table>
-                    </div></td>
-                  <td>${item.slot}</td></tr>
-              </c:forEach>
-            </table>
+          <div style="float: left;">
+            <div style="float: left; margin-left: 5px;">
+              <table>
+                <thead><tr><th colspan="2">Features</th></tr></thead>
+                <tbody>
+                  <c:forEach items="${cha.bonuses}" var="feat">
+                    <tr>
+                      <td title="">${feat.name}
+                        <div class="tooltip">
+                          <h3>${feat.name}</h3>
+                          <h4>${feat.category} ${feat.type}</h4>
+                          <div style="font-size: 0.75em;">Level: ${feat.level}</div>
+                          <c:if test="${not empty feat.bonuses}">
+                            <div style="font-size: 0.75em;">
+                              Bonuses:
+                              <table>
+                                <c:forEach items="${feat.bonuses}" var="bonus">
+                                  <tr><td>${bonus.stat}</td><td>${bonus.value}</td></tr>
+                                </c:forEach>
+                              </table>
+                            </div>
+                          </c:if>
+                          <c:if test="${not empty feat.buffs}">
+                            <div style="font-size: 0.75em;">
+                              Buffs:
+                              <table width="100%">
+                                <c:forEach items="${feat.buffs}" var="buff">
+                                  <tr><td>${buff.buff}</td></tr>
+                                </c:forEach>
+                              </table>
+                            </div>
+                          </c:if>
+                          <c:if test="${not empty feat.details}">
+                            <div style="font-size: 0.6em;">
+                              <table>
+                                <c:forEach items="${feat.details}" var="detail">
+                                  <tr><td><b>${detail.name}:</b> ${detail.value}</td></tr>
+                                </c:forEach>
+                              </table>
+                            </div>
+                          </c:if>
+                          <div style="font-size: 0.75em;">Level: ${feat.level}</div>
+                          <div style="font-size: 0.5em;">${feat.source}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </c:forEach>
+                </tbody>
+              </table>
+            </div>
+            <div style="float: left; margin-left: 5px;">
+              <table>
+                <thead><tr><th colspan="2">Inventory</th></tr>
+                  <tr style="font-size: 0.6em;"><th>Item</th><th>Slot</th></tr></thead>
+                <c:forEach items="${cha.items}" var="item">
+                  <tr>
+                    <td title=""><input type="checkbox" readonly="true" jsf:value="${item.worn}"/>${item.name}
+                      <div class="tooltip">
+                        <h3>${item.name}</h3>
+                        <h4>${item.slot}</h4>
+                        ${item.count}<br/>
+                        <table>
+                          <c:forEach items="#{item.bonuses}" var="smod">
+                            <tr><td>#{smod.stat}</td><td>#{smod.value}</td></tr>
+                          </c:forEach>
+                        </table>
+                      </div></td>
+                    <td>${item.slot}</td></tr>
+                </c:forEach>
+              </table>
+            </div>
+            <div style="float: left; margin-left: 5px;">
+              <table>
+                <thead>
+                  <tr><th colspan="2">Active Buffs</th></tr>
+                </thead>
+                <c:forEach items="${cha.buffs}" var="buff">
+                  <tr>
+                    <td>#{buff.source}</td>
+                    <td>#{buff.buff}</td>
+                  </tr>
+                </c:forEach>
+              </table>
+            </div>
+            <div style="clear: both;">
+              <table>
+                <thead>
+                  <tr><th colspan="6">Powers</th></tr>
+                  <tr style="font-size: .6em">
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Action</th>
+                    <th>Attack</th>
+                    <th>Damage</th>
+                    <th>Effect</th>
+                  </tr>
+                </thead>
+                <c:forEach items="${cha.powers}" var="power">
+                  <tr>
+                    <td>#{power.type}</td>
+                    <td title="">#{power.name}
+                      <div class="tooltip">
+                        <h3>${power.name}</h3>
+                        <h4>${power.type} ${power.action}</h4>
+                        <div style="font-size: 0.75em;">${power.range}</div>
+                        <table width="100%">
+                          <c:if test="${not empty power.attack or not empty power.damage}">
+                            <thead>
+                              <tr style="font-size: .5em;">
+                                <th>Attack</th>
+                                <th>Damage</th>
+                              </tr>
+                            </thead>
+                            <tr>
+                              <td>${power.attackValue}</td>
+                              <td>${power.damageValue}</td>
+                            </tr>
+                            <tr style="font-size: .5em;">
+                              <td>${power.attack}</td>
+                              <td>${power.damage}</td>
+                            </tr>
+                          </c:if>
+                          <c:if test="${not empty power.effect}">
+                            <tr>
+                              <td colspan="2" style="font-size:0.75em;">${power.effect}</td>
+                            </tr>
+                          </c:if>
+                          <c:if test="${not empty power.miss}">
+                            <tr>
+                              <td colspan="2" style="font-size:0.75em;"><b>Miss:</b> ${power.miss}</td>
+                            </tr>
+                          </c:if>
+                        </table>
+                        <c:if test="${not empty power.details}">
+                          <table style="font-size:0.6em;">
+                            <c:forEach items="#{power.details}" var="detail">
+                              <tr><td><b>#{detail.name}:</b> ${detail.value}</td></tr>
+                            </c:forEach>
+                          </table>
+                        </c:if>
+                        <small>${power.source}</small>
+                      </div>
 
-          </div>
-          <div style="clear: both;">
-            <table>
-              <thead>
-                <tr><th colspan="10">Powers</th></tr>
-                <tr style="font-size: .6em">
-                  <th>Source</th>
-                  <th>Type</th>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Action</th>
-                  <th>Range</th>
-                  <th>Target</th>
-                  <th>Attack</th>
-                  <th>Effect</th>
-                  <th>More</th>
-                </tr>
-              </thead>
-              <c:forEach items="${cha.powers}" var="power">
-                <tr>
-                  <td>#{power.source}</td>
-                  <td>#{power.type}</td>
-                  <td>#{power.name}</td>
-                  <td>#{power.description}</td>
-                  <td>#{power.action}</td>
-                  <td>#{power.range}</td>
-                  <td>#{power.target}</td>
-                  <td>#{power.attack}</td>
-                  <td>#{power.effect}</td>
-                  <td>#{power.more}</td>
-                </tr>
-              </c:forEach>
-            </table>
+                    </td>
+                    <td>#{power.action}</td>
+                    <td>#{power.attack}</td>
+                    <td>#{power.damage}</td>
+                    <td>#{power.effect}</td>
 
+
+                  </tr>
+                </c:forEach>
+              </table>
+            </div>
           </div>
         </div>
       </c:forEach>

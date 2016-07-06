@@ -11,12 +11,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 import net.dungeons.data.Chara;
 import net.dungeons.data.CharaFeat;
-import net.dungeons.model.Bonus;
-import net.dungeons.model.CharacterFeat;
 
-@Named("adminCampaign")
+@Named("adminCharacters")
 @RequestScoped
-public class AdminCampaign {
+public class AdminCharacters {
 
   @PersistenceContext
   private EntityManager em;
@@ -24,8 +22,8 @@ public class AdminCampaign {
 
   @PostConstruct
   public void init() {
-    CriteriaQuery<Chara> cq = em.getCriteriaBuilder().createQuery(Chara.class);
-    chars = em.createQuery(cq.select(cq.from(Chara.class))).getResultList();
+    CriteriaQuery<Chara> cqChara = em.getCriteriaBuilder().createQuery(Chara.class);
+    chars = em.createQuery(cqChara.select(cqChara.from(Chara.class))).getResultList();
   }
 
   public List<Chara> getCharacters() {
@@ -38,11 +36,11 @@ public class AdminCampaign {
 
   @Transactional
   public void saveAll() {
-    chars.forEach(this::save);
+    chars.forEach(this::saveChar);
   }
 
   @Transactional
-  public void save(Chara c) {
+  public void saveChar(Chara c) {
     em.merge(c);
   }
 

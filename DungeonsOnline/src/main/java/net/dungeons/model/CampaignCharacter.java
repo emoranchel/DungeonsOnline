@@ -1,5 +1,6 @@
 package net.dungeons.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +39,11 @@ public class CampaignCharacter {
 
   private final Map<String, CharacterStat> allStats = new HashMap<>();
 
+  private final List<CharacterFeat> features;
   private final List<CharacterSkill> skills;
-  private final List<CharacterFeat> bonuses;
   private final List<CharacterItem> items;
   private final List<CharacterPower> powers;
+  private final List<CharacterBuff> buffs;
 
   public CampaignCharacter(Chara cha) {
     this.name = cha.getName();
@@ -63,9 +65,17 @@ public class CampaignCharacter {
 
     this.skills.stream().forEach((skill) -> allStats.put("SKILL:" + skill.getName(), skill.getStat()));
 
-    this.bonuses = cha.getBonuses().stream().map(CharacterFeat::new).collect(Collectors.toList());
-    this.items = cha.getItem().stream().map(CharacterItem::new).collect(Collectors.toList());
-    this.powers = cha.getPowers().stream().map(CharacterPower::new).collect(Collectors.toList());
+    this.features = cha.getBonuses().stream().map(f->new CharacterFeat(f, this)).collect(Collectors.toList());
+    this.items = cha.getItem().stream().map(i->new CharacterItem(i,this)).collect(Collectors.toList());
+
+    this.powers = new ArrayList<>();
+    this.powers.addAll(cha.getPowers().stream().map(p->new CharacterPower(p, this)).collect(Collectors.toList()));
+    this.powers.addAll(this.features.stream().flatMap((o) -> o.getPowers().stream()).collect(Collectors.toList()));
+    this.powers.addAll(this.items.stream().filter((i) -> i.isWorn()).flatMap((o) -> o.getPowers().stream()).collect(Collectors.toList()));
+
+    this.buffs = new ArrayList<>();
+    this.buffs.addAll(this.features.stream().flatMap(f -> f.getBuffs().stream()).collect(Collectors.toList()));
+    this.buffs.addAll(this.items.stream().filter(i -> i.isWorn()).flatMap(i -> i.getBuffs().stream()).collect(Collectors.toList()));
 
     this.strAttack = new CharacterStat("STR-Attack", 0, true);
     strAttack.addMod("STR", strength::getBonus);
@@ -96,7 +106,7 @@ public class CampaignCharacter {
 
     this.hp = new CharacterStat("HP", initialHP, false);
     this.hp.addMod("Constitution Bonus", constitution::getValue);
-    this.hp.addMod("Level (" + hpPerLevel + "+" + (Math.max(0, constitution.getBonus())) + ")",
+    this.hp.addMod("Level (" + hpPerLevel + "+" + (Math.max(0, constitution.getBonus())) + ")x" + (level - 1),
             () -> ((level - 1) * (hpPerLevel + (Math.max(0, constitution.getBonus())))));
 
     this.armorClass = new CharacterStat("AC", 10, false);
@@ -133,8 +143,8 @@ public class CampaignCharacter {
     allStats.put("REF", reflexes);
     allStats.put("WILL", willpower);
 
-    bonuses.stream().forEach((bonus) -> {
-      bonus.getBonuses().stream().forEach((b) -> addBonus(b, bonus));
+    features.stream().forEach((feature) -> {
+      feature.getBonuses().stream().forEach((b) -> addBonus(b, feature));
     });
     items.stream().filter(CharacterItem::isWorn).forEach((item) -> {
       item.getBonuses().stream().forEach((b) -> allStats.get(b.getStat()).addMod(item.getName(), b.getBonus()));
@@ -250,7 +260,7 @@ public class CampaignCharacter {
   }
 
   public List<CharacterFeat> getBonuses() {
-    return bonuses;
+    return features;
   }
 
   public List<CharacterItem> getItems() {
@@ -259,6 +269,10 @@ public class CampaignCharacter {
 
   public List<CharacterPower> getPowers() {
     return powers;
+  }
+
+  public List<CharacterBuff> getBuffs() {
+    return buffs;
   }
 
   CharacterSkill getSkill(String name) {

@@ -1,6 +1,7 @@
 package net.dungeons.model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import net.dungeons.data.CharaItem;
 import net.dungeons.data.DataItem;
 
@@ -12,17 +13,24 @@ public class CharacterItem {
   private final boolean worn;
   private final List<Bonus> bonuses;
   private final List<Detail> details;
-  private final int level;
+  private final List<CharacterPower> powers;
+  private final List<CharacterBuff> buffs;
 
-  public CharacterItem(CharaItem charaItem) {
+  private final int level;
+  private final String damage;
+
+  public CharacterItem(CharaItem charaItem, CampaignCharacter character) {
     final DataItem item = charaItem.getItem();
     this.name = item.getName();
     this.count = charaItem.getCnt();
     this.slot = item.getSlot();
     this.worn = charaItem.isWorn();
-    this.bonuses = JsonIterator.toList(item.getBonus(), Bonus::new);
-    this.details = JsonIterator.toList(item.getDetails(), Detail::new);
+    this.bonuses = JsonIterator.objectToList(item.getBonus(), Bonus::new);
+    this.details = JsonIterator.objectToList(item.getDetails(), Detail::new);
+    this.powers = charaItem.getItem().getPowers().stream().map(i -> new CharacterPower(i, character)).collect(Collectors.toList());
+    this.buffs = CharacterBuff.get(charaItem.getItem().getBuffText(), "I: " + item.getName());
     this.level = item.getLvl();
+    this.damage = item.getWeaponDamage();
   }
 
   public String getName() {
@@ -51,6 +59,18 @@ public class CharacterItem {
 
   public int getLevel() {
     return level;
+  }
+
+  public List<CharacterPower> getPowers() {
+    return powers;
+  }
+
+  public List<CharacterBuff> getBuffs() {
+    return buffs;
+  }
+
+  public String getDamage() {
+    return damage;
   }
 
 }
