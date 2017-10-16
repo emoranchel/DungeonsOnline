@@ -1,0 +1,230 @@
+{
+    "name": "Momiji",
+    "class": "Momiji",
+    "level": 9,
+    "hp": 72,
+    "healingsurges": 11,
+    "initiative": 8,
+    "fortitude": 16,
+    "reflexes": 18,
+    "will": 17,
+    "armorClass": 17,
+    "speed": 6,
+    "str": 14,
+    "dex": 19,
+    "con": 12,
+    "wis": 11,
+    "int": 10,
+    "cha": 16,
+    "strBonus": "+2",
+    "dexBonus": "+4",
+    "conBonus": "+1",
+    "wisBonus": "0",
+    "intBonus": "0",
+    "chaBonus": "+3",
+    "strAttack": 6,
+    "conAttack": 5,
+    "dexAttack": 8,
+    "intAttack": 4,
+    "wisAttack": 4,
+    "chaAttack": 7,
+    "skills": [
+        {
+            "name": "Acrobatics",
+            "bonus": "+10"
+        },
+        {
+            "name": "Arcana",
+            "bonus": "+4"
+        },
+        {
+            "name": "Athletics",
+            "bonus": "+8"
+        },
+        {
+            "name": "Bluff",
+            "bonus": "+7"
+        },
+        {
+            "name": "Diplomacy",
+            "bonus": "+7"
+        },
+        {
+            "name": "Dungeoneering",
+            "bonus": "+4"
+        },
+        {
+            "name": "Endurance",
+            "bonus": "+5"
+        },
+        {
+            "name": "Heal",
+            "bonus": "+4"
+        },
+        {
+            "name": "History",
+            "bonus": "+4"
+        },
+        {
+            "name": "Insight",
+            "bonus": "+4"
+        },
+        {
+            "name": "Intimidate",
+            "bonus": "+7"
+        },
+        {
+            "name": "Nature",
+            "bonus": "+4"
+        },
+        {
+            "name": "Perception",
+            "bonus": "+4"
+        },
+        {
+            "name": "Religion",
+            "bonus": "+4"
+        },
+        {
+            "name": "Stealth",
+            "bonus": "+8"
+        },
+        {
+            "name": "Streetwise",
+            "bonus": "+7"
+        },
+        {
+            "name": "Thievery",
+            "bonus": "+8"
+        },
+        {
+            "name": "Knowledge(Arcana)",
+            "bonus": "+4"
+        }
+    ],
+    "features": [
+        {
+            "name": "Momiji Class Skills"
+        },
+        {
+            "name": "Sneak Attack"
+        }
+    ],
+    "items": [
+        {
+            "name": "Bracers of perfect shot",
+            "slot": "Arms",
+            "worn": true,
+            "damage": ""
+        },
+        {
+            "name": "Darkleaf leather armor +1",
+            "slot": "Armor",
+            "worn": true,
+            "damage": ""
+        },
+        {
+            "name": "Lifedrinker dagger +1",
+            "slot": "Weapon",
+            "worn": true,
+            "damage": "1d4+1"
+        }
+    ],
+    "powers": [
+        {
+            "name": "Riposte Strike",
+            "type": "AtWill",
+            "source": "Rogue Attack 1",
+            "action": "Standard Action",
+            "range": "Melee Weapon",
+            "attack": "DEX vs AC",
+            "damage": "1[W]+DEX",
+            "effect": "Counter next hit",
+            "miss": "",
+            "details": [
+                {
+                    "name": "Target",
+                    "value": "One Creature"
+                },
+                {
+                    "name": "Keywords",
+                    "value": "Martial, Weapon"
+                },
+                {
+                    "name": "Requirement",
+                    "value": "You must be wielding a light-blade"
+                },
+                {
+                    "name": "Effect",
+                    "value": "If the target attacks you before your next turn you make another attack as immediate interrupt: Str vs AC and deals 1[W]+Str damage."
+                }
+            ]
+        },
+        {
+            "name": "Tumble",
+            "type": "Encounter",
+            "source": "Rogue Utility 2",
+            "action": "Move Action",
+            "range": "Personal",
+            "attack": "",
+            "damage": "",
+            "effect": "You Shift your speed",
+            "miss": "",
+            "details": []
+        },
+        {
+            "name": "Walking Wounded",
+            "type": "Daily",
+            "source": "Rogue Attack 5",
+            "action": "Standard Action",
+            "range": "Melee or Ranged Weapon",
+            "attack": "DEX vs FORT",
+            "damage": "2[W]+DEX",
+            "effect": "Target knocked prone",
+            "miss": "Half damage, target not prone",
+            "details": []
+        },
+        {
+            "name": "Lifedrinker dagger +1",
+            "type": "AtWill",
+            "source": "Basic Melee Attack",
+            "action": "Standard Action",
+            "range": "Melee",
+            "attack": "STR vs AC",
+            "damage": "1[W]+STR",
+            "effect": "",
+            "miss": "No damage",
+            "details": []
+        },
+        {
+            "name": "Lifedrinker dagger +1",
+            "type": "AtWill",
+            "source": "Basic Ranged Attack",
+            "action": "Standard Action",
+            "range": "5/10",
+            "attack": "DEX vs AC",
+            "damage": "1[W]",
+            "effect": "",
+            "miss": "No damage",
+            "details": []
+        }
+    ],
+    "buffs": [
+        {
+            "source": "F: Sneak Attack",
+            "buff": "+2d8 Damage on advantage"
+        },
+        {
+            "source": "I: Bracers of perfect shot",
+            "buff": "+2 damage on ranged basic attacks"
+        },
+        {
+            "source": "I: Darkleaf leather armor +1",
+            "buff": "+2 AC vs first attack"
+        },
+        {
+            "source": "I: Lifedrinker dagger +1",
+            "buff": "Gain 5 temp HP with kills. Critical 1d6 Necrotic"
+        }
+    ]
+}

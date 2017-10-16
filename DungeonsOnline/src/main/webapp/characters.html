@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+  <head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="resources/css/custom-theme/jquery-ui-1.10.2.custom.css" type="text/css"> 
+    <link rel="stylesheet" href="resources/css/styles.css" type="text/css"> 
+    <link rel="stylesheet" href="resources/css/map.css" type="text/css">
+    <link rel="stylesheet" href="resources/css/powerCards.css" type="text/css">
+    <script src="resources/js/jquery-1.9.1.js" type="text/javascript" ></script>
+    <script src="resources/js/jquery-ui-1.10.2.custom.min.js" type="text/javascript" ></script>
+    <script src="resources/js/handlebars-v4.0.5.js" type="text/javascript" ></script>
+    <script src="resources/js/freewall.js" type="text/javascript" ></script>
+    <script src="resources/js/charasheet.js" type="text/javascript" ></script>
+    <style>
+      .characterSheet{
+        font-size: 10pt;
+      }
+    </style>
+    <script>
+      var charas = [
+        'Momiji',
+        'Hatta',
+        'Riku',
+        'Shiririn',
+        'Hanna'
+      ];
+      $(function () {
+
+        $("#dialog").dialog({
+          modal: true,
+          autoOpen: false,
+          buttons: {
+            Ok: function () {
+              $(this).dialog("close");
+            }
+          }
+        });
+
+        $(window).resize(function () {
+          $('.ui-dialog').css({
+            'width': $(window).width() - 20,
+            //'height': $(window).height(),
+            'left': '0px',
+            'top': '0px'
+          });
+        }).resize();
+        charas.forEach(function (chara) {
+          var initDiv = createInitiativeDiv(chara);
+          initDiv.on("click", displayDetails(chara, function () {
+            $("#dialog").html("LOADING...");
+            $("#dialog").dialog("open");
+          }, function (charHtml) {
+            $("#dialog").html(charHtml);
+          }));
+          $('#characters').append(initDiv);
+        });
+      });
+
+      function createInitiativeDiv(name) {
+        var initDiv = jQuery("<div/>", {
+          style: "background-image:url('ImageServlet?image=" + name + "&type=initiative'); float:left",
+          class: "initiativePortrait",
+          id: "char-" + name + "-init"
+        });
+        initDiv.html("<div class=\"initiativeName\">" + name + "</div>");
+        return initDiv;
+      }
+
+    </script>
+  </head>
+  <body>
+    <div id="characters">
+    </div>
+    <div id="dialog">
+    </div>
+  </body>
+</html>

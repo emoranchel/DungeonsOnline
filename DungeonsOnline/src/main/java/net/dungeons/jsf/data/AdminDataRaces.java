@@ -1,4 +1,4 @@
-package net.dungeons.jsf;
+package net.dungeons.jsf.data;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -8,23 +8,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
-import net.dungeons.data.DataClass;
+import net.dungeons.data.DataRace;
 
-@Named("adminDataClasses")
+@Named("adminDataRaces")
 @RequestScoped
-public class AdminDataClasses {
+public class AdminDataRaces {
 
   @PersistenceContext
   private EntityManager em;
-  private List<DataClass> classes;
+  private List<DataRace> classes;
 
   @PostConstruct
   public void init() {
-    CriteriaQuery<DataClass> cqClass = em.getCriteriaBuilder().createQuery(DataClass.class);
-    classes = em.createQuery(cqClass.select(cqClass.from(DataClass.class))).getResultList();
+    CriteriaQuery<DataRace> cqClass = em.getCriteriaBuilder().createQuery(DataRace.class);
+    classes = em.createQuery(cqClass.select(cqClass.from(DataRace.class))).getResultList();
   }
 
-  public List<DataClass> getClasses() {
+  public List<DataRace> getRaces() {
     return classes;
   }
 

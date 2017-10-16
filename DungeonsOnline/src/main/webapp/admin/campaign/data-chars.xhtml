@@ -35,10 +35,20 @@
         <h:commandButton action="${adminCharacters.saveAll}" value="Save All"/>
         <h:dataTable value="${adminCharacters.characters}" var="cha">
           <h:column>
-            <f:facet name="header">Name</f:facet><a class="nameLink" href="#">${cha.name}</a>
+            <f:facet name="header">Name</f:facet>${cha.name}
+          </h:column>
+          <h:column>
+            <f:facet name="header">Race</f:facet>${cha.charRace.name}
           </h:column>
           <h:column>
             <f:facet name="header">Class</f:facet>${cha.charClass.name}
+          </h:column>
+          <h:column>
+            <f:facet name="header">Gender</f:facet>
+            <h:selectOneMenu value="${cha.gender}">
+              <f:selectItem itemValue="Male" itemLabel="Male"/>
+              <f:selectItem itemValue="Female" itemLabel="Female"/>
+            </h:selectOneMenu>
           </h:column>
           <h:column>
             <f:facet name="header">Type</f:facet>
@@ -66,6 +76,43 @@
           </h:column>
           <h:column>
             <f:facet name="header">CHA</f:facet><h:inputText value="${cha.charisma}" size="2"/>
+          </h:column>
+        </h:dataTable>
+        <h:commandButton action="${adminCharacters.saveAll}" value="Save All"/>
+      </h:form>
+      <br style="clear: both;"/>
+      <h:form>
+        <h:commandButton action="${adminCharacters.saveAll}" value="Save All"/>
+        <h:dataTable value="${adminCharacters.details}" var="det">
+          <h:column>
+            <f:facet name="header">Name</f:facet>${det.name}
+          </h:column>
+          <h:column>
+            <f:facet name="header">Size</f:facet><h:inputText value="${det.csize}" size="8"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Alignment</f:facet><h:inputText value="${det.alignment}" size="8"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Height</f:facet><h:inputText value="${det.height}" size="5"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Weight</f:facet><h:inputText value="${det.weight}" size="5"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Age</f:facet><h:inputText value="${det.age}" size="9"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Personality</f:facet><h:inputTextarea value="${det.personality}" rows="3" cols="20"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Background</f:facet><h:inputTextarea value="${det.background}" rows="3" cols="20"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Relations</f:facet><h:inputTextarea value="${det.relations}" rows="3" cols="20"/>
+          </h:column>
+          <h:column>
+            <f:facet name="header">Journal</f:facet><h:inputTextarea value="${det.journal}" rows="5" cols="20"/>
           </h:column>
         </h:dataTable>
         <h:commandButton action="${adminCharacters.saveAll}" value="Save All"/>

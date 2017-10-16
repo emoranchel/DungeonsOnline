@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -61,9 +63,23 @@ public class Chara implements Serializable {
   @Column(name = "CTYPE")
   private String ctype;
 
+  @Basic(optional = false)
+  @NotNull
+  @Size(min = 1, max = 20)
+  @Column(name = "GENDER")
+  private String gender;
+
+  @OneToOne(fetch = FetchType.EAGER)
+  @PrimaryKeyJoinColumn
+  private CharaDetail charDetail;
+
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "CHARCLASS")
   private DataClass charClass;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "CHARRACE")
+  private DataRace charRace;
 
   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinColumn(name = "chara")
@@ -205,6 +221,30 @@ public class Chara implements Serializable {
 
   public void setBonuses(List<CharaFeat> bonuses) {
     this.bonuses = bonuses;
+  }
+
+  public String getGender() {
+    return gender;
+  }
+
+  public void setGender(String gender) {
+    this.gender = gender;
+  }
+
+  public CharaDetail getCharDetail() {
+    return charDetail;
+  }
+
+  public void setCharDetail(CharaDetail charDetail) {
+    this.charDetail = charDetail;
+  }
+
+  public DataRace getCharRace() {
+    return charRace;
+  }
+
+  public void setCharRace(DataRace charRace) {
+    this.charRace = charRace;
   }
 
   @Override

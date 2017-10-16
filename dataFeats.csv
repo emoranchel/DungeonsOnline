@@ -1,9 +1,17 @@
 'CLASS FEATURES
 'Category;Name;Source;Type;BuffText;Bonus;Details
 Class;Sneak Attack;Rogue Class Feature;Inmediate;+2d8 Damage on advantage;;{"Property":"If you have combat advantage against an attacked enemy add 2d8 damage"}
+Class;Healer's Lore;Cleric Class Feature;Inmediate;Add WIS mod to HP healed;;
+
 
 'COMMON FEATS
-
+Racial;Group Awareness;Racial;Passive;Non-elf allies within 5 get +1 to Perception;;
+Racial;Wild Step;Racial;Passive;Ignore difficult terrain when shifting;;
+Feat;Ritual Caster;Feat;Feat;Able to cast rituals;;
+Feat;Thoughness;Feat;Passive;;{"HPLevel":"+1"};{"Property":"Gain 1 extra HP per level"}
+Feat;Battle Healer;Inmediate;Regain HP when using healing word;;
+Feat;Defensive Healing Word;Healing word provides +1 defenses;;
 
 'CHARACTER SPECIFIC FEATURES
 Character;Momiji Class Skills;Momiji level 1;Passive;;{"SKILL:Acrobatics":"+2","SKILL:Athletics":"+2"};
+Character;Albed Class Skills;Albed level 1;Passive;;{"SKILL:Arcana":"+5","SKILL:Heal":"+5","SKILL:Insight":"+5","SKILL:Religion":"+5"};

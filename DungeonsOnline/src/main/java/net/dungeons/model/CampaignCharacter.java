@@ -5,9 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 import net.dungeons.data.Chara;
 
-public class CampaignCharacter {
+public class CampaignCharacter implements JsonAble {
 
   private final String name;
   private final String charClass;
@@ -65,11 +67,11 @@ public class CampaignCharacter {
 
     this.skills.stream().forEach((skill) -> allStats.put("SKILL:" + skill.getName(), skill.getStat()));
 
-    this.features = cha.getBonuses().stream().map(f->new CharacterFeat(f, this)).collect(Collectors.toList());
-    this.items = cha.getItem().stream().map(i->new CharacterItem(i,this)).collect(Collectors.toList());
+    this.features = cha.getBonuses().stream().map(f -> new CharacterFeat(f, this)).collect(Collectors.toList());
+    this.items = cha.getItem().stream().map(i -> new CharacterItem(i, this)).collect(Collectors.toList());
 
     this.powers = new ArrayList<>();
-    this.powers.addAll(cha.getPowers().stream().map(p->new CharacterPower(p, this)).collect(Collectors.toList()));
+    this.powers.addAll(cha.getPowers().stream().map(p -> new CharacterPower(p, this)).collect(Collectors.toList()));
     this.powers.addAll(this.features.stream().flatMap((o) -> o.getPowers().stream()).collect(Collectors.toList()));
     this.powers.addAll(this.items.stream().filter((i) -> i.isWorn()).flatMap((o) -> o.getPowers().stream()).collect(Collectors.toList()));
 
@@ -108,7 +110,7 @@ public class CampaignCharacter {
     this.hp.addMod("Constitution Bonus", constitution::getValue);
     this.hp.addMod("Level (" + hpPerLevel + "+" + (Math.max(0, constitution.getBonus())) + ")x" + (level - 1),
             () -> ((level - 1) * (hpPerLevel + (Math.max(0, constitution.getBonus())))));
-
+    
     this.armorClass = new CharacterStat("AC", 10, false);
     this.armorClass.addMod("DEX", dexterity::getBonus); // add armor restriction
 
@@ -142,6 +144,8 @@ public class CampaignCharacter {
     allStats.put("FORT", fortitude);
     allStats.put("REF", reflexes);
     allStats.put("WILL", willpower);
+    
+    allStats.put("INIT", initiative);
 
     features.stream().forEach((feature) -> {
       feature.getBonuses().stream().forEach((b) -> addBonus(b, feature));
@@ -155,7 +159,13 @@ public class CampaignCharacter {
     if (allStats.containsKey(b.getStat())) {
       allStats.get(b.getStat()).addMod(bonus.getName(), b.getBonus());
     } else {
-      System.err.println("Error, bonus not found:" + b.getStat());
+      switch (b.getStat()) {
+        case "HPLevel":
+          this.hp.addMod(bonus.getName(), () -> ((level) * (b.getIntValue())));
+          break;
+        default:
+          System.err.println("Error, bonus not found:" + b.getStat());
+      }
     }
   }
 
@@ -282,6 +292,44 @@ public class CampaignCharacter {
       }
     }
     return null;
+  }
+
+  public JsonObjectBuilder toJson() {
+    return Json.createObjectBuilder()
+            .add("name", this.name)
+            .add("class", this.charClass)
+            .add("level", this.level)
+            .add("hp", this.hp.getValue())
+            .add("healingsurges", this.healingSurges.getValue())
+            .add("initiative", this.initiative.getValue())
+            .add("fortitude", this.fortitude.getValue())
+            .add("reflexes", this.reflexes.getValue())
+            .add("will", this.willpower.getValue())
+            .add("armorClass", this.armorClass.getValue())
+            .add("speed", this.speed.getValue())
+            .add("str", this.strength.getBase())
+            .add("dex", this.dexterity.getBase())
+            .add("con", this.constitution.getBase())
+            .add("wis", this.wisdom.getBase())
+            .add("int", this.intelligence.getBase())
+            .add("cha", this.charisma.getBase())
+            .add("strBonus", this.strength.getBonusStr())
+            .add("dexBonus", this.dexterity.getBonusStr())
+            .add("conBonus", this.constitution.getBonusStr())
+            .add("wisBonus", this.wisdom.getBonusStr())
+            .add("intBonus", this.intelligence.getBonusStr())
+            .add("chaBonus", this.charisma.getBonusStr())
+            .add("strAttack", this.strAttack.getValue())
+            .add("conAttack", this.conAttack.getValue())
+            .add("dexAttack", this.dexAttack.getValue())
+            .add("intAttack", this.intAttack.getValue())
+            .add("wisAttack", this.wisAttack.getValue())
+            .add("chaAttack", this.chaAttack.getValue())
+            .add("skills", JsonAble.toJson(skills))
+            .add("features", JsonAble.toJson(features))
+            .add("items", JsonAble.toJson(items))
+            .add("powers", JsonAble.toJson(powers))
+            .add("buffs", JsonAble.toJson(buffs));
   }
 
 }

@@ -1,0 +1,7 @@
+'NAME;BONUS
+Human;
+Dwarf;{"SKLILL:Dungeoneering":"+2","SKLILL:Endurance":"+2"}
+Elf;{"SKLILL:Nature":"+2","SKLILL:Perception":"+2"}
+Half-Elf;{"SKLILL:Diplomacy":"+2","SKLILL:Insight":"+2"}
+Gnome;{"SKLILL:Arcana":"+2","SKLILL:Stealth":"+2"}
+Halfling;{"SKLILL:Acrobatics":"+2","SKLILL:Thievery":"+2"}

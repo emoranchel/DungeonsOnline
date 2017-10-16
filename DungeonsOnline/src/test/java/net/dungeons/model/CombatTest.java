@@ -32,7 +32,7 @@ public class CombatTest {
   }
 
   @Test
-  public void testAMesta() throws Exception {
+  public void testInitiative() throws Exception {
     assertEquals("Momiji", combat.getInitiatives().get(0).getName());
     combat.nextInitiative();
     assertEquals("Kaisoku", combat.getInitiatives().get(0).getName());

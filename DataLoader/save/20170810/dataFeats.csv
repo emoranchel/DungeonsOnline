@@ -1,0 +1,19 @@
+'Category|name|source|type|buffText|bonus|details
+Class|Sneak Attack|Rogue Class Feature|Inmediate|+2d8 Damage on advantage||{"Property":"If you have combat advantage against an attacked enemy add 2d8 damage"}
+Class|Healer's Lore|Cleric Class Feature|Inmediate|Add WIS mod to HP healed||
+Racial|Group Awareness|Racial|Passive|Non-elf allies within 5 get +1 to Perception||
+Racial|Wild Step|Racial|Passive|Ignore difficult terrain when shifting||
+Feat|Ritual Caster|Feat|Feat|Able to cast rituals||
+Feat|Thoughness|Feat|Passive||{"HPLevel":"+1"}|{"Property":"Gain 1 extra HP per level"}
+Feat|Battle Healer|Inmediate|Regain HP when using healing word|||
+Feat|Defensive Healing Word|Healing word provides +1 defenses||||
+Character|Momiji Class Skills|Momiji level 1|Passive||{"SKILL:Acrobatics":"+5","SKILL:Athletics":"+5","SKILL:Bluff":"+5", "SKILL:Thievery":"+5", "SKILL:Streetwise":"+5", "SKILL:Perception":"+5", "SKILL:Insight":"+5" }|
+Character|Albed Class Skills|Albed level 1|Passive||{"SKILL:Arcana":"+5","SKILL:Heal":"+5","SKILL:Insight":"+5","SKILL:Religion":"+5"}|
+Feat|Improved Initiative|Feat|Passive||{"INIT":"+4"}|{"Property":"Gain +4 to initiative"}
+Feat|Rapid Assault|Feat|Passive|+2 damage on first round||{"Property":"Gain +2 damage on all damage dealt in the first round of combat"}
+Feat|Alertness|Feat|Passive|No combat advantage on surprise, +2 perception|{"SKILL:Perception":"+2"}|{"Property":"You don't give combat advantage on surprise attacks","Bonus":"+2 perception"}
+Feat|Slaying Action|Feat|Feat|Spend action point -> Deal damage of sneak attack again|null|{"Property":"You may spend an action point to deal double sneak attack damage"}
+Racial|Human Defenses|Racial|Passive||{"FORT":"+1","REF":"+1","WILL":"+1"}|{"Property":"You gain +1 to FORT, REF and WILL"}
+Feat|Human Perseverance|Feat|Passive|+1 to Saving Throws||null
+Feat|Escape Artist|Feat|Feat|Escape from grab as a minor action|{"SKILL:Acrobatics":"+2"}|
+Feat|Distant Advantage|Feat|Feat|Gain advantage on flanked enemy||null

@@ -1,0 +1,89 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jul 7, 2016, 12:09:54 PM
+    Author     : ed_ze
+*/
+
+.card{
+  /* display: block; */
+  
+  border:1pt solid black;
+  width: 220px;
+  background: #ffffff;
+  margin: 5px;
+  padding: 2px;
+}
+
+.footnote{
+  width: 100%;
+  border-top: 1pt solid #c0c0c0;
+  height: 14px;
+  font-size: 8pt;
+}
+
+.card hgroup{
+  margin:0;
+  width: 100%;
+  color: #ffffff;
+}
+
+.card hgroup.Equip{
+  background: #666600;
+}
+
+.card hgroup.Gear{
+  background: #af773f;
+}
+
+.card hgroup.Encounter{
+  background: #FFCCCC;
+}
+.card hgroup.AtWill{
+  background: #CCFFCC;
+}
+.card hgroup.Daily{
+  background: #CCCCCC;
+}
+.card hgroup.Consumable{
+  background: #2a3dca;
+}
+.card hgroup.Special{
+  background: #3c928d;
+}
+.card hgroup.Other{
+  background: #4d3c92;
+}
+
+.card hgroup h3{
+  margin:0;
+  padding: 0;
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+.card hgroup h4{
+  margin:0;
+  padding: 0;
+  font-size: 10pt;
+  font-weight: normal;
+}
+
+.card p{
+  display: block;
+  width: 100%;
+  margin:0;
+  padding: 0;
+  font-size: 8pt;
+}
+
+.card p:nth-child(odd){
+  background: #ffffff;
+}
+.card p:nth-child(even){
+  background: #f6f6f6;
+}
+

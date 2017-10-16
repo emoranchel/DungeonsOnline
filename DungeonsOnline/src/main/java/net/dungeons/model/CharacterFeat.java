@@ -2,10 +2,12 @@ package net.dungeons.model;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 import net.dungeons.data.CharaFeat;
 import net.dungeons.data.DataFeat;
 
-public class CharacterFeat {
+public class CharacterFeat implements JsonAble {
 
   private final String name;
   private final List<Bonus> bonuses;
@@ -24,7 +26,7 @@ public class CharacterFeat {
     this.bonuses = JsonIterator.objectToList(feat.getBonus(), Bonus::new);
     this.details = JsonIterator.objectToList(feat.getDetails(), Detail::new);
     this.buffs = CharacterBuff.get(feat.getBuffText(), "F: " + feat.getName());
-    this.powers = feat.getPowers().stream().map(f->new CharacterPower(f, character)).collect(Collectors.toList());
+    this.powers = feat.getPowers().stream().map(f -> new CharacterPower(f, character)).collect(Collectors.toList());
     this.type = feat.getType();
     this.source = feat.getSource();
     this.category = feat.getCategory();
@@ -64,6 +66,12 @@ public class CharacterFeat {
 
   public String getCategory() {
     return category;
+  }
+
+  @Override
+  public JsonObjectBuilder toJson() {
+    return Json.createObjectBuilder()
+            .add("name", name);
   }
 
 }

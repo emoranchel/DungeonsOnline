@@ -2,10 +2,12 @@ package net.dungeons.model;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 import net.dungeons.data.CharaItem;
 import net.dungeons.data.DataItem;
 
-public class CharacterItem {
+public class CharacterItem implements JsonAble {
 
   private final String name;
   private final int count;
@@ -71,6 +73,16 @@ public class CharacterItem {
 
   public String getDamage() {
     return damage;
+  }
+
+  @Override
+  public JsonObjectBuilder toJson() {
+    return Json.createObjectBuilder()
+            .add("name", name)
+            .add("slot", slot)
+            .add("worn", worn)
+            .add("count", count)
+            .add("damage", damage);
   }
 
 }

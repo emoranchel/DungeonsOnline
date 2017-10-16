@@ -19,7 +19,10 @@ public class Bonus {
   }
 
   public StatCalculus getBonus() {
-    return () -> Integer.parseInt(value);
+    return () -> getIntValue();
   }
 
+  public int getIntValue() {
+    return Integer.parseInt(value);
+  }
 }

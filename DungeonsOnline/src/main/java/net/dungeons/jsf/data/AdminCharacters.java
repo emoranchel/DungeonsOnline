@@ -1,4 +1,4 @@
-package net.dungeons.jsf;
+package net.dungeons.jsf.data;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 import net.dungeons.data.Chara;
+import net.dungeons.data.CharaDetail;
 import net.dungeons.data.CharaFeat;
 
 @Named("adminCharacters")
@@ -19,15 +20,23 @@ public class AdminCharacters {
   @PersistenceContext
   private EntityManager em;
   private List<Chara> chars;
+  private List<CharaDetail> details;
 
   @PostConstruct
   public void init() {
     CriteriaQuery<Chara> cqChara = em.getCriteriaBuilder().createQuery(Chara.class);
     chars = em.createQuery(cqChara.select(cqChara.from(Chara.class))).getResultList();
+
+    CriteriaQuery<CharaDetail> cqDetail = em.getCriteriaBuilder().createQuery(CharaDetail.class);
+    details = em.createQuery(cqDetail.select(cqDetail.from(CharaDetail.class))).getResultList();
   }
 
   public List<Chara> getCharacters() {
     return chars;
+  }
+
+  public List<CharaDetail> getDetails() {
+    return details;
   }
 
   public List<String> getTypes() {
@@ -37,10 +46,16 @@ public class AdminCharacters {
   @Transactional
   public void saveAll() {
     chars.forEach(this::saveChar);
+    details.forEach(this::saveDetail);
   }
 
   @Transactional
   public void saveChar(Chara c) {
+    em.merge(c);
+  }
+
+  @Transactional
+  public void saveDetail(CharaDetail c) {
     em.merge(c);
   }
 

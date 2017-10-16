@@ -1,0 +1,124 @@
+<div class="characterSheet">
+  <div>
+    <h1>{{name}}</h1>
+  </div>
+  <div style="width:330px; float: left;">
+    <div>
+      <div style="float:left;">
+        <table width="100%">
+          <thead>
+            <tr><th colspan="4">Ability Scores</th></tr>
+            <tr style="font-size: .60em"><th>Ability</th><th>Score</th><th>Mod</th><th>Mod+Lvl</th></tr>
+          </thead>
+          <tr><td>STR</td><td>{{str}}</td><td>{{strBonus}}</td><td>{{strAttack}}</td></tr>
+          <tr><td>CON</td><td>{{con}}</td><td>{{conBonus}}</td><td>{{conAttack}}</td></tr>
+          <tr><td>DEX</td><td>{{dex}}</td><td>{{dexBonus}}</td><td>{{dexAttack}}</td></tr>
+          <tr><td>INT</td><td>{{int}}</td><td>{{intBonus}}</td><td>{{intAttack}}</td></tr>
+          <tr><td>WIS</td><td>{{wis}}</td><td>{{wisBonus}}</td><td>{{wisAttack}}</td></tr>
+          <tr><td>CHA</td><td>{{cha}}</td><td>{{chaBonus}}</td><td>{{chaAttack}}</td></tr>
+        </table>
+        <table width="100%">
+          <thead>
+            <tr><th colspan="2">Hit Points</th></tr>
+          </thead>
+          <tr><td>HP</td><td>{{hp}}</td></tr>
+          <tr><td>Healing Surges</td><td>{{healingsurges}}</td></tr>
+        </table>
+        <table width="100%">
+          <tr><th>Initiative</th><td>{{initiative}}</td></tr>
+        </table>
+        <table width="100%">
+          <tr><th>Speed</th><td>{{speed}}</td></tr>
+        </table>
+        <table width="100%">
+          <thead>
+            <tr><th colspan="2">Defenses</th></tr>
+          </thead>
+          <tr><td>Armor Class</td><td>{{armorClass}}</td></tr>
+          <tr><td>Fortitude</td><td>{{fortitude}}</td></tr>
+          <tr><td>Reflexes</td><td>{{reflexes}}</td></tr>
+          <tr><td>Will</td><td>{{will}}</td></tr>
+        </table>
+      </div>
+      <div style="float:left;">
+        <table>
+          <thead>
+            <tr><th>Skill</th><th>Bonus</th></tr>
+          </thead>
+          {{#each skills}}
+          <tr><td>{{name}}</td><td>{{bonus}}</td></tr>
+          {{/each}}
+        </table>
+      </div>
+    </div>
+    <div>
+      <table width="100%">
+        <thead>
+          <tr><th colspan="2">Active Buffs</th></tr>
+        </thead>
+        {{#each buffs}}
+        <tr><td>{{source}}</td><td>{{buff}}</td></tr>
+        {{/each}}
+      </table>
+    </div>
+    <div>
+      <table width="100%">
+        <thead>
+          <tr><th>Features</th></tr>
+        </thead>
+        {{#each features}}
+        <tr><td>{{name}}</td></tr>
+        {{/each}}
+      </table>
+    </div>
+    <div>
+      <table width="100%">
+        <thead>
+          <tr><th colspan="2">Inventory</th></tr>
+          <tr style="font-size: 0.6em;"><th>&nbsp;</th><th>#</th><th>Item</th><th>Slot</th><th>damage</th></tr>
+        </thead>
+        {{#each items}}
+        <tr>
+          <td><input type="checkbox" {{#if worn}}checked="checked"{{/if}}/></td>
+          <td>{{count}}</td>
+          <td>{{name}}</td>
+          <td>{{slot}}</td>
+          <td>{{damage}}</td>
+        </tr>
+        {{/each}}
+      </table>
+    </div>
+  </div>
+  <div id="powerContainer" style="margin-left:350px;margin-right:auto;">
+    {{#each powers}}
+    <div class="card">
+      <hgroup class="{{type}}">
+        <h3>{{name}}</h3>
+        <h4>{{type}} . {{action}}</h4>
+      </hgroup>
+      <p>{{range}}</p>
+      {{#if hasBattleBlock}}
+      <table width="100%">
+        {{#if hasAttackBlock}}
+        <thead>
+          <tr><td>Attack</td><td>Damage</td></tr>
+        </thead>
+        <tr><td>{{attackValue}}</td><td>{{damageValue}}</td></tr>
+        <tr style="font-size:0.6em;"><td>{{attack}}</td><td>{{damage}}</td></tr>
+        {{/if}}
+        {{#if hasEffectBlock}}
+        <tr><td colspan="2">{{effect}}</td></tr>
+        {{/if}}
+        {{#if hasMissBlock}}
+        <tr><td colspan="2"><strong>Miss:</strong>{{miss}}</td></tr>
+        {{/if}}
+      </table>
+      {{/if}}
+      {{#each details}}
+      <p><strong>{{name}}: </strong>{{value}}</p>
+      {{/each}}
+      <div class="footnote">{{source}}</div>
+    </div>
+    {{/each}}
+  </div>
+</div>

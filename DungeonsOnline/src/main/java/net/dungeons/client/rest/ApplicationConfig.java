@@ -14,6 +14,7 @@ public class ApplicationConfig extends Application {
   }
 
   private void addRestResourceClasses(Set<Class<?>> resources) {
+    resources.add(net.dungeons.client.rest.CharService.class);
     resources.add(net.dungeons.client.rest.CombatService.class);
   }
   

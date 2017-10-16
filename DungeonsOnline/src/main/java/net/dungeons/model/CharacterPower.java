@@ -2,12 +2,14 @@ package net.dungeons.model;
 
 import java.util.List;
 import java.util.Optional;
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 import net.dungeons.data.BasePower;
 import net.dungeons.data.CharaPower;
 import net.dungeons.data.DataFeatPower;
 import net.dungeons.data.DataItemPower;
 
-public class CharacterPower {
+public class CharacterPower implements JsonAble {
 
   private final String source;
   private final String type;
@@ -144,5 +146,35 @@ public class CharacterPower {
 
   private CharSequence toVal(int bonus) {
     return "(" + Integer.toString(bonus) + ")";
+  }
+
+  @Override
+  public JsonObjectBuilder toJson() {
+    return Json.createObjectBuilder()
+            .add("name", name)
+            .add("type", type)
+            .add("source", source)
+            .add("action", action)
+            .add("range", range)
+            .add("attack", attack)
+            .add("damage", damage)
+            .add("attackValue", getAttackValue())
+            .add("damageValue", getDamageValue())
+            .add("effect", effect)
+            .add("miss", miss)
+            .add("details", JsonAble.toJson(details))
+            .add("hasBattleBlock", haz(miss, effect, attack, damage))
+            .add("hasMissBlock", haz(miss))
+            .add("hasEffectBlock", haz(effect))
+            .add("hasAttackBlock", haz(attack, damage));
+  }
+
+  private boolean haz(String... strings) {
+    for (String s : strings) {
+      if (s != null && s.trim().length() > 0) {
+        return true;
+      }
+    }
+    return false;
   }
 }

@@ -2,7 +2,6 @@ package net.edzero.dungeonsonline.csv2json;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 
 public class CSVReader {
@@ -14,12 +13,12 @@ public class CSVReader {
     new CSVReader(filename, separator).foreach(action);
   }
 
-  public CSVReader(String filename, String separator) throws FileNotFoundException {
+  public CSVReader(String filename, String separator) {
     this.filename = filename;
     this.separator = separator;
   }
 
-  public void foreach(ConsumerEx<CSVData> action) throws Exception {
+  public void foreach(ConsumerEx<CSVData> action) {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filename)))) {
       String line;
       int count = 0;
@@ -72,6 +71,9 @@ public class CSVReader {
       this.data = data;
     }
 
-  }
+    public String[] rawData() {
+      return data;
+    }
 
+  }
 }

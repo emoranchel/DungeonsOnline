@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.json.Json;
 import javax.json.JsonArray;
+import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 
-public class CharacterBuff {
+public class CharacterBuff implements JsonAble {
 
   public static List<CharacterBuff> get(String json, String source) {
     List<CharacterBuff> buffs = new ArrayList<>();
@@ -41,6 +42,13 @@ public class CharacterBuff {
 
   public String getSource() {
     return source;
+  }
+
+  @Override
+  public JsonObjectBuilder toJson() {
+    return Json.createObjectBuilder()
+            .add("source", source)
+            .add("buff", buff);
   }
 
 }

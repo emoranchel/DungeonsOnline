@@ -1,5 +1,6 @@
 package net.dungeons.data;
 
+import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "DATAFEATPOWER")
-public class DataFeatPower {
+public class DataFeatPower implements Serializable {
 
   @Id
   @Basic(optional = false)

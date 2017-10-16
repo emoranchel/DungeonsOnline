@@ -1,8 +1,11 @@
 package net.dungeons.model;
 
+import java.math.BigDecimal;
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
 import net.dungeons.data.CharaSkill;
 
-public class CharacterSkill {
+public class CharacterSkill implements JsonAble {
 
   private final String name;
   private final CharacterStat bonus;
@@ -58,6 +61,13 @@ public class CharacterSkill {
 
   public CharacterStat getStat() {
     return bonus;
+  }
+
+  @Override
+  public JsonObjectBuilder toJson() {
+    return Json.createObjectBuilder()
+            .add("name", name)
+            .add("bonus", getBonusStr());
   }
 
 }
